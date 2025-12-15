@@ -50,3 +50,57 @@ function loadLesson(topic) {
 
   box.innerHTML = lessons[topic];
 }
+const questions = [
+  {
+    q: "She ___ to school every day.",
+    answers: ["go", "goes", "going"],
+    correct: 1
+  },
+  {
+    q: "I ___ a movie yesterday.",
+    answers: ["watch", "watched", "watching"],
+    correct: 1
+  },
+  {
+    q: "He is ___ engineer.",
+    answers: ["a", "an", "the"],
+    correct: 1
+  }
+];
+
+let current = 0;
+
+function loadQuestion() {
+  document.getElementById("question").textContent = questions[current].q;
+  const answersDiv = document.getElementById("answers");
+  answersDiv.innerHTML = "";
+
+  questions[current].answers.forEach((a, index) => {
+    const btn = document.createElement("button");
+    btn.textContent = a;
+    btn.onclick = () => check(index);
+    answersDiv.appendChild(btn);
+  });
+}
+
+function check(index) {
+  const feedback = document.getElementById("feedback");
+  if (index === questions[current].correct) {
+    feedback.textContent = "Correct ✔";
+    feedback.style.color = "green";
+  } else {
+    feedback.textContent = "Wrong ✘";
+    feedback.style.color = "red";
+  }
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= questions.length) {
+    current = 0;
+  }
+  loadQuestion();
+}
+
+loadQuestion();
+
