@@ -1,20 +1,18 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* ======================
-     PAGE NAVIGATION
-  ====================== */
-  function showPage(id) {
+  /* =====================
+     PAGE SWITCHING
+  ===================== */
+  window.showPage = function (id) {
     document.querySelectorAll(".page").forEach(p =>
       p.classList.add("hidden")
     );
     document.getElementById(id).classList.remove("hidden");
-  }
+  };
 
-  window.showPage = showPage;
-
-  /* ======================
-     AUTH ELEMENTS
-  ====================== */
+  /* =====================
+     AUTH SYSTEM
+  ===================== */
   const loginBtn = document.getElementById("loginBtn");
   const signupBtn = document.getElementById("signupBtn");
   const logoutBtn = document.getElementById("logoutBtn");
@@ -27,12 +25,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let mode = "";
 
-  /* ======================
-     AUTH BUTTON EVENTS
-  ====================== */
-  loginBtn.addEventListener("click", () => openAuth("login"));
-  signupBtn.addEventListener("click", () => openAuth("signup"));
-  logoutBtn.addEventListener("click", logout);
+  loginBtn.onclick = () => openAuth("login");
+  signupBtn.onclick = () => openAuth("signup");
+  logoutBtn.onclick = logout;
 
   function openAuth(type) {
     mode = type;
@@ -55,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (mode === "signup") {
       localStorage.setItem("user_" + u, p);
-      alert("Account created. Now log in.");
+      alert("Account created. Now login.");
       modal.classList.add("hidden");
     }
 
@@ -87,9 +82,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   updateUser();
 
-  /* ======================
+  /* =====================
      GRAMMAR LESSONS
-  ====================== */
+  ===================== */
   window.loadLesson = function (type) {
     const lessons = {
       presentPerfect: `
@@ -105,14 +100,15 @@ document.addEventListener("DOMContentLoaded", () => {
       perfectContinuous: `
         <h3>Perfect Continuous</h3>
         <p>have/has been + verb-ing</p>
+        <p>They have been studying for hours.</p>
       `
     };
     document.getElementById("lessonBox").innerHTML = lessons[type];
   };
 
-  /* ======================
+  /* =====================
      PRACTICE SYSTEM
-  ====================== */
+  ===================== */
   const quizzes = {
     easy: [
       { q: "I ___ finished my homework.", a: ["have", "had"], c: 0 }
@@ -121,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
       { q: "She ___ left before I arrived.", a: ["has", "had"], c: 1 }
     ],
     hard: [
-      { q: "They ___ been studying for hours.", a: ["have", "had"], c: 0 }
+      { q: "They ___ been waiting for hours.", a: ["have", "had"], c: 0 }
     ]
   };
 
@@ -133,11 +129,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const answers = document.getElementById("answers");
   const feedback = document.getElementById("feedback");
 
-  difficulty.addEventListener("change", e => {
+  difficulty.onchange = e => {
     currentQuiz = quizzes[e.target.value] || [];
     index = 0;
     loadQuestion();
-  });
+  };
 
   function loadQuestion() {
     if (!currentQuiz.length) return;
