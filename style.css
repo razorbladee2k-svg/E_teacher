@@ -45,7 +45,7 @@ nav button {
   display: none;
 }
 
-/* GRAMMAR */
+/* TOPICS */
 .topics {
   list-style: none;
   padding: 0;
@@ -55,7 +55,7 @@ nav button {
   background: white;
   margin: 10px auto;
   padding: 10px;
-  width: 260px;
+  width: 300px;
   cursor: pointer;
   border-radius: 6px;
 }
