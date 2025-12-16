@@ -7,14 +7,9 @@
 </head>
 <body>
 
-<!-- TOP BAR -->
 <div class="top-bar">
-  <div id="userName">Guest</div>
-  <div class="auth">
-    <button id="loginBtn">Login</button>
-    <button id="signupBtn">Sign Up</button>
-    <button id="logoutBtn" class="hidden">Logout</button>
-  </div>
+  <span id="userName">Guest</span>
+  <button id="logoutBtn" class="hidden">Logout</button>
 </div>
 
 <header>
@@ -24,6 +19,8 @@
 
 <nav>
   <button data-page="home">Home</button>
+  <button data-page="signup">Sign Up</button>
+  <button data-page="login">Login</button>
   <button data-page="grammar">Grammar</button>
   <button data-page="practice">Practice</button>
 </nav>
@@ -31,41 +28,37 @@
 <!-- HOME -->
 <section id="home" class="page">
   <h2>Welcome</h2>
-  <p>Learn English grammar step by step from A1 to B2.</p>
+  <p>Please sign up or log in.</p>
+</section>
+
+<!-- SIGN UP -->
+<section id="signup" class="page hidden">
+  <h2>Sign Up</h2>
+  <input id="suUser" placeholder="Username">
+  <input id="suPass" type="password" placeholder="Password">
+  <button id="signupSubmit">Create Account</button>
+</section>
+
+<!-- LOGIN -->
+<section id="login" class="page hidden">
+  <h2>Login</h2>
+  <input id="liUser" placeholder="Username">
+  <input id="liPass" type="password">
+  <button id="loginSubmit">Login</button>
 </section>
 
 <!-- GRAMMAR -->
 <section id="grammar" class="page hidden">
   <h2>A1 Grammar</h2>
-
-  <select id="levelSelect">
-    <option value="A1">A1</option>
-  </select>
-
   <ul id="lessonList"></ul>
-
-  <div id="lessonBox">Select a grammar topic.</div>
+  <div id="lessonBox">Select a lesson.</div>
 </section>
 
 <!-- PRACTICE -->
 <section id="practice" class="page hidden">
-  <h2 id="practiceTitle">Practice</h2>
-  <p id="question"></p>
-  <div id="answers"></div>
-  <p id="feedback"></p>
-  <button id="nextBtn">Next</button>
+  <h2>Practice</h2>
+  <p>Practice will unlock after login.</p>
 </section>
-
-<!-- AUTH MODAL -->
-<div id="authModal" class="modal hidden">
-  <div class="modal-box">
-    <h3 id="authTitle"></h3>
-    <input id="authUser" placeholder="Username">
-    <input id="authPass" type="password" placeholder="Password">
-    <button id="submitAuth">Submit</button>
-    <button id="cancelAuth">Cancel</button>
-  </div>
-</div>
 
 <script src="script.js"></script>
 </body>
