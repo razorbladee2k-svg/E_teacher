@@ -5,66 +5,76 @@
   <title>eTeacher</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body class="light">
 
-<header class="topbar">
-  <div class="brand">eTeacher</div>
-  <div class="user-area">
-    <span id="username">Guest</span>
-    <span id="xp">0 XP</span>
-    <span id="streak">🔥 0</span>
-    <button id="loginBtn">Login</button>
-    <button id="signupBtn">Sign up</button>
-    <button id="logoutBtn" class="hidden">Logout</button>
+<!-- HEADER -->
+<header class="header">
+  <div class="header-left">
+    <span class="logo">eTeacher</span>
+
+    <nav class="nav">
+      <div class="nav-item">Grammar</div>
+      <div class="nav-item">Practice</div>
+      <div class="nav-item">Levels</div>
+      <div class="nav-item">Resources</div>
+    </nav>
+  </div>
+
+  <div class="header-right">
+    <button id="themeBtn">🌙</button>
+    <button id="loginBtn" class="ghost">Log In</button>
+    <button id="signupBtn" class="primary">Sign Up</button>
   </div>
 </header>
 
-<main id="app">
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <h1>Discover a smarter way to learn English</h1>
+    <p>
+      Build real grammar skills with structured lessons, adaptive practice,
+      and progress tracking — from A1 to B2.
+    </p>
+    <div class="hero-actions">
+      <button class="primary big" id="startPractice">
+        Give me a practice
+      </button>
+      <button class="outline big" id="chooseLevel">
+        Choose my level
+      </button>
+    </div>
+  </div>
 
-  <!-- AUTH -->
-  <section id="auth" class="screen hidden">
-    <h2 id="authTitle">Login</h2>
-    <input id="authUser" placeholder="Username" />
-    <input id="authPass" type="password" placeholder="Password" />
-    <button id="authSubmit">Continue</button>
-  </section>
+  <div class="hero-visual">
+    <!-- placeholder box (replace with SVG/illustration later) -->
+    <div class="illustration"></div>
+  </div>
+</section>
+
+<!-- APP -->
+<main id="app" class="hidden">
 
   <!-- DASHBOARD -->
   <section id="dashboard" class="screen">
-    <h1>Your English Path</h1>
-
-    <div class="level-grid">
-      <div class="level-card" data-level="A1">
-        <h3>A1</h3>
-        <div class="progress-ring" data-progress="0"></div>
-      </div>
-      <div class="level-card locked">
-        <h3>A2</h3>
-      </div>
-      <div class="level-card locked">
-        <h3>B1</h3>
-      </div>
-      <div class="level-card locked">
-        <h3>B2</h3>
-      </div>
-    </div>
+    <h2>Your learning path</h2>
+    <div class="card-grid" id="levelCards"></div>
   </section>
 
-  <!-- LESSONS -->
-  <section id="lessons" class="screen hidden">
-    <h2 id="lessonTitle"></h2>
-    <div id="lessonList" class="lesson-grid"></div>
-    <button class="back">← Back</button>
+  <!-- GRAMMAR -->
+  <section id="grammar" class="screen hidden">
+    <h2 id="grammarTitle"></h2>
+    <div id="grammarList" class="list"></div>
+    <button class="ghost" onclick="goDashboard()">← Back</button>
   </section>
 
   <!-- PRACTICE -->
   <section id="practice" class="screen hidden">
     <h2 id="practiceTitle"></h2>
-    <div class="card">
+    <div class="practice-card">
       <p id="question"></p>
       <div id="answers"></div>
+      <p id="feedback"></p>
     </div>
-    <p id="feedback"></p>
   </section>
 
 </main>
