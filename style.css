@@ -11,8 +11,16 @@ header {
   padding: 30px;
 }
 
-nav {
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
   background: #111827;
+  color: white;
+}
+
+nav {
+  background: #2563eb;
   padding: 10px;
 }
 
@@ -20,13 +28,9 @@ nav button {
   margin: 5px;
   padding: 10px 20px;
   color: white;
-  background: #2563eb;
+  background: #1d4ed8;
   border: none;
   cursor: pointer;
-}
-
-nav button:hover {
-  background: #1d4ed8;
 }
 
 .page {
@@ -39,34 +43,44 @@ nav button:hover {
 
 select {
   padding: 8px;
-  font-size: 16px;
-  margin-bottom: 20px;
+  margin: 15px;
 }
 
 #lessonList {
   list-style: none;
   padding: 0;
-  max-width: 400px;
-  margin: 0 auto;
+  max-width: 500px;
+  margin: auto;
 }
 
 #lessonList li {
   background: white;
-  margin: 8px 0;
   padding: 10px;
+  margin: 8px 0;
   cursor: pointer;
   border-radius: 6px;
 }
 
-#lessonList li:hover {
-  background: #e0e7ff;
-}
-
 #lessonBox {
   background: white;
-  max-width: 600px;
-  margin: 30px auto;
   padding: 20px;
+  margin: 20px auto;
+  max-width: 700px;
   border-radius: 8px;
   text-align: left;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-box {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
 }
