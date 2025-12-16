@@ -1,23 +1,25 @@
 const body = document.body;
 const app = document.getElementById("app");
 
-themeBtn.onclick = () => body.classList.toggle("dark");
+themeToggle.onclick = () => body.classList.toggle("dark");
 
-/* START FLOW */
+/* ENTRY */
 startPractice.onclick = () => {
-  document.querySelector(".hero").classList.add("hidden");
   app.classList.remove("hidden");
+  document.querySelector(".hero").classList.add("hidden");
+  document.querySelector(".features").classList.add("hidden");
   loadPractice("A1");
 };
 
 chooseLevel.onclick = () => {
-  document.querySelector(".hero").classList.add("hidden");
   app.classList.remove("hidden");
-  renderDashboard();
+  document.querySelector(".hero").classList.add("hidden");
+  document.querySelector(".features").classList.add("hidden");
+  renderLevels();
 };
 
-/* DASHBOARD */
-const grammarData = {
+/* DATA */
+const grammar = {
   A1: [
     "To be (am / is / are)",
     "Present simple",
@@ -31,17 +33,27 @@ const grammarData = {
     "Conditionals",
     "Passive voice",
     "Reported speech",
-    "Modal verbs",
-    "Gerund vs infinitive"
+    "Modal verbs"
   ]
 };
 
-function renderDashboard() {
-  const grid = document.getElementById("levelCards");
+const questions = {
+  A1: [
+    { q: "She ___ happy.", o: ["is", "are"], a: 0 },
+    { q: "They ___ here.", o: ["is", "are"], a: 1 }
+  ],
+  B1: [
+    { q: "I ___ here since 2020.", o: ["have been", "was"], a: 0 }
+  ]
+};
+
+/* LEVELS */
+function renderLevels() {
+  const grid = document.getElementById("levels");
   grid.innerHTML = "";
-  Object.keys(grammarData).forEach(level => {
+  Object.keys(grammar).forEach(level => {
     const card = document.createElement("div");
-    card.className = "card";
+    card.className = "feature";
     card.textContent = level;
     card.onclick = () => showGrammar(level);
     grid.appendChild(card);
@@ -53,46 +65,35 @@ function showGrammar(level) {
   document.getElementById("grammar").classList.remove("hidden");
   grammarTitle.textContent = level + " Grammar";
   grammarList.innerHTML = "";
-  grammarData[level].forEach(g => {
+  grammar[level].forEach(item => {
     const div = document.createElement("div");
     div.className = "card";
-    div.textContent = g;
+    div.textContent = item;
     div.onclick = () => loadPractice(level);
     grammarList.appendChild(div);
   });
 }
 
-function goDashboard() {
+function goBack() {
   document.getElementById("grammar").classList.add("hidden");
   document.getElementById("dashboard").classList.remove("hidden");
 }
 
 /* PRACTICE */
-const questions = {
-  A1: [
-    { q: "She ___ happy.", o: ["is", "are"], a: 0 },
-    { q: "They ___ here.", o: ["is", "are"], a: 1 }
-  ],
-  B1: [
-    { q: "I ___ here since 2020.", o: ["have been", "was"], a: 0 },
-    { q: "If I ___ you, I would study.", o: ["am", "were"], a: 1 }
-  ]
-};
-
-let qIndex = 0;
-let currentSet = [];
+let index = 0;
+let set = [];
 
 function loadPractice(level) {
   document.getElementById("grammar").classList.add("hidden");
   document.getElementById("practice").classList.remove("hidden");
   practiceTitle.textContent = level + " Practice";
-  currentSet = questions[level];
-  qIndex = 0;
+  set = questions[level];
+  index = 0;
   renderQuestion();
 }
 
 function renderQuestion() {
-  const q = currentSet[qIndex];
+  const q = set[index];
   question.textContent = q.q;
   answers.innerHTML = "";
   feedback.textContent = "";
@@ -102,19 +103,20 @@ function renderQuestion() {
     btn.textContent = opt;
     btn.onclick = () => {
       btn.classList.add(i === q.a ? "correct" : "wrong");
-      setTimeout(nextQuestion, 600);
+      setTimeout(next, 600);
     };
     answers.appendChild(btn);
   });
 }
 
-function nextQuestion() {
-  qIndex++;
-  if (qIndex >= currentSet.length) {
-    renderDashboard();
+function next() {
+  index++;
+  if (index >= set.length) {
     document.getElementById("practice").classList.add("hidden");
+    renderLevels();
     document.getElementById("dashboard").classList.remove("hidden");
     return;
   }
   renderQuestion();
 }
+
