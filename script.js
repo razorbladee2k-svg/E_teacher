@@ -1,3 +1,6 @@
+/* ======================
+   GLOBAL PAGE SWITCH
+====================== */
 function showPage(id) {
   document.querySelectorAll(".page").forEach(p =>
     p.classList.add("hidden")
@@ -5,21 +8,37 @@ function showPage(id) {
   document.getElementById(id).classList.remove("hidden");
 }
 
+/* ======================
+   GLOBAL GRAMMAR
+====================== */
+function loadLesson(type) {
+  const lessons = {
+    presentPerfect: `
+      <h3>Present Perfect</h3>
+      <p>have / has + past participle</p>
+      <p>I have finished my work.</p>
+    `,
+    pastPerfect: `
+      <h3>Past Perfect</h3>
+      <p>had + past participle</p>
+      <p>She had left before I arrived.</p>
+    `,
+    perfectContinuous: `
+      <h3>Perfect Continuous</h3>
+      <p>have/has been + verb-ing</p>
+      <p>They have been studying for hours.</p>
+   _hook
+    `
+  };
+  document.getElementById("lessonBox").innerHTML = lessons[type];
+}
+
+/* ======================
+   MAIN SCRIPT
+====================== */
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* =====================
-     PAGE SWITCHING
-  ===================== */
-  window.showPage = function (id) {
-    document.querySelectorAll(".page").forEach(p =>
-      p.classList.add("hidden")
-    );
-    document.getElementById(id).classList.remove("hidden");
-  };
-
-  /* =====================
-     AUTH SYSTEM
-  ===================== */
+  /* AUTH */
   const loginBtn = document.getElementById("loginBtn");
   const signupBtn = document.getElementById("signupBtn");
   const logoutBtn = document.getElementById("logoutBtn");
@@ -50,10 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const u = authUsername.value.trim();
     const p = authPassword.value.trim();
 
-    if (!u || !p) {
-      alert("Fill all fields");
-      return;
-    }
+    if (!u || !p) return alert("Fill all fields");
 
     if (mode === "signup") {
       localStorage.setItem("user_" + u, p);
@@ -66,9 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem("loggedUser", u);
         updateUser();
         modal.classList.add("hidden");
-      } else {
-        alert("Wrong username or password");
-      }
+      } else alert("Wrong username or password");
     }
   };
 
@@ -89,33 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   updateUser();
 
-  /* =====================
-     GRAMMAR LESSONS
-  ===================== */
-  window.loadLesson = function (type) {
-    const lessons = {
-      presentPerfect: `
-        <h3>Present Perfect</h3>
-        <p>have / has + past participle</p>
-        <p>I have finished my work.</p>
-      `,
-      pastPerfect: `
-        <h3>Past Perfect</h3>
-        <p>had + past participle</p>
-        <p>She had left before I arrived.</p>
-      `,
-      perfectContinuous: `
-        <h3>Perfect Continuous</h3>
-        <p>have/has been + verb-ing</p>
-        <p>They have been studying for hours.</p>
-      `
-    };
-    document.getElementById("lessonBox").innerHTML = lessons[type];
-  };
-
-  /* =====================
-     PRACTICE SYSTEM
-  ===================== */
+  /* PRACTICE */
   const quizzes = {
     easy: [
       { q: "I ___ finished my homework.", a: ["have", "had"], c: 0 }
