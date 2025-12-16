@@ -9,73 +9,62 @@
 
 <header class="topbar">
   <div class="brand">eTeacher</div>
-  <div class="auth">
-    <span id="currentUser">Guest</span>
-    <button id="signupBtn">Sign Up</button>
+  <div class="user-area">
+    <span id="username">Guest</span>
+    <span id="xp">0 XP</span>
+    <span id="streak">🔥 0</span>
     <button id="loginBtn">Login</button>
+    <button id="signupBtn">Sign up</button>
     <button id="logoutBtn" class="hidden">Logout</button>
   </div>
 </header>
 
-<nav class="nav">
-  <button data-page="home">Home</button>
-  <button data-page="grammar">Grammar</button>
-  <button data-page="practice">Practice</button>
-  <button data-page="progress">Progress</button>
-</nav>
+<main id="app">
 
-<main>
-
-  <section id="home" class="page">
-    <h1>Advanced English Learning Platform</h1>
-    <p>Grammar • Practice • Progress Tracking</p>
+  <!-- AUTH -->
+  <section id="auth" class="screen hidden">
+    <h2 id="authTitle">Login</h2>
+    <input id="authUser" placeholder="Username" />
+    <input id="authPass" type="password" placeholder="Password" />
+    <button id="authSubmit">Continue</button>
   </section>
 
-  <section id="grammar" class="page hidden">
-    <h2>Grammar Levels</h2>
-    <div class="levels">
-      <button data-level="A1">A1</button>
-      <button data-level="A2">A2</button>
-      <button data-level="B1">B1</button>
-      <button data-level="B2">B2</button>
-    </div>
-    <ul id="topicList"></ul>
-    <article id="lessonBox"></article>
-  </section>
+  <!-- DASHBOARD -->
+  <section id="dashboard" class="screen">
+    <h1>Your English Path</h1>
 
-  <section id="practice" class="page hidden">
-    <h2>Practice Engine</h2>
-    <div class="levels">
-      <button data-diff="easy">Easy</button>
-      <button data-diff="medium">Medium</button>
-      <button data-diff="hard">Hard</button>
-    </div>
-
-    <div id="quizBox" class="hidden">
-      <p id="qText"></p>
-      <div id="qOptions"></div>
-      <p id="qFeedback"></p>
-      <button id="nextBtn">Next</button>
+    <div class="level-grid">
+      <div class="level-card" data-level="A1">
+        <h3>A1</h3>
+        <div class="progress-ring" data-progress="0"></div>
+      </div>
+      <div class="level-card locked">
+        <h3>A2</h3>
+      </div>
+      <div class="level-card locked">
+        <h3>B1</h3>
+      </div>
+      <div class="level-card locked">
+        <h3>B2</h3>
+      </div>
     </div>
   </section>
 
-  <section id="progress" class="page hidden">
-    <h2>Your Progress</h2>
-    <p id="progressText">Login to track progress.</p>
+  <!-- LESSONS -->
+  <section id="lessons" class="screen hidden">
+    <h2 id="lessonTitle"></h2>
+    <div id="lessonList" class="lesson-grid"></div>
+    <button class="back">← Back</button>
   </section>
 
-  <section id="signup" class="page hidden">
-    <h2>Create Account</h2>
-    <input id="suUser" placeholder="Username" />
-    <input id="suPass" type="password" placeholder="Password" />
-    <button id="suSubmit">Sign Up</button>
-  </section>
-
-  <section id="login" class="page hidden">
-    <h2>Login</h2>
-    <input id="liUser" placeholder="Username" />
-    <input id="liPass" type="password" />
-    <button id="liSubmit">Login</button>
+  <!-- PRACTICE -->
+  <section id="practice" class="screen hidden">
+    <h2 id="practiceTitle"></h2>
+    <div class="card">
+      <p id="question"></p>
+      <div id="answers"></div>
+    </div>
+    <p id="feedback"></p>
   </section>
 
 </main>
