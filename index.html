@@ -10,7 +10,7 @@
 <!-- TOP BAR -->
 <div class="top-bar">
   <div id="userName">Guest</div>
-  <div>
+  <div class="auth">
     <button id="loginBtn">Login</button>
     <button id="signupBtn">Sign Up</button>
     <button id="logoutBtn" class="hidden">Logout</button>
@@ -19,7 +19,7 @@
 
 <header>
   <h1>eTeacher</h1>
-  <p>English Grammar A1–B2</p>
+  <p>English Grammar Learning Platform</p>
 </header>
 
 <nav>
@@ -31,25 +31,20 @@
 <!-- HOME -->
 <section id="home" class="page">
   <h2>Welcome</h2>
-  <p>Select Grammar to start learning.</p>
+  <p>Learn English grammar step by step from A1 to B2.</p>
 </section>
 
 <!-- GRAMMAR -->
 <section id="grammar" class="page hidden">
-  <h2>Grammar</h2>
+  <h2>A1 Grammar</h2>
 
   <select id="levelSelect">
-    <option value="">Select level</option>
-    <option>A1</option>
-    <option>A2</option>
-    <option>B1</option>
-    <option>B1+</option>
-    <option>B2</option>
+    <option value="A1">A1</option>
   </select>
 
   <ul id="lessonList"></ul>
 
-  <div id="lessonBox">Select a lesson.</div>
+  <div id="lessonBox">Select a grammar topic.</div>
 </section>
 
 <!-- PRACTICE -->
