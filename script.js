@@ -2,7 +2,9 @@
    PAGE SWITCH
 ====================== */
 function showPage(id) {
-  document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
+  document.querySelectorAll(".page").forEach(p =>
+    p.classList.add("hidden")
+  );
   document.getElementById(id).classList.remove("hidden");
 }
 
@@ -24,7 +26,7 @@ function loadLesson(type) {
     ppContinuous: `
       <h3>Present Perfect Continuous</h3>
       <p>have/has been + verb-ing</p>
-      <p>I have been studying for 2 hours.</p>
+      <p>I have been studying for hours.</p>
     `,
     pastPerfectCont: `
       <h3>Past Perfect Continuous</h3>
@@ -33,22 +35,23 @@ function loadLesson(type) {
     `,
     mixedPerfect: `
       <h3>Mixed Perfect Tenses</h3>
-      <p>Compare:</p>
       <p>I have lived here for years.</p>
       <p>I had lived there before I moved.</p>
     `
   };
-  lessonBox.innerHTML = lessons[type];
+
+  document.getElementById("lessonBox").innerHTML = lessons[type];
 }
 
 /* ======================
-   AUTH + PRACTICE
+   MAIN LOGIC
 ====================== */
 document.addEventListener("DOMContentLoaded", () => {
 
-  const loginBtn = loginBtn = document.getElementById("loginBtn");
-  const signupBtn = document.getElementById("signupBtn");
-  const logoutBtn = document.getElementById("logoutBtn");
+  /* AUTH ELEMENTS */
+  const loginBtn   = document.getElementById("loginBtn");
+  const signupBtn  = document.getElementById("signupBtn");
+  const logoutBtn  = document.getElementById("logoutBtn");
   const userNameBox = document.getElementById("user-name");
 
   const modal = document.getElementById("authModal");
@@ -58,6 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let mode = "";
 
+  /* AUTH BUTTONS */
   loginBtn.onclick = () => openAuth("login");
   signupBtn.onclick = () => openAuth("signup");
   logoutBtn.onclick = logout;
@@ -68,16 +72,22 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.classList.remove("hidden");
   }
 
-  window.closeAuth = () => modal.classList.add("hidden");
+  window.closeAuth = function () {
+    modal.classList.add("hidden");
+  };
 
-  window.submitAuth = () => {
+  window.submitAuth = function () {
     const u = authUsername.value.trim();
     const p = authPassword.value.trim();
-    if (!u || !p) return alert("Fill all fields");
+
+    if (!u || !p) {
+      alert("Fill all fields");
+      return;
+    }
 
     if (mode === "signup") {
       localStorage.setItem("user_" + u, p);
-      alert("Account created. Now login.");
+      alert("Account created! Now login.");
       modal.classList.add("hidden");
     }
 
@@ -86,14 +96,16 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem("loggedUser", u);
         updateUser();
         modal.classList.add("hidden");
-      } else alert("Wrong login");
+      } else {
+        alert("Wrong username or password");
+      }
     }
   };
 
   function updateUser() {
-    const u = localStorage.getItem("loggedUser");
-    if (u) {
-      userNameBox.textContent = u;
+    const user = localStorage.getItem("loggedUser");
+    if (user) {
+      userNameBox.textContent = user;
       loginBtn.classList.add("hidden");
       signupBtn.classList.add("hidden");
       logoutBtn.classList.remove("hidden");
@@ -125,6 +137,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let quiz = [];
   let index = 0;
 
+  const difficulty = document.getElementById("difficulty");
+  const question = document.getElementById("question");
+  const answers = document.getElementById("answers");
+  const feedback = document.getElementById("feedback");
+
   difficulty.onchange = e => {
     quiz = quizzes[e.target.value] || [];
     index = 0;
@@ -135,11 +152,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!quiz.length) return;
     question.textContent = quiz[index].q;
     answers.innerHTML = "";
+
     quiz[index].a.forEach((ans, i) => {
-      const b = document.createElement("button");
-      b.textContent = ans;
-      b.onclick = () => check(i);
-      answers.appendChild(b);
+      const btn = document.createElement("button");
+      btn.textContent = ans;
+      btn.onclick = () => check(i);
+      answers.appendChild(btn);
     });
   }
 
@@ -156,8 +174,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  window.nextQuestion = () => {
+  window.nextQuestion = function () {
     index = (index + 1) % quiz.length;
     loadQuestion();
   };
+
 });
