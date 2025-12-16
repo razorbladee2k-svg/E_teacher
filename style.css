@@ -1,8 +1,8 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #f4f6fb;
   text-align: center;
+  background: #f4f6fb;
 }
 
 .top-bar {
@@ -13,10 +13,6 @@ body {
   color: white;
 }
 
-.auth button {
-  margin-left: 8px;
-}
-
 .page {
   padding: 40px;
 }
@@ -25,11 +21,10 @@ body {
   display: none;
 }
 
-.main-buttons button,
-.level-buttons button {
-  padding: 15px 30px;
+button {
+  padding: 12px 25px;
   margin: 10px;
-  font-size: 18px;
+  font-size: 16px;
   cursor: pointer;
 }
 
@@ -42,13 +37,11 @@ input {
 ul {
   list-style: none;
   padding: 0;
-  max-width: 600px;
-  margin: 20px auto;
 }
 
-ul li {
+li {
   background: white;
-  padding: 12px;
-  margin: 6px 0;
-  border-radius: 6px;
+  margin: 6px auto;
+  padding: 10px;
+  max-width: 400px;
 }
