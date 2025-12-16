@@ -25,39 +25,34 @@
   <button data-page="practice">Practice</button>
 </nav>
 
-<!-- HOME -->
 <section id="home" class="page">
   <h2>Welcome</h2>
   <p>Please sign up or log in.</p>
 </section>
 
-<!-- SIGN UP -->
 <section id="signup" class="page hidden">
   <h2>Sign Up</h2>
-  <input id="suUser" placeholder="Username">
-  <input id="suPass" type="password" placeholder="Password">
+  <input id="suUser" placeholder="Username" autocomplete="off">
+  <input id="suPass" type="password" placeholder="Password" autocomplete="new-password">
   <button id="signupSubmit">Create Account</button>
 </section>
 
-<!-- LOGIN -->
 <section id="login" class="page hidden">
   <h2>Login</h2>
-  <input id="liUser" placeholder="Username">
-  <input id="liPass" type="password">
+  <input id="liUser" placeholder="Username" autocomplete="off">
+  <input id="liPass" type="password" placeholder="Password" autocomplete="new-password">
   <button id="loginSubmit">Login</button>
 </section>
 
-<!-- GRAMMAR -->
 <section id="grammar" class="page hidden">
   <h2>A1 Grammar</h2>
   <ul id="lessonList"></ul>
   <div id="lessonBox">Select a lesson.</div>
 </section>
 
-<!-- PRACTICE -->
 <section id="practice" class="page hidden">
   <h2>Practice</h2>
-  <p>Practice will unlock after login.</p>
+  <p>Select a grammar lesson to practice.</p>
 </section>
 
 <script src="script.js"></script>
