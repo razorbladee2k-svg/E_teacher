@@ -27,8 +27,8 @@
 <main>
 
   <section id="home" class="page">
-    <h1>Advanced English Learning</h1>
-    <p>Grammar • Practice • Progress tracking</p>
+    <h1>Advanced English Learning Platform</h1>
+    <p>Grammar • Practice • Progress Tracking</p>
   </section>
 
   <section id="grammar" class="page hidden">
@@ -39,41 +39,42 @@
       <button data-level="B1">B1</button>
       <button data-level="B2">B2</button>
     </div>
-    <ul id="grammarTopics"></ul>
-    <article id="lessonContent"></article>
+    <ul id="topicList"></ul>
+    <article id="lessonBox"></article>
   </section>
 
   <section id="practice" class="page hidden">
-    <h2>Practice</h2>
+    <h2>Practice Engine</h2>
     <div class="levels">
       <button data-diff="easy">Easy</button>
       <button data-diff="medium">Medium</button>
       <button data-diff="hard">Hard</button>
     </div>
-    <div id="quiz" class="hidden">
+
+    <div id="quizBox" class="hidden">
       <p id="qText"></p>
       <div id="qOptions"></div>
       <p id="qFeedback"></p>
-      <button id="nextQuestion">Next</button>
+      <button id="nextBtn">Next</button>
     </div>
   </section>
 
   <section id="progress" class="page hidden">
     <h2>Your Progress</h2>
-    <p id="progressInfo">Login to track progress.</p>
+    <p id="progressText">Login to track progress.</p>
   </section>
 
   <section id="signup" class="page hidden">
     <h2>Create Account</h2>
-    <input id="suName" placeholder="Username" />
+    <input id="suUser" placeholder="Username" />
     <input id="suPass" type="password" placeholder="Password" />
     <button id="suSubmit">Sign Up</button>
   </section>
 
   <section id="login" class="page hidden">
     <h2>Login</h2>
-    <input id="liName" placeholder="Username" />
-    <input id="liPass" type="password" placeholder="Password" />
+    <input id="liUser" placeholder="Username" />
+    <input id="liPass" type="password" />
     <button id="liSubmit">Login</button>
   </section>
 
