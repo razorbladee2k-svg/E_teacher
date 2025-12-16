@@ -1,5 +1,5 @@
 /* ======================
-   PAGE SWITCH
+   PAGE SWITCH (GLOBAL)
 ====================== */
 function showPage(id) {
   document.querySelectorAll(".page").forEach(p =>
@@ -9,7 +9,7 @@ function showPage(id) {
 }
 
 /* ======================
-   GRAMMAR LESSONS
+   GRAMMAR LESSONS (GLOBAL)
 ====================== */
 function loadLesson(type) {
   const lessons = {
@@ -44,80 +44,75 @@ function loadLesson(type) {
 }
 
 /* ======================
-   MAIN LOGIC
+   GLOBAL AUTH FUNCTIONS
+====================== */
+let mode = "";
+
+function openAuth(type) {
+  mode = type;
+  document.getElementById("authTitle").textContent =
+    type === "login" ? "Login" : "Sign Up";
+  document.getElementById("authModal").classList.remove("hidden");
+}
+
+function closeAuth() {
+  document.getElementById("authModal").classList.add("hidden");
+}
+
+function submitAuth() {
+  const username = document.getElementById("authUsername").value.trim();
+  const password = document.getElementById("authPassword").value.trim();
+
+  if (!username || !password) {
+    alert("Fill all fields");
+    return;
+  }
+
+  if (mode === "signup") {
+    localStorage.setItem("user_" + username, password);
+    alert("Account created! Now login.");
+    closeAuth();
+    return;
+  }
+
+  if (mode === "login") {
+    const saved = localStorage.getItem("user_" + username);
+    if (saved === password) {
+      localStorage.setItem("loggedUser", username);
+      updateUserUI();
+      closeAuth();
+    } else {
+      alert("Wrong username or password");
+    }
+  }
+}
+
+function logout() {
+  localStorage.removeItem("loggedUser");
+  location.reload();
+}
+
+function updateUserUI() {
+  const user = localStorage.getItem("loggedUser");
+  if (user) {
+    document.getElementById("user-name").textContent = user;
+    document.getElementById("loginBtn").classList.add("hidden");
+    document.getElementById("signupBtn").classList.add("hidden");
+    document.getElementById("logoutBtn").classList.remove("hidden");
+  }
+}
+
+/* ======================
+   MAIN INIT
 ====================== */
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* AUTH ELEMENTS */
-  const loginBtn   = document.getElementById("loginBtn");
-  const signupBtn  = document.getElementById("signupBtn");
-  const logoutBtn  = document.getElementById("logoutBtn");
-  const userNameBox = document.getElementById("user-name");
+  // Auth buttons
+  document.getElementById("loginBtn").onclick = () => openAuth("login");
+  document.getElementById("signupBtn").onclick = () => openAuth("signup");
+  document.getElementById("logoutBtn").onclick = logout;
 
-  const modal = document.getElementById("authModal");
-  const authTitle = document.getElementById("authTitle");
-  const authUsername = document.getElementById("authUsername");
-  const authPassword = document.getElementById("authPassword");
-
-  let mode = "";
-
-  /* AUTH BUTTONS */
-  loginBtn.onclick = () => openAuth("login");
-  signupBtn.onclick = () => openAuth("signup");
-  logoutBtn.onclick = logout;
-
-  function openAuth(type) {
-    mode = type;
-    authTitle.textContent = type === "login" ? "Login" : "Sign Up";
-    modal.classList.remove("hidden");
-  }
-
-  window.closeAuth = function () {
-    modal.classList.add("hidden");
-  };
-
-  window.submitAuth = function () {
-    const u = authUsername.value.trim();
-    const p = authPassword.value.trim();
-
-    if (!u || !p) {
-      alert("Fill all fields");
-      return;
-    }
-
-    if (mode === "signup") {
-      localStorage.setItem("user_" + u, p);
-      alert("Account created! Now login.");
-      modal.classList.add("hidden");
-    }
-
-    if (mode === "login") {
-      if (localStorage.getItem("user_" + u) === p) {
-        localStorage.setItem("loggedUser", u);
-        updateUser();
-        modal.classList.add("hidden");
-      } else {
-        alert("Wrong username or password");
-      }
-    }
-  };
-
-  function updateUser() {
-    const user = localStorage.getItem("loggedUser");
-    if (user) {
-      userNameBox.textContent = user;
-      loginBtn.classList.add("hidden");
-      signupBtn.classList.add("hidden");
-      logoutBtn.classList.remove("hidden");
-    }
-  }
-
-  function logout() {
-    localStorage.removeItem("loggedUser");
-    location.reload();
-  }
-
-  updateUser();
+  updateUserUI();
 
   /* ======================
      PRACTICE + MISTAKES
@@ -156,12 +151,12 @@ document.addEventListener("DOMContentLoaded", () => {
     quiz[index].a.forEach((ans, i) => {
       const btn = document.createElement("button");
       btn.textContent = ans;
-      btn.onclick = () => check(i);
+      btn.onclick = () => checkAnswer(i);
       answers.appendChild(btn);
     });
   }
 
-  function check(i) {
+  function checkAnswer(i) {
     const user = localStorage.getItem("loggedUser") || "guest";
     if (i !== quiz[index].c) {
       const key = "mistakes_" + user;
@@ -178,5 +173,4 @@ document.addEventListener("DOMContentLoaded", () => {
     index = (index + 1) % quiz.length;
     loadQuestion();
   };
-
 });
