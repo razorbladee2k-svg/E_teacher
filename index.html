@@ -2,73 +2,99 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>eTeacher</title>
+  <title>eTeacher – Learn English Clearly</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="light">
 
-<!-- HEADER -->
-<header class="header">
-  <div class="header-left">
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="nav-left">
     <span class="logo">eTeacher</span>
-
-    <nav class="nav">
-      <div class="nav-item">Grammar</div>
-      <div class="nav-item">Practice</div>
-      <div class="nav-item">Levels</div>
-      <div class="nav-item">Resources</div>
+    <nav>
+      <a href="#grammar">Grammar</a>
+      <a href="#practice">Practice</a>
+      <a href="#levels">Levels</a>
+      <a href="#resources">Resources</a>
     </nav>
   </div>
 
-  <div class="header-right">
-    <button id="themeBtn">🌙</button>
-    <button id="loginBtn" class="ghost">Log In</button>
-    <button id="signupBtn" class="primary">Sign Up</button>
+  <div class="nav-right">
+    <button id="themeToggle">🌙</button>
+    <button class="btn ghost">Log in</button>
+    <button class="btn primary">Sign up</button>
   </div>
 </header>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-text">
-    <h1>Discover a smarter way to learn English</h1>
-    <p>
-      Build real grammar skills with structured lessons, adaptive practice,
-      and progress tracking — from A1 to B2.
+  <div class="hero-content">
+    <h1>
+      Learn English <br />
+      <span class="highlight">clearly, deeply, professionally</span>
+    </h1>
+
+    <p class="hero-sub">
+      Structured grammar, intelligent practice, and clear progress —
+      from A1 to B2. No games. No noise. Just real learning.
     </p>
+
     <div class="hero-actions">
-      <button class="primary big" id="startPractice">
-        Give me a practice
+      <button class="btn primary large" id="startPractice">
+        Start with practice
       </button>
-      <button class="outline big" id="chooseLevel">
+      <button class="btn outline large" id="chooseLevel">
         Choose my level
       </button>
     </div>
   </div>
 
   <div class="hero-visual">
-    <!-- placeholder box (replace with SVG/illustration later) -->
-    <div class="illustration"></div>
+    <div class="glass-card">
+      <h3>What you get</h3>
+      <ul>
+        <li>✔ Full grammar roadmap</li>
+        <li>✔ Smart practice questions</li>
+        <li>✔ Progress tracking</li>
+        <li>✔ Dark mode</li>
+      </ul>
+    </div>
   </div>
 </section>
 
-<!-- APP -->
+<!-- FEATURES -->
+<section class="features">
+  <div class="feature">
+    <h3>Grammar, explained properly</h3>
+    <p>No shortcuts. Every tense, modal, and structure explained clearly.</p>
+  </div>
+
+  <div class="feature">
+    <h3>Practice that adapts</h3>
+    <p>Questions adjust based on your mistakes.</p>
+  </div>
+
+  <div class="feature">
+    <h3>Track real progress</h3>
+    <p>See exactly what you know and what you need next.</p>
+  </div>
+</section>
+
+<!-- APP AREA -->
 <main id="app" class="hidden">
 
-  <!-- DASHBOARD -->
-  <section id="dashboard" class="screen">
-    <h2>Your learning path</h2>
-    <div class="card-grid" id="levelCards"></div>
+  <section id="dashboard" class="app-section">
+    <h2>Your English levels</h2>
+    <div class="level-grid" id="levels"></div>
   </section>
 
-  <!-- GRAMMAR -->
-  <section id="grammar" class="screen hidden">
+  <section id="grammar" class="app-section hidden">
     <h2 id="grammarTitle"></h2>
-    <div id="grammarList" class="list"></div>
-    <button class="ghost" onclick="goDashboard()">← Back</button>
+    <div id="grammarList" class="card-list"></div>
+    <button class="btn ghost" onclick="goBack()">← Back</button>
   </section>
 
-  <!-- PRACTICE -->
-  <section id="practice" class="screen hidden">
+  <section id="practice" class="app-section hidden">
     <h2 id="practiceTitle"></h2>
     <div class="practice-card">
       <p id="question"></p>
