@@ -1,12 +1,18 @@
-/* NAVIGATION */
+/* =====================
+   NAVIGATION (WORKING)
+===================== */
 document.querySelectorAll("nav button").forEach(btn => {
-  btn.onclick = () => {
-    document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".page").forEach(p =>
+      p.classList.add("hidden")
+    );
     document.getElementById(btn.dataset.page).classList.remove("hidden");
-  };
+  });
 });
 
-/* GRAMMAR + PRACTICE DATA */
+/* =====================
+   A1 GRAMMAR DATA (FULL)
+===================== */
 const grammarData = {
   A1: {
     "Present simple: am / is / are": {
@@ -14,101 +20,176 @@ const grammarData = {
         <h3>Present simple: am / is / are</h3>
         <p>I am a student.</p>
         <p>She is happy.</p>
-        <p>They are here.</p>
+        <p>They are at school.</p>
       `,
       practice: [
         { q: "She ___ happy.", o: ["am", "is", "are"], a: 1 }
       ]
-    }
-  },
-  A2: {
-    "Present perfect": {
+    },
+
+    "Present simple: I do / I don’t / Do I?": {
       lesson: `
-        <h3>Present perfect</h3>
-        <p>have / has + past participle</p>
-        <p>I have finished.</p>
+        <h3>Present simple</h3>
+        <p>I work every day.</p>
+        <p>I don’t work on Sunday.</p>
+        <p>Do you work here?</p>
       `,
       practice: [
-        { q: "I ___ finished.", o: ["have", "had"], a: 0 }
+        { q: "___ you like coffee?", o: ["Do", "Does"], a: 0 }
+      ]
+    },
+
+    "Present continuous": {
+      lesson: `
+        <h3>Present continuous</h3>
+        <p>I am studying now.</p>
+        <p>She is working.</p>
+        <p>Are you listening?</p>
+      `,
+      practice: [
+        { q: "She ___ working.", o: ["is", "are"], a: 0 }
+      ]
+    },
+
+    "Have got": {
+      lesson: `
+        <h3>Have got</h3>
+        <p>I have got a car.</p>
+        <p>She has got a phone.</p>
+      `,
+      practice: [
+        { q: "He ___ got a dog.", o: ["have", "has"], a: 1 }
+      ]
+    },
+
+    "Was / were (past of be)": {
+      lesson: `
+        <h3>Was / were</h3>
+        <p>I was tired.</p>
+        <p>They were late.</p>
+      `,
+      practice: [
+        { q: "They ___ happy.", o: ["was", "were"], a: 1 }
+      ]
+    },
+
+    "Past simple: regular & irregular": {
+      lesson: `
+        <h3>Past simple</h3>
+        <p>I worked yesterday.</p>
+        <p>I went home.</p>
+      `,
+      practice: [
+        { q: "I ___ home.", o: ["go", "went"], a: 1 }
+      ]
+    },
+
+    "Imperative": {
+      lesson: `
+        <h3>Imperative</h3>
+        <p>Sit down!</p>
+        <p>Don’t talk!</p>
+      `,
+      practice: [
+        { q: "___ quiet!", o: ["Be", "Are"], a: 0 }
+      ]
+    },
+
+    "Can / can’t": {
+      lesson: `
+        <h3>Can / can’t</h3>
+        <p>I can swim.</p>
+        <p>I can’t drive.</p>
+      `,
+      practice: [
+        { q: "I ___ swim.", o: ["can", "can’t"], a: 0 }
+      ]
+    },
+
+    "Articles: a / an / the": {
+      lesson: `
+        <h3>Articles</h3>
+        <p>a cat</p>
+        <p>an apple</p>
+        <p>the sun</p>
+      `,
+      practice: [
+        { q: "___ apple", o: ["a", "an"], a: 1 }
+      ]
+    },
+
+    "There is / there are": {
+      lesson: `
+        <h3>There is / there are</h3>
+        <p>There is a book.</p>
+        <p>There are two books.</p>
+      `,
+      practice: [
+        { q: "There ___ two cats.", o: ["is", "are"], a: 1 }
       ]
     }
   }
 };
 
-let currentPractice = [];
-let practiceIndex = 0;
-
-/* LOAD GRAMMAR */
-const levelSelect = document.getElementById("levelSelect");
+/* =====================
+   GRAMMAR + PRACTICE
+===================== */
 const lessonList = document.getElementById("lessonList");
 const lessonBox = document.getElementById("lessonBox");
 
-levelSelect.onchange = () => {
-  lessonList.innerHTML = "";
-  lessonBox.innerHTML = "Select a lesson.";
-  const level = levelSelect.value;
-  if (!grammarData[level]) return;
+Object.keys(grammarData.A1).forEach(title => {
+  const li = document.createElement("li");
+  li.textContent = title;
+  li.onclick = () => {
+    lessonBox.innerHTML = grammarData.A1[title].lesson;
+    startPractice(grammarData.A1[title].practice, title);
+  };
+  lessonList.appendChild(li);
+});
 
-  Object.keys(grammarData[level]).forEach(title => {
-    const li = document.createElement("li");
-    li.textContent = title;
-    li.onclick = () => {
-      lessonBox.innerHTML = grammarData[level][title].lesson;
-      startPractice(grammarData[level][title].practice, title);
-    };
-    lessonList.appendChild(li);
-  });
-};
+let currentPractice = [];
+let index = 0;
 
-/* PRACTICE */
 function startPractice(practice, title) {
   currentPractice = practice;
-  practiceIndex = 0;
-  document.getElementById("practiceTitle").textContent = "Practice: " + title;
-  showPractice();
+  index = 0;
+  document.getElementById("practiceTitle").textContent =
+    "Practice: " + title;
+  showQuestion();
 }
 
-function showPractice() {
+function showQuestion() {
   if (!currentPractice.length) return;
-  const q = currentPractice[practiceIndex];
-  document.getElementById("question").textContent = q.q;
-  const answers = document.getElementById("answers");
+  const q = currentPractice[index];
+  question.textContent = q.q;
   answers.innerHTML = "";
-  document.getElementById("feedback").textContent = "";
+  feedback.textContent = "";
 
   q.o.forEach((opt, i) => {
     const btn = document.createElement("button");
     btn.textContent = opt;
-    btn.onclick = () => checkAnswer(i);
+    btn.onclick = () => {
+      feedback.textContent =
+        i === q.a ? "Correct ✔" : "Wrong ✘";
+    };
     answers.appendChild(btn);
   });
 }
 
-function checkAnswer(i) {
-  const q = currentPractice[practiceIndex];
-  if (i === q.a) {
-    feedback.textContent = "Correct ✔";
-  } else {
-    feedback.textContent = "Wrong ✘";
-    saveMistake(q.q);
-  }
-}
-
 nextBtn.onclick = () => {
-  practiceIndex = (practiceIndex + 1) % currentPractice.length;
-  showPractice();
+  index = (index + 1) % currentPractice.length;
+  showQuestion();
 };
 
-/* AUTH SYSTEM */
-const authModal = document.getElementById("authModal");
-const authTitle = document.getElementById("authTitle");
-
+/* =====================
+   AUTH (WORKING)
+===================== */
 loginBtn.onclick = () => openAuth("login");
 signupBtn.onclick = () => openAuth("signup");
-logoutBtn.onclick = logout;
-
-submitAuth.onclick = submitAuthForm;
-cancelAuth.onclick = () => authModal.classList.add("hidden");
+logoutBtn.onclick = () => {
+  localStorage.removeItem("user");
+  location.reload();
+};
 
 function openAuth(type) {
   authTitle.textContent = type === "login" ? "Login" : "Sign Up";
@@ -116,48 +197,26 @@ function openAuth(type) {
   authModal.classList.remove("hidden");
 }
 
-function submitAuthForm() {
+cancelAuth.onclick = () => authModal.classList.add("hidden");
+
+submitAuth.onclick = () => {
   const u = authUser.value.trim();
   const p = authPass.value.trim();
   if (!u || !p) return alert("Fill all fields");
 
   if (authModal.dataset.mode === "signup") {
     if (localStorage.getItem("user_" + u))
-      return alert("Username already exists");
+      return alert("Username exists");
     localStorage.setItem("user_" + u, p);
     alert("Account created");
-    authModal.classList.add("hidden");
   } else {
-    if (localStorage.getItem("user_" + u) === p) {
-      localStorage.setItem("loggedUser", u);
-      updateUser();
-      authModal.classList.add("hidden");
-    } else alert("Wrong login");
-  }
-}
-
-function updateUser() {
-  const u = localStorage.getItem("loggedUser");
-  if (u) {
+    if (localStorage.getItem("user_" + u) !== p)
+      return alert("Wrong login");
+    localStorage.setItem("user", u);
     userName.textContent = u;
     loginBtn.classList.add("hidden");
     signupBtn.classList.add("hidden");
     logoutBtn.classList.remove("hidden");
   }
-}
-
-function logout() {
-  localStorage.removeItem("loggedUser");
-  location.reload();
-}
-
-updateUser();
-
-/* MISTAKES */
-function saveMistake(text) {
-  const user = localStorage.getItem("loggedUser") || "guest";
-  const key = "mistakes_" + user;
-  const arr = JSON.parse(localStorage.getItem(key) || "[]");
-  arr.push(text);
-  localStorage.setItem(key, JSON.stringify(arr));
-}
+  authModal.classList.add("hidden");
+};
