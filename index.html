@@ -2,75 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>eTeacher</title>
+  <title>eTeacher – Grammar</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- TOP BAR -->
-<div class="top-bar">
-  <div id="user-name">Guest</div>
-
-  <div class="auth-buttons">
-    <button id="loginBtn">Login</button>
-    <button id="signupBtn">Sign Up</button>
-    <button id="logoutBtn" class="hidden">Logout</button>
-  </div>
-</div>
-
 <header>
   <h1>eTeacher</h1>
-  <p>Advanced English Grammar Learning</p>
+  <p>English Grammar from A1 to B2</p>
 </header>
 
-<nav>
-  <button onclick="showPage('grammar')">Grammar</button>
-  <button onclick="showPage('practice')">Practice</button>
-</nav>
+<main>
+  <section id="grammar">
+    <h2>Grammar Lessons</h2>
 
-<!-- GRAMMAR -->
-<section id="grammar" class="page">
-  <h2>Advanced Grammar</h2>
+    <!-- LEVEL SELECT -->
+    <select id="levelSelect">
+      <option value="">Select level</option>
+      <option value="A1">A1</option>
+      <option value="A2">A2</option>
+      <option value="B1">B1</option>
+      <option value="B1+">B1+</option>
+      <option value="B2">B2</option>
+    </select>
 
-  <ul class="topics">
-    <li onclick="loadLesson('presentPerfect')">Present Perfect</li>
-    <li onclick="loadLesson('pastPerfect')">Past Perfect</li>
-    <li onclick="loadLesson('ppContinuous')">Present Perfect Continuous</li>
-    <li onclick="loadLesson('pastPerfectCont')">Past Perfect Continuous</li>
-    <li onclick="loadLesson('mixedPerfect')">Mixed Perfect Tenses</li>
-  </ul>
+    <!-- LESSON LIST -->
+    <ul id="lessonList"></ul>
 
-  <div id="lessonBox">Select a lesson.</div>
-</section>
-
-<!-- PRACTICE -->
-<section id="practice" class="page hidden">
-  <h2>Practice</h2>
-
-  <select id="difficulty">
-    <option value="">Select difficulty</option>
-    <option value="easy">Easy</option>
-    <option value="medium">Medium</option>
-    <option value="hard">Hard</option>
-  </select>
-
-  <p id="question"></p>
-  <div id="answers"></div>
-  <p id="feedback"></p>
-
-  <button onclick="nextQuestion()">Next</button>
-</section>
-
-<!-- AUTH MODAL -->
-<div id="authModal" class="modal hidden">
-  <div class="modal-box">
-    <h3 id="authTitle"></h3>
-    <input id="authUsername" placeholder="Username">
-    <input id="authPassword" type="password" placeholder="Password">
-    <button onclick="submitAuth()">Submit</button>
-    <button onclick="closeAuth()">Cancel</button>
-  </div>
-</div>
+    <!-- LESSON CONTENT -->
+    <div id="lessonBox">
+      Select a lesson to start.
+    </div>
+  </section>
+</main>
 
 <script src="script.js"></script>
 </body>
