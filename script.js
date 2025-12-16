@@ -1,5 +1,5 @@
 /* =====================
-   NAVIGATION (WORKING)
+   NAVIGATION
 ===================== */
 document.querySelectorAll("nav button").forEach(btn => {
   btn.addEventListener("click", () => {
@@ -11,7 +11,7 @@ document.querySelectorAll("nav button").forEach(btn => {
 });
 
 /* =====================
-   A1 GRAMMAR DATA (FULL)
+   A1 GRAMMAR DATA
 ===================== */
 const grammarData = {
   A1: {
@@ -44,95 +44,16 @@ const grammarData = {
         <h3>Present continuous</h3>
         <p>I am studying now.</p>
         <p>She is working.</p>
-        <p>Are you listening?</p>
       `,
       practice: [
         { q: "She ___ working.", o: ["is", "are"], a: 0 }
-      ]
-    },
-
-    "Have got": {
-      lesson: `
-        <h3>Have got</h3>
-        <p>I have got a car.</p>
-        <p>She has got a phone.</p>
-      `,
-      practice: [
-        { q: "He ___ got a dog.", o: ["have", "has"], a: 1 }
-      ]
-    },
-
-    "Was / were (past of be)": {
-      lesson: `
-        <h3>Was / were</h3>
-        <p>I was tired.</p>
-        <p>They were late.</p>
-      `,
-      practice: [
-        { q: "They ___ happy.", o: ["was", "were"], a: 1 }
-      ]
-    },
-
-    "Past simple: regular & irregular": {
-      lesson: `
-        <h3>Past simple</h3>
-        <p>I worked yesterday.</p>
-        <p>I went home.</p>
-      `,
-      practice: [
-        { q: "I ___ home.", o: ["go", "went"], a: 1 }
-      ]
-    },
-
-    "Imperative": {
-      lesson: `
-        <h3>Imperative</h3>
-        <p>Sit down!</p>
-        <p>Don’t talk!</p>
-      `,
-      practice: [
-        { q: "___ quiet!", o: ["Be", "Are"], a: 0 }
-      ]
-    },
-
-    "Can / can’t": {
-      lesson: `
-        <h3>Can / can’t</h3>
-        <p>I can swim.</p>
-        <p>I can’t drive.</p>
-      `,
-      practice: [
-        { q: "I ___ swim.", o: ["can", "can’t"], a: 0 }
-      ]
-    },
-
-    "Articles: a / an / the": {
-      lesson: `
-        <h3>Articles</h3>
-        <p>a cat</p>
-        <p>an apple</p>
-        <p>the sun</p>
-      `,
-      practice: [
-        { q: "___ apple", o: ["a", "an"], a: 1 }
-      ]
-    },
-
-    "There is / there are": {
-      lesson: `
-        <h3>There is / there are</h3>
-        <p>There is a book.</p>
-        <p>There are two books.</p>
-      `,
-      practice: [
-        { q: "There ___ two cats.", o: ["is", "are"], a: 1 }
       ]
     }
   }
 };
 
 /* =====================
-   GRAMMAR + PRACTICE
+   LOAD A1 GRAMMAR
 ===================== */
 const lessonList = document.getElementById("lessonList");
 const lessonBox = document.getElementById("lessonBox");
@@ -147,6 +68,9 @@ Object.keys(grammarData.A1).forEach(title => {
   lessonList.appendChild(li);
 });
 
+/* =====================
+   PRACTICE
+===================== */
 let currentPractice = [];
 let index = 0;
 
@@ -182,41 +106,93 @@ nextBtn.onclick = () => {
 };
 
 /* =====================
-   AUTH (WORKING)
+   AUTH SYSTEM (FIXED)
 ===================== */
+const loginBtn = document.getElementById("loginBtn");
+const signupBtn = document.getElementById("signupBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+const userName = document.getElementById("userName");
+
+const authModal = document.getElementById("authModal");
+const authTitle = document.getElementById("authTitle");
+const authUser = document.getElementById("authUser");
+const authPass = document.getElementById("authPass");
+const submitAuth = document.getElementById("submitAuth");
+const cancelAuth = document.getElementById("cancelAuth");
+
+let authMode = "login";
+
 loginBtn.onclick = () => openAuth("login");
 signupBtn.onclick = () => openAuth("signup");
-logoutBtn.onclick = () => {
-  localStorage.removeItem("user");
-  location.reload();
-};
+logoutBtn.onclick = logout;
+cancelAuth.onclick = () => authModal.classList.add("hidden");
 
-function openAuth(type) {
-  authTitle.textContent = type === "login" ? "Login" : "Sign Up";
-  authModal.dataset.mode = type;
+function openAuth(mode) {
+  authMode = mode;
+  authTitle.textContent = mode === "login" ? "Login" : "Sign Up";
+  authUser.value = "";
+  authPass.value = "";
   authModal.classList.remove("hidden");
 }
 
-cancelAuth.onclick = () => authModal.classList.add("hidden");
-
 submitAuth.onclick = () => {
-  const u = authUser.value.trim();
-  const p = authPass.value.trim();
-  if (!u || !p) return alert("Fill all fields");
+  const username = authUser.value.trim();
+  const password = authPass.value.trim();
 
-  if (authModal.dataset.mode === "signup") {
-    if (localStorage.getItem("user_" + u))
-      return alert("Username exists");
-    localStorage.setItem("user_" + u, p);
-    alert("Account created");
-  } else {
-    if (localStorage.getItem("user_" + u) !== p)
-      return alert("Wrong login");
-    localStorage.setItem("user", u);
+  if (!username || !password) {
+    alert("Fill all fields");
+    return;
+  }
+
+  const userKey = "user_" + username;
+
+  if (authMode === "signup") {
+    if (localStorage.getItem(userKey)) {
+      alert("Username already exists");
+      return;
+    }
+    localStorage.setItem(userKey, password);
+    alert("Account created. Now log in.");
+    authModal.classList.add("hidden");
+    return;
+  }
+
+  if (authMode === "login") {
+    const savedPass = localStorage.getItem(userKey);
+    if (savedPass === null) {
+      alert("User does not exist");
+      return;
+    }
+    if (savedPass !== password) {
+      alert("Wrong password");
+      return;
+    }
+
+    localStorage.setItem("loggedUser", username);
+    updateUserUI();
+    authModal.classList.add("hidden");
+  }
+};
+
+function updateUserUI() {
+  const u = localStorage.getItem("loggedUser");
+  if (u) {
     userName.textContent = u;
     loginBtn.classList.add("hidden");
     signupBtn.classList.add("hidden");
     logoutBtn.classList.remove("hidden");
+  } else {
+    userName.textContent = "Guest";
+    loginBtn.classList.remove("hidden");
+    signupBtn.classList.remove("hidden");
+    logoutBtn.classList.add("hidden");
   }
-  authModal.classList.add("hidden");
-};
+}
+
+function logout() {
+  localStorage.removeItem("loggedUser");
+  updateUserUI();
+}
+
+/* RESTORE LOGIN ON REFRESH */
+updateUserUI();
