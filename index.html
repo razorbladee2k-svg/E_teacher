@@ -7,29 +7,50 @@
 </head>
 <body>
 
+<!-- TOP BAR -->
 <div class="top-bar">
-  <span id="userName">Guest</span>
-  <button id="logoutBtn" class="hidden">Logout</button>
+  <div class="logo">eTeacher</div>
+  <div class="auth">
+    <button id="signupBtn">Sign Up</button>
+    <button id="loginBtn">Log In</button>
+    <span id="userName"></span>
+    <button id="logoutBtn" class="hidden">Logout</button>
+  </div>
 </div>
 
-<header>
-  <h1>eTeacher</h1>
-  <p>English Grammar Learning Platform</p>
-</header>
-
-<nav>
-  <button data-page="home">Home</button>
-  <button data-page="signup">Sign Up</button>
-  <button data-page="login">Login</button>
-  <button data-page="grammar">Grammar</button>
-  <button data-page="practice">Practice</button>
-</nav>
-
-<section id="home" class="page">
-  <h2>Welcome</h2>
-  <p>Please sign up or log in.</p>
+<!-- MAIN PAGE -->
+<section id="main" class="page">
+  <h1>Welcome to eTeacher</h1>
+  <div class="main-buttons">
+    <button id="goGrammar">Grammar</button>
+    <button id="goPractice">Practice</button>
+  </div>
 </section>
 
+<!-- GRAMMAR PAGE -->
+<section id="grammar" class="page hidden">
+  <h2>Grammar Levels</h2>
+  <div class="level-buttons">
+    <button data-level="A1">A1</button>
+    <button data-level="A2">A2</button>
+    <button data-level="B1">B1</button>
+    <button data-level="B2">B2</button>
+  </div>
+
+  <ul id="grammarList"></ul>
+</section>
+
+<!-- PRACTICE PAGE -->
+<section id="practice" class="page hidden">
+  <h2>Practice Difficulty</h2>
+  <div class="level-buttons">
+    <button>Easy</button>
+    <button>Medium</button>
+    <button>Hard</button>
+  </div>
+</section>
+
+<!-- SIGN UP -->
 <section id="signup" class="page hidden">
   <h2>Sign Up</h2>
   <input id="suUser" placeholder="Username" autocomplete="off">
@@ -37,22 +58,12 @@
   <button id="signupSubmit">Create Account</button>
 </section>
 
+<!-- LOGIN -->
 <section id="login" class="page hidden">
-  <h2>Login</h2>
+  <h2>Log In</h2>
   <input id="liUser" placeholder="Username" autocomplete="off">
   <input id="liPass" type="password" placeholder="Password" autocomplete="new-password">
-  <button id="loginSubmit">Login</button>
-</section>
-
-<section id="grammar" class="page hidden">
-  <h2>A1 Grammar</h2>
-  <ul id="lessonList"></ul>
-  <div id="lessonBox">Select a lesson.</div>
-</section>
-
-<section id="practice" class="page hidden">
-  <h2>Practice</h2>
-  <p>Select a grammar lesson to practice.</p>
+  <button id="loginSubmit">Log In</button>
 </section>
 
 <script src="script.js"></script>
