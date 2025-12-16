@@ -11,8 +11,30 @@ header {
   padding: 30px;
 }
 
-main {
+nav {
+  background: #111827;
+  padding: 10px;
+}
+
+nav button {
+  margin: 5px;
+  padding: 10px 20px;
+  color: white;
+  background: #2563eb;
+  border: none;
+  cursor: pointer;
+}
+
+nav button:hover {
+  background: #1d4ed8;
+}
+
+.page {
   padding: 20px;
+}
+
+.hidden {
+  display: none;
 }
 
 select {
