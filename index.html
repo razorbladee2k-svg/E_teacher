@@ -25,4 +25,51 @@
 
 <nav>
   <button onclick="showPage('grammar')">Grammar</button>
-  <button onclick="showPage('practice')">Practice</button
+  <button onclick="showPage('practice')">Practice</button>
+</nav>
+
+<!-- GRAMMAR PAGE -->
+<section id="grammar" class="page">
+  <h2>Grammar Lessons</h2>
+
+  <ul class="topics">
+    <li onclick="loadLesson('presentPerfect')">Present Perfect</li>
+    <li onclick="loadLesson('pastPerfect')">Past Perfect</li>
+    <li onclick="loadLesson('perfectContinuous')">Perfect Continuous</li>
+  </ul>
+
+  <div id="lessonBox">Select a lesson.</div>
+</section>
+
+<!-- PRACTICE PAGE -->
+<section id="practice" class="page hidden">
+  <h2>Practice</h2>
+
+  <select id="difficulty">
+    <option value="">Select difficulty</option>
+    <option value="easy">Easy</option>
+    <option value="medium">Medium</option>
+    <option value="hard">Hard</option>
+  </select>
+
+  <p id="question"></p>
+  <div id="answers"></div>
+  <p id="feedback"></p>
+
+  <button onclick="nextQuestion()">Next</button>
+</section>
+
+<!-- AUTH MODAL -->
+<div id="authModal" class="modal hidden">
+  <div class="modal-box">
+    <h3 id="authTitle"></h3>
+    <input id="authUsername" placeholder="Username">
+    <input id="authPassword" type="password" placeholder="Password">
+    <button onclick="submitAuth()">Submit</button>
+    <button onclick="closeAuth()">Cancel</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
