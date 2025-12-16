@@ -1,16 +1,21 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* NAVIGATION */
-  document.querySelectorAll("nav button").forEach(btn => {
-    btn.onclick = () => {
-      document.querySelectorAll(".page").forEach(p =>
-        p.classList.add("hidden")
-      );
-      document.getElementById(btn.dataset.page).classList.remove("hidden");
-    };
-  });
+  /* PAGE SWITCH */
+  function showPage(id) {
+    document.querySelectorAll(".page").forEach(p =>
+      p.classList.add("hidden")
+    );
+    document.getElementById(id).classList.remove("hidden");
+  }
 
-  /* AUTH STORAGE */
+  /* MAIN BUTTONS */
+  goGrammar.onclick = () => showPage("grammar");
+  goPractice.onclick = () => showPage("practice");
+
+  signupBtn.onclick = () => showPage("signup");
+  loginBtn.onclick = () => showPage("login");
+
+  /* AUTH */
   function getUsers() {
     return JSON.parse(localStorage.getItem("USERS") || "{}");
   }
@@ -19,13 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("USERS", JSON.stringify(users));
   }
 
-  /* CLEAR AUTOFILL */
-  ["suUser","suPass","liUser","liPass"].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = "";
-  });
-
-  /* SIGN UP */
   signupSubmit.onclick = () => {
     const u = suUser.value.trim();
     const p = suPass.value.trim();
@@ -36,82 +34,76 @@ document.addEventListener("DOMContentLoaded", () => {
 
     users[u] = p;
     saveUsers(users);
-
-    alert("Account created. Now login.");
-    suUser.value = "";
-    suPass.value = "";
+    alert("Account created");
+    showPage("login");
   };
 
-  /* LOGIN */
   loginSubmit.onclick = () => {
     const u = liUser.value.trim();
     const p = liPass.value.trim();
     const users = getUsers();
 
-    if (!users[u]) return alert("User does not exist");
-    if (users[u] !== p) return alert("Wrong password");
+    if (!users[u] || users[u] !== p)
+      return alert("Wrong login");
 
     localStorage.setItem("LOGGED", u);
-    updateUI();
-    alert("Logged in");
+    updateAuthUI();
+    showPage("main");
   };
 
-  /* LOGOUT */
   logoutBtn.onclick = () => {
     localStorage.removeItem("LOGGED");
-    updateUI();
+    updateAuthUI();
   };
 
-  /* UI STATE */
-  function updateUI() {
+  function updateAuthUI() {
     const u = localStorage.getItem("LOGGED");
     if (u) {
       userName.textContent = u;
+      signupBtn.classList.add("hidden");
+      loginBtn.classList.add("hidden");
       logoutBtn.classList.remove("hidden");
     } else {
-      userName.textContent = "Guest";
+      userName.textContent = "";
+      signupBtn.classList.remove("hidden");
+      loginBtn.classList.remove("hidden");
       logoutBtn.classList.add("hidden");
     }
   }
 
-  updateUI();
+  updateAuthUI();
 
-  /* A1 GRAMMAR */
+  /* GRAMMAR DATA */
   const grammar = {
-    "Present simple: am / is / are": `
-      <h3>Present simple: am / is / are</h3>
-      <p>I am a student.</p>
-      <p>She is happy.</p>
-      <p>They are here.</p>
-    `,
-    "Present simple: I do / I don’t / Do I?": `
-      <h3>Present simple</h3>
-      <p>I work every day.</p>
-      <p>I don’t work on Sunday.</p>
-      <p>Do you work here?</p>
-    `,
-    "Present continuous": `
-      <h3>Present continuous</h3>
-      <p>I am studying now.</p>
-      <p>She is working.</p>
-    `,
-    "Have got": `
-      <h3>Have got</h3>
-      <p>I have got a car.</p>
-      <p>She has got a phone.</p>
-    `,
-    "Was / were": `
-      <h3>Was / were</h3>
-      <p>I was tired.</p>
-      <p>They were late.</p>
-    `
+    B1: [
+      "Present simple vs present continuous",
+      "Past simple vs present perfect",
+      "Present perfect simple vs continuous",
+      "Past simple, past continuous, past perfect",
+      "First and second conditional",
+      "Modal verbs of obligation",
+      "Reported speech",
+      "Passive voice",
+      "Gerund or infinitive"
+    ]
   };
 
-  Object.keys(grammar).forEach(title => {
-    const li = document.createElement("li");
-    li.textContent = title;
-    li.onclick = () => lessonBox.innerHTML = grammar[title];
-    lessonList.appendChild(li);
+  document.querySelectorAll("[data-level]").forEach(btn => {
+    btn.onclick = () => {
+      grammarList.innerHTML = "";
+      const level = btn.dataset.level;
+
+      if (!grammar[level]) {
+        grammarList.innerHTML = "<li>No grammar added yet</li>";
+        return;
+      }
+
+      grammar[level].forEach(topic => {
+        const li = document.createElement("li");
+        li.textContent = topic;
+        grammarList.appendChild(li);
+      });
+    };
   });
 
 });
