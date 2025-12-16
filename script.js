@@ -1,146 +1,120 @@
-document.addEventListener("DOMContentLoaded", () => {
+const body = document.body;
+const app = document.getElementById("app");
 
-  /* ========= STATE ========= */
-  const state = {
-    user: null,
-    xp: 0,
-    streak: 0,
-    currentLesson: null,
-    questionIndex: 0
-  };
+themeBtn.onclick = () => body.classList.toggle("dark");
 
-  const users = () => JSON.parse(localStorage.getItem("USERS") || "{}");
-  const saveUsers = d => localStorage.setItem("USERS", JSON.stringify(d));
+/* START FLOW */
+startPractice.onclick = () => {
+  document.querySelector(".hero").classList.add("hidden");
+  app.classList.remove("hidden");
+  loadPractice("A1");
+};
 
-  /* ========= ROUTER ========= */
-  const screens = document.querySelectorAll(".screen");
-  function show(id) {
-    screens.forEach(s => s.classList.add("hidden"));
-    document.getElementById(id).classList.remove("hidden");
+chooseLevel.onclick = () => {
+  document.querySelector(".hero").classList.add("hidden");
+  app.classList.remove("hidden");
+  renderDashboard();
+};
+
+/* DASHBOARD */
+const grammarData = {
+  A1: [
+    "To be (am / is / are)",
+    "Present simple",
+    "Present continuous",
+    "Have got",
+    "Was / were"
+  ],
+  B1: [
+    "Present simple vs continuous",
+    "Past simple vs present perfect",
+    "Conditionals",
+    "Passive voice",
+    "Reported speech",
+    "Modal verbs",
+    "Gerund vs infinitive"
+  ]
+};
+
+function renderDashboard() {
+  const grid = document.getElementById("levelCards");
+  grid.innerHTML = "";
+  Object.keys(grammarData).forEach(level => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.textContent = level;
+    card.onclick = () => showGrammar(level);
+    grid.appendChild(card);
+  });
+}
+
+function showGrammar(level) {
+  document.getElementById("dashboard").classList.add("hidden");
+  document.getElementById("grammar").classList.remove("hidden");
+  grammarTitle.textContent = level + " Grammar";
+  grammarList.innerHTML = "";
+  grammarData[level].forEach(g => {
+    const div = document.createElement("div");
+    div.className = "card";
+    div.textContent = g;
+    div.onclick = () => loadPractice(level);
+    grammarList.appendChild(div);
+  });
+}
+
+function goDashboard() {
+  document.getElementById("grammar").classList.add("hidden");
+  document.getElementById("dashboard").classList.remove("hidden");
+}
+
+/* PRACTICE */
+const questions = {
+  A1: [
+    { q: "She ___ happy.", o: ["is", "are"], a: 0 },
+    { q: "They ___ here.", o: ["is", "are"], a: 1 }
+  ],
+  B1: [
+    { q: "I ___ here since 2020.", o: ["have been", "was"], a: 0 },
+    { q: "If I ___ you, I would study.", o: ["am", "were"], a: 1 }
+  ]
+};
+
+let qIndex = 0;
+let currentSet = [];
+
+function loadPractice(level) {
+  document.getElementById("grammar").classList.add("hidden");
+  document.getElementById("practice").classList.remove("hidden");
+  practiceTitle.textContent = level + " Practice";
+  currentSet = questions[level];
+  qIndex = 0;
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = currentSet[qIndex];
+  question.textContent = q.q;
+  answers.innerHTML = "";
+  feedback.textContent = "";
+
+  q.o.forEach((opt, i) => {
+    const btn = document.createElement("button");
+    btn.textContent = opt;
+    btn.onclick = () => {
+      btn.classList.add(i === q.a ? "correct" : "wrong");
+      setTimeout(nextQuestion, 600);
+    };
+    answers.appendChild(btn);
+  });
+}
+
+function nextQuestion() {
+  qIndex++;
+  if (qIndex >= currentSet.length) {
+    renderDashboard();
+    document.getElementById("practice").classList.add("hidden");
+    document.getElementById("dashboard").classList.remove("hidden");
+    return;
   }
-
-  /* ========= AUTH ========= */
-  loginBtn.onclick = signupBtn.onclick = () => {
-    authTitle.textContent = event.target.id === "signupBtn" ? "Sign up" : "Login";
-    show("auth");
-  };
-
-  authSubmit.onclick = () => {
-    const u = authUser.value.trim();
-    const p = authPass.value.trim();
-    const db = users();
-
-    if (!db[u]) {
-      db[u] = { pass: p, xp: 0, streak: 1 };
-    }
-    if (db[u].pass !== p) return alert("Wrong password");
-
-    saveUsers(db);
-    state.user = u;
-    state.xp = db[u].xp;
-    state.streak = db[u].streak;
-
-    updateHeader();
-    show("dashboard");
-  };
-
-  logoutBtn.onclick = () => {
-    state.user = null;
-    show("dashboard");
-    updateHeader();
-  };
-
-  function updateHeader() {
-    if (!state.user) {
-      username.textContent = "Guest";
-      xp.textContent = "0 XP";
-      streak.textContent = "🔥 0";
-      logoutBtn.classList.add("hidden");
-      return;
-    }
-    username.textContent = state.user;
-    xp.textContent = state.xp + " XP";
-    streak.textContent = "🔥 " + state.streak;
-    logoutBtn.classList.remove("hidden");
-  }
-
-  /* ========= GRAMMAR DATA ========= */
-  const lessons = {
-    A1: [
-      {
-        title: "To be (am/is/are)",
-        quiz: [
-          { q: "She ___ happy.", a: ["is", "are"], c: 0 },
-          { q: "They ___ here.", a: ["is", "are"], c: 1 }
-        ]
-      },
-      {
-        title: "Present Simple",
-        quiz: [
-          { q: "I ___ coffee.", a: ["like", "likes"], c: 0 }
-        ]
-      }
-    ]
-  };
-
-  /* ========= DASHBOARD ========= */
-  document.querySelector(".level-card[data-level='A1']").onclick = () => {
-    lessonTitle.textContent = "A1 Lessons";
-    lessonList.innerHTML = "";
-    lessons.A1.forEach((l, i) => {
-      const div = document.createElement("div");
-      div.className = "lesson";
-      div.textContent = l.title;
-      div.onclick = () => startLesson(l);
-      lessonList.appendChild(div);
-    });
-    show("lessons");
-  };
-
-  /* ========= PRACTICE ENGINE ========= */
-  function startLesson(lesson) {
-    state.currentLesson = lesson;
-    state.questionIndex = 0;
-    practiceTitle.textContent = lesson.title;
-    show("practice");
-    renderQuestion();
-  }
-
-  function renderQuestion() {
-    const q = state.currentLesson.quiz[state.questionIndex];
-    question.textContent = q.q;
-    answers.innerHTML = "";
-    feedback.textContent = "";
-
-    q.a.forEach((opt, i) => {
-      const b = document.createElement("button");
-      b.textContent = opt;
-      b.onclick = () => {
-        if (i === q.c) {
-          b.classList.add("correct");
-          reward();
-        } else {
-          b.classList.add("wrong");
-        }
-      };
-      answers.appendChild(b);
-    });
-  }
-
-  function reward() {
-    state.xp += 10;
-    const db = users();
-    db[state.user].xp = state.xp;
-    saveUsers(db);
-    updateHeader();
-
-    state.questionIndex++;
-    if (state.questionIndex >= state.currentLesson.quiz.length) {
-      show("dashboard");
-      return;
-    }
-    setTimeout(renderQuestion, 600);
-  }
-
-  show("dashboard");
-});
+  renderQuestion();
+}
