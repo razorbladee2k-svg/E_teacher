@@ -9,61 +9,60 @@
 
 <!-- TOP BAR -->
 <div class="top-bar">
-  <div class="logo">eTeacher</div>
-  <div class="auth">
+  <span class="logo">eTeacher</span>
+  <div>
     <button id="signupBtn">Sign Up</button>
     <button id="loginBtn">Log In</button>
-    <span id="userName"></span>
-    <button id="logoutBtn" class="hidden">Logout</button>
   </div>
 </div>
 
 <!-- MAIN PAGE -->
 <section id="main" class="page">
-  <h1>Welcome to eTeacher</h1>
-  <div class="main-buttons">
-    <button id="goGrammar">Grammar</button>
-    <button id="goPractice">Practice</button>
-  </div>
+  <h1>Welcome</h1>
+  <button id="grammarBtn">Grammar</button>
+  <button id="practiceBtn">Practice</button>
 </section>
 
 <!-- GRAMMAR PAGE -->
 <section id="grammar" class="page hidden">
   <h2>Grammar Levels</h2>
-  <div class="level-buttons">
-    <button data-level="A1">A1</button>
-    <button data-level="A2">A2</button>
-    <button data-level="B1">B1</button>
-    <button data-level="B2">B2</button>
-  </div>
+  <button class="levelBtn" data-level="A1">A1</button>
+  <button class="levelBtn" data-level="A2">A2</button>
+  <button class="levelBtn" data-level="B1">B1</button>
+  <button class="levelBtn" data-level="B2">B2</button>
 
   <ul id="grammarList"></ul>
+  <button id="backFromGrammar">Back</button>
 </section>
 
 <!-- PRACTICE PAGE -->
 <section id="practice" class="page hidden">
   <h2>Practice Difficulty</h2>
-  <div class="level-buttons">
-    <button>Easy</button>
-    <button>Medium</button>
-    <button>Hard</button>
-  </div>
+  <button>Easy</button>
+  <button>Medium</button>
+  <button>Hard</button>
+  <br><br>
+  <button id="backFromPractice">Back</button>
 </section>
 
 <!-- SIGN UP -->
 <section id="signup" class="page hidden">
   <h2>Sign Up</h2>
-  <input id="suUser" placeholder="Username" autocomplete="off">
-  <input id="suPass" type="password" placeholder="Password" autocomplete="new-password">
+  <input id="suUser" placeholder="Username">
+  <input id="suPass" type="password" placeholder="Password">
   <button id="signupSubmit">Create Account</button>
+  <br><br>
+  <button id="backFromSignup">Back</button>
 </section>
 
 <!-- LOGIN -->
 <section id="login" class="page hidden">
   <h2>Log In</h2>
-  <input id="liUser" placeholder="Username" autocomplete="off">
-  <input id="liPass" type="password" placeholder="Password" autocomplete="new-password">
+  <input id="liUser" placeholder="Username">
+  <input id="liPass" type="password" placeholder="Password">
   <button id="loginSubmit">Log In</button>
+  <br><br>
+  <button id="backFromLogin">Back</button>
 </section>
 
 <script src="script.js"></script>
