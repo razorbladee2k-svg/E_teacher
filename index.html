@@ -1,72 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>eTeacher</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<div class="top-bar">
-  <div class="logo">eTeacher</div>
+<header class="topbar">
+  <div class="brand">eTeacher</div>
   <div class="auth">
-    <span id="userName">Guest</span>
+    <span id="currentUser">Guest</span>
     <button id="signupBtn">Sign Up</button>
     <button id="loginBtn">Login</button>
     <button id="logoutBtn" class="hidden">Logout</button>
   </div>
-</div>
+</header>
 
-<section id="home" class="page">
-  <h1>Welcome</h1>
-  <p>Learn English grammar step by step</p>
-  <button id="goGrammar">Grammar</button>
-  <button id="goPractice">Practice</button>
-</section>
+<nav class="nav">
+  <button data-page="home">Home</button>
+  <button data-page="grammar">Grammar</button>
+  <button data-page="practice">Practice</button>
+  <button data-page="progress">Progress</button>
+</nav>
 
-<section id="grammar" class="page hidden">
-  <h2>Grammar Levels</h2>
-  <button class="levelBtn" data-level="A1">A1</button>
-  <button class="levelBtn" data-level="A2">A2</button>
-  <button class="levelBtn" data-level="B1">B1</button>
-  <button class="levelBtn" data-level="B2">B2</button>
+<main>
 
-  <ul id="grammarList"></ul>
-  <button class="backBtn">Back</button>
-</section>
+  <section id="home" class="page">
+    <h1>Advanced English Learning</h1>
+    <p>Grammar • Practice • Progress tracking</p>
+  </section>
 
-<section id="practice" class="page hidden">
-  <h2>Practice</h2>
-  <button class="diffBtn" data-diff="easy">Easy</button>
-  <button class="diffBtn" data-diff="medium">Medium</button>
-  <button class="diffBtn" data-diff="hard">Hard</button>
+  <section id="grammar" class="page hidden">
+    <h2>Grammar Levels</h2>
+    <div class="levels">
+      <button data-level="A1">A1</button>
+      <button data-level="A2">A2</button>
+      <button data-level="B1">B1</button>
+      <button data-level="B2">B2</button>
+    </div>
+    <ul id="grammarTopics"></ul>
+    <article id="lessonContent"></article>
+  </section>
 
-  <div id="quizBox" class="hidden">
-    <p id="question"></p>
-    <div id="answers"></div>
-    <p id="feedback"></p>
-    <button id="nextQ">Next</button>
-  </div>
+  <section id="practice" class="page hidden">
+    <h2>Practice</h2>
+    <div class="levels">
+      <button data-diff="easy">Easy</button>
+      <button data-diff="medium">Medium</button>
+      <button data-diff="hard">Hard</button>
+    </div>
+    <div id="quiz" class="hidden">
+      <p id="qText"></p>
+      <div id="qOptions"></div>
+      <p id="qFeedback"></p>
+      <button id="nextQuestion">Next</button>
+    </div>
+  </section>
 
-  <p id="progress"></p>
-  <button class="backBtn">Back</button>
-</section>
+  <section id="progress" class="page hidden">
+    <h2>Your Progress</h2>
+    <p id="progressInfo">Login to track progress.</p>
+  </section>
 
-<section id="signup" class="page hidden">
-  <h2>Sign Up</h2>
-  <input id="suUser" placeholder="Username">
-  <input id="suPass" type="password" placeholder="Password">
-  <button id="signupSubmit">Create Account</button>
-  <button class="backBtn">Back</button>
-</section>
+  <section id="signup" class="page hidden">
+    <h2>Create Account</h2>
+    <input id="suName" placeholder="Username" />
+    <input id="suPass" type="password" placeholder="Password" />
+    <button id="suSubmit">Sign Up</button>
+  </section>
 
-<section id="login" class="page hidden">
-  <h2>Login</h2>
-  <input id="liUser" placeholder="Username">
-  <input id="liPass" type="password" placeholder="Password">
-  <button id="loginSubmit">Login</button>
-  <button class="backBtn">Back</button>
-</section>
+  <section id="login" class="page hidden">
+    <h2>Login</h2>
+    <input id="liName" placeholder="Username" />
+    <input id="liPass" type="password" placeholder="Password" />
+    <button id="liSubmit">Login</button>
+  </section>
+
+</main>
 
 <script src="script.js"></script>
 </body>
