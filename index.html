@@ -2,106 +2,75 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>eTeacher – English Grammar</title>
+  <title>eTeacher</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>
-  <h1>eTeacher</h1>
-  <p>Learn English Grammar Step by Step</p>
-</header>
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div id="userName">Guest</div>
 
-<nav>
-  <button onclick="showPage('grammar')">Grammar Lessons</button>
-  <button onclick="showPage('practice')">Practice</button>
-</nav>
-
-<!-- GRAMMAR PAGE -->
-<section id="grammar" class="page">
-  <h2>Grammar Topics</h2>
-
-  <ul class="topics">
-    <li onclick="loadLesson('parts')">Parts of Speech</li>
-    <li onclick="loadLesson('tenses')">Tenses</li>
-    <li onclick="loadLesson('articles')">Articles</li>
-    <li onclick="loadLesson('prepositions')">Prepositions</li>
-    <li onclick="loadLesson('modals')">Modal Verbs</li>
-    <li onclick="loadLesson('passive')">Passive Voice</li>
-    <li onclick="loadLesson('conditionals')">Conditionals</li>
-  </ul>
-
-  <div id="lessonBox">
-    <p>Select a topic to start learning.</p>
+  <div class="auth-buttons">
+    <button onclick="openAuth('login')">Login</button>
+    <button onclick="openAuth('signup')">Sign Up</button>
+    <button onclick="logout()" id="logoutBtn" class="hidden">Logout</button>
   </div>
-</section>
-
-<!-- PRACTICE PAGE -->
-<section id="practice" class="page hidden">
-  <h2>Practice</h2>
-
-  <p id="question"></p>
-
-  <div id="answers"></div>
-
-  <p id="feedback"></p>
-
-  <button onclick="nextQuestion()">Next Question</button>
-</section>
-
-<script src="script.js"></script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>eTeacher – English Grammar</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+</div>
 
 <header>
   <h1>eTeacher</h1>
-  <p>Learn English Grammar Step by Step</p>
+  <p>Advanced English Grammar Learning</p>
 </header>
 
 <nav>
-  <button onclick="showPage('grammar')">Grammar Lessons</button>
+  <button onclick="showPage('grammar')">Grammar</button>
   <button onclick="showPage('practice')">Practice</button>
 </nav>
 
-<!-- GRAMMAR PAGE -->
+<!-- GRAMMAR -->
 <section id="grammar" class="page">
-  <h2>Grammar Topics</h2>
+  <h2>Grammar Lessons</h2>
 
   <ul class="topics">
-    <li onclick="loadLesson('parts')">Parts of Speech</li>
-    <li onclick="loadLesson('tenses')">Tenses</li>
-    <li onclick="loadLesson('articles')">Articles</li>
-    <li onclick="loadLesson('prepositions')">Prepositions</li>
-    <li onclick="loadLesson('modals')">Modal Verbs</li>
-    <li onclick="loadLesson('passive')">Passive Voice</li>
-    <li onclick="loadLesson('conditionals')">Conditionals</li>
+    <li onclick="loadLesson('presentPerfect')">Present Perfect</li>
+    <li onclick="loadLesson('pastPerfect')">Past Perfect</li>
+    <li onclick="loadLesson('perfectContinuous')">Perfect Continuous</li>
+    <li onclick="loadLesson('conditionalsAdvanced')">Advanced Conditionals</li>
   </ul>
 
   <div id="lessonBox">
-    <p>Select a topic to start learning.</p>
+    <p>Select a lesson.</p>
   </div>
 </section>
 
-<!-- PRACTICE PAGE -->
+<!-- PRACTICE -->
 <section id="practice" class="page hidden">
   <h2>Practice</h2>
 
+  <select onchange="setDifficulty(this.value)">
+    <option value="">Select Difficulty</option>
+    <option value="easy">Easy</option>
+    <option value="medium">Medium</option>
+    <option value="hard">Hard</option>
+  </select>
+
   <p id="question"></p>
-
   <div id="answers"></div>
-
   <p id="feedback"></p>
-
-  <button onclick="nextQuestion()">Next Question</button>
+  <button onclick="nextQuestion()">Next</button>
 </section>
+
+<!-- AUTH MODAL -->
+<div id="authModal" class="modal hidden">
+  <div class="modal-content">
+    <h3 id="authTitle"></h3>
+    <input id="authName" placeholder="Username">
+    <input id="authPass" type="password" placeholder="Password">
+    <button onclick="submitAuth()">Submit</button>
+    <button onclick="closeAuth()">Close</button>
+  </div>
+</div>
 
 <script src="script.js"></script>
 </body>
