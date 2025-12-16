@@ -1,15 +1,13 @@
 /* ======================
-   GLOBAL PAGE SWITCH
+   PAGE SWITCH
 ====================== */
 function showPage(id) {
-  document.querySelectorAll(".page").forEach(p =>
-    p.classList.add("hidden")
-  );
+  document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
 }
 
 /* ======================
-   GLOBAL GRAMMAR
+   GRAMMAR LESSONS
 ====================== */
 function loadLesson(type) {
   const lessons = {
@@ -23,23 +21,32 @@ function loadLesson(type) {
       <p>had + past participle</p>
       <p>She had left before I arrived.</p>
     `,
-    perfectContinuous: `
-      <h3>Perfect Continuous</h3>
+    ppContinuous: `
+      <h3>Present Perfect Continuous</h3>
       <p>have/has been + verb-ing</p>
-      <p>They have been studying for hours.</p>
-   _hook
+      <p>I have been studying for 2 hours.</p>
+    `,
+    pastPerfectCont: `
+      <h3>Past Perfect Continuous</h3>
+      <p>had been + verb-ing</p>
+      <p>They had been waiting for hours.</p>
+    `,
+    mixedPerfect: `
+      <h3>Mixed Perfect Tenses</h3>
+      <p>Compare:</p>
+      <p>I have lived here for years.</p>
+      <p>I had lived there before I moved.</p>
     `
   };
-  document.getElementById("lessonBox").innerHTML = lessons[type];
+  lessonBox.innerHTML = lessons[type];
 }
 
 /* ======================
-   MAIN SCRIPT
+   AUTH + PRACTICE
 ====================== */
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* AUTH */
-  const loginBtn = document.getElementById("loginBtn");
+  const loginBtn = loginBtn = document.getElementById("loginBtn");
   const signupBtn = document.getElementById("signupBtn");
   const logoutBtn = document.getElementById("logoutBtn");
   const userNameBox = document.getElementById("user-name");
@@ -61,14 +68,11 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.classList.remove("hidden");
   }
 
-  window.closeAuth = function () {
-    modal.classList.add("hidden");
-  };
+  window.closeAuth = () => modal.classList.add("hidden");
 
-  window.submitAuth = function () {
+  window.submitAuth = () => {
     const u = authUsername.value.trim();
     const p = authPassword.value.trim();
-
     if (!u || !p) return alert("Fill all fields");
 
     if (mode === "signup") {
@@ -82,14 +86,14 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem("loggedUser", u);
         updateUser();
         modal.classList.add("hidden");
-      } else alert("Wrong username or password");
+      } else alert("Wrong login");
     }
   };
 
   function updateUser() {
-    const user = localStorage.getItem("loggedUser");
-    if (user) {
-      userNameBox.textContent = user;
+    const u = localStorage.getItem("loggedUser");
+    if (u) {
+      userNameBox.textContent = u;
       loginBtn.classList.add("hidden");
       signupBtn.classList.add("hidden");
       logoutBtn.classList.remove("hidden");
@@ -103,7 +107,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   updateUser();
 
-  /* PRACTICE */
+  /* ======================
+     PRACTICE + MISTAKES
+  ====================== */
   const quizzes = {
     easy: [
       { q: "I ___ finished my homework.", a: ["have", "had"], c: 0 }
@@ -116,41 +122,42 @@ document.addEventListener("DOMContentLoaded", () => {
     ]
   };
 
-  let currentQuiz = [];
+  let quiz = [];
   let index = 0;
 
-  const difficulty = document.getElementById("difficulty");
-  const question = document.getElementById("question");
-  const answers = document.getElementById("answers");
-  const feedback = document.getElementById("feedback");
-
   difficulty.onchange = e => {
-    currentQuiz = quizzes[e.target.value] || [];
+    quiz = quizzes[e.target.value] || [];
     index = 0;
     loadQuestion();
   };
 
   function loadQuestion() {
-    if (!currentQuiz.length) return;
-    question.textContent = currentQuiz[index].q;
+    if (!quiz.length) return;
+    question.textContent = quiz[index].q;
     answers.innerHTML = "";
-
-    currentQuiz[index].a.forEach((ans, i) => {
-      const btn = document.createElement("button");
-      btn.textContent = ans;
-      btn.onclick = () => check(i);
-      answers.appendChild(btn);
+    quiz[index].a.forEach((ans, i) => {
+      const b = document.createElement("button");
+      b.textContent = ans;
+      b.onclick = () => check(i);
+      answers.appendChild(b);
     });
   }
 
   function check(i) {
-    feedback.textContent =
-      i === currentQuiz[index].c ? "Correct ✔" : "Wrong ✘";
+    const user = localStorage.getItem("loggedUser") || "guest";
+    if (i !== quiz[index].c) {
+      const key = "mistakes_" + user;
+      const data = JSON.parse(localStorage.getItem(key) || "[]");
+      data.push(quiz[index].q);
+      localStorage.setItem(key, JSON.stringify(data));
+      feedback.textContent = "Wrong ✘ (saved)";
+    } else {
+      feedback.textContent = "Correct ✔";
+    }
   }
 
-  window.nextQuestion = function () {
-    index = (index + 1) % currentQuiz.length;
+  window.nextQuestion = () => {
+    index = (index + 1) % quiz.length;
     loadQuestion();
   };
-
 });
