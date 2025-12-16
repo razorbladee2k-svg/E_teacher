@@ -5,65 +5,50 @@ body {
   text-align: center;
 }
 
-header {
-  background: #1e40af;
-  color: white;
-  padding: 30px;
-}
-
 .top-bar {
-  background: #111827;
-  color: white;
-  padding: 10px 20px;
   display: flex;
   justify-content: space-between;
-}
-
-nav {
-  background: #2563eb;
-  padding: 10px;
-}
-
-nav button {
-  margin: 5px;
-  padding: 10px 15px;
-  background: #1d4ed8;
+  padding: 10px 20px;
+  background: #1e293b;
   color: white;
-  border: none;
-  cursor: pointer;
+}
+
+.auth button {
+  margin-left: 8px;
 }
 
 .page {
-  padding: 20px;
+  padding: 40px;
 }
 
 .hidden {
   display: none;
 }
 
-input {
-  display: block;
-  margin: 10px auto;
-  padding: 8px;
-}
-
-#lessonList {
-  list-style: none;
-  padding: 0;
-  max-width: 400px;
-  margin: auto;
-}
-
-#lessonList li {
-  background: white;
-  margin: 8px 0;
-  padding: 10px;
+.main-buttons button,
+.level-buttons button {
+  padding: 15px 30px;
+  margin: 10px;
+  font-size: 18px;
   cursor: pointer;
 }
 
-#lessonBox {
-  background: white;
-  padding: 20px;
-  margin: 20px auto;
+input {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
   max-width: 600px;
+  margin: 20px auto;
+}
+
+ul li {
+  background: white;
+  padding: 12px;
+  margin: 6px 0;
+  border-radius: 6px;
 }
