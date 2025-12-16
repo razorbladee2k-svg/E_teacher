@@ -1,3 +1,4 @@
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -27,8 +28,8 @@ nav {
 nav button {
   margin: 5px;
   padding: 10px 20px;
-  color: white;
   background: #1d4ed8;
+  color: white;
   border: none;
   cursor: pointer;
 }
@@ -41,11 +42,6 @@ nav button {
   display: none;
 }
 
-select {
-  padding: 8px;
-  margin: 15px;
-}
-
 #lessonList {
   list-style: none;
   padding: 0;
@@ -55,17 +51,17 @@ select {
 
 #lessonList li {
   background: white;
-  padding: 10px;
   margin: 8px 0;
+  padding: 10px;
   cursor: pointer;
   border-radius: 6px;
 }
 
 #lessonBox {
   background: white;
-  padding: 20px;
-  margin: 20px auto;
   max-width: 700px;
+  margin: 20px auto;
+  padding: 20px;
   border-radius: 8px;
   text-align: left;
 }
