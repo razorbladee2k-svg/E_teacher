@@ -1,6 +1,4 @@
-/* =====================
-   NAVIGATION
-===================== */
+/* NAVIGATION */
 document.querySelectorAll("nav button").forEach(btn => {
   btn.onclick = () => {
     document.querySelectorAll(".page").forEach(p =>
@@ -10,136 +8,81 @@ document.querySelectorAll("nav button").forEach(btn => {
   };
 });
 
-/* =====================
-   AUTH (BULLETPROOF)
-===================== */
-const loginBtn = document.getElementById("loginBtn");
-const signupBtn = document.getElementById("signupBtn");
-const logoutBtn = document.getElementById("logoutBtn");
-const userName = document.getElementById("userName");
-
-const authModal = document.getElementById("authModal");
-const authTitle = document.getElementById("authTitle");
-const authUser = document.getElementById("authUser");
-const authPass = document.getElementById("authPass");
-const submitAuth = document.getElementById("submitAuth");
-const cancelAuth = document.getElementById("cancelAuth");
-
-let mode = "login";
-
-/* ALWAYS USE ONE STORAGE OBJECT */
+/* AUTH STORAGE */
 function getUsers() {
-  const data = localStorage.getItem("USERS_DB");
-  return data ? JSON.parse(data) : {};
+  return JSON.parse(localStorage.getItem("USERS") || "{}");
 }
 
 function saveUsers(users) {
-  localStorage.setItem("USERS_DB", JSON.stringify(users));
+  localStorage.setItem("USERS", JSON.stringify(users));
 }
 
-/* OPEN MODAL */
-loginBtn.onclick = () => openAuth("login");
-signupBtn.onclick = () => openAuth("signup");
-cancelAuth.onclick = () => authModal.classList.add("hidden");
-logoutBtn.onclick = logout;
-
-function openAuth(type) {
-  mode = type;
-  authTitle.textContent = type === "login" ? "Login" : "Sign Up";
-  authUser.value = "";
-  authPass.value = "";
-  authModal.classList.remove("hidden");
-}
-
-/* SUBMIT */
-submitAuth.onclick = () => {
-  const username = authUser.value.trim();
-  const password = authPass.value.trim();
-
-  if (!username || !password) {
-    alert("Fill all fields");
-    return;
-  }
+/* SIGN UP */
+signupSubmit.onclick = () => {
+  const u = suUser.value.trim();
+  const p = suPass.value.trim();
+  if (!u || !p) return alert("Fill all fields");
 
   const users = getUsers();
+  if (users[u]) return alert("Username exists");
 
-  if (mode === "signup") {
-    if (users[username]) {
-      alert("Username already exists");
-      return;
-    }
+  users[u] = p;
+  saveUsers(users);
 
-    users[username] = password;
-    saveUsers(users);
-
-    alert("✅ SIGN UP SUCCESSFUL\nUser saved: " + username);
-    authModal.classList.add("hidden");
-    return;
-  }
-
-  if (mode === "login") {
-    if (!users[username]) {
-      alert("❌ USER DOES NOT EXIST");
-      return;
-    }
-
-    if (users[username] !== password) {
-      alert("❌ WRONG PASSWORD");
-      return;
-    }
-
-    localStorage.setItem("LOGGED_IN_USER", username);
-    updateUserUI();
-    authModal.classList.add("hidden");
-  }
+  alert("Account created. Now login.");
+  suUser.value = suPass.value = "";
 };
 
-/* UI */
-function updateUserUI() {
-  const user = localStorage.getItem("LOGGED_IN_USER");
-  if (user) {
-    userName.textContent = user;
-    loginBtn.classList.add("hidden");
-    signupBtn.classList.add("hidden");
+/* LOGIN */
+loginSubmit.onclick = () => {
+  const u = liUser.value.trim();
+  const p = liPass.value.trim();
+  const users = getUsers();
+
+  if (!users[u]) return alert("User does not exist");
+  if (users[u] !== p) return alert("Wrong password");
+
+  localStorage.setItem("LOGGED", u);
+  updateUI();
+  alert("Logged in");
+};
+
+/* LOGOUT */
+logoutBtn.onclick = () => {
+  localStorage.removeItem("LOGGED");
+  updateUI();
+};
+
+/* UI STATE */
+function updateUI() {
+  const u = localStorage.getItem("LOGGED");
+  if (u) {
+    userName.textContent = u;
     logoutBtn.classList.remove("hidden");
   } else {
     userName.textContent = "Guest";
-    loginBtn.classList.remove("hidden");
-    signupBtn.classList.remove("hidden");
     logoutBtn.classList.add("hidden");
   }
 }
 
-function logout() {
-  localStorage.removeItem("LOGGED_IN_USER");
-  updateUserUI();
-}
+updateUI();
 
-updateUserUI();
-
-/* =====================
-   A1 GRAMMAR (SAFE)
-===================== */
-const grammarData = {
-  A1: {
-    "Present simple: am / is / are": `
-      <h3>Present simple: am / is / are</h3>
-      <p>I am a student.</p>
-      <p>She is happy.</p>
-      <p>They are here.</p>
-    `
-  }
+/* A1 GRAMMAR */
+const grammar = {
+  "Present simple: am / is / are": `
+    <h3>Present simple: am / is / are</h3>
+    <p>I am a student.</p>
+    <p>She is happy.</p>
+  `,
+  "Present continuous": `
+    <h3>Present continuous</h3>
+    <p>I am studying now.</p>
+  `
 };
 
-const lessonList = document.getElementById("lessonList");
-const lessonBox = document.getElementById("lessonBox");
-
-lessonList.innerHTML = "";
-Object.keys(grammarData.A1).forEach(title => {
+Object.keys(grammar).forEach(t => {
   const li = document.createElement("li");
-  li.textContent = title;
-  li.onclick = () => {
-    lessonBox.innerHTML = grammarData.A1[title];
-  };
+  li.textContent = t;
+  li.onclick = () => lessonBox.innerHTML = grammar[t];
   lessonList.appendChild(li);
 });
