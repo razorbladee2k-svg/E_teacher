@@ -2,39 +2,54 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>eTeacher – Grammar</title>
+  <title>eTeacher</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
   <h1>eTeacher</h1>
-  <p>English Grammar from A1 to B2</p>
+  <p>English Grammar Learning (A1–B2)</p>
 </header>
 
-<main>
-  <section id="grammar">
-    <h2>Grammar Lessons</h2>
+<!-- NAVIGATION -->
+<nav>
+  <button data-page="home">Home</button>
+  <button data-page="grammar">Grammar</button>
+  <button data-page="practice">Practice</button>
+</nav>
 
-    <!-- LEVEL SELECT -->
-    <select id="levelSelect">
-      <option value="">Select level</option>
-      <option value="A1">A1</option>
-      <option value="A2">A2</option>
-      <option value="B1">B1</option>
-      <option value="B1+">B1+</option>
-      <option value="B2">B2</option>
-    </select>
+<!-- HOME -->
+<section id="home" class="page">
+  <h2>Welcome</h2>
+  <p>Select Grammar to start learning.</p>
+</section>
 
-    <!-- LESSON LIST -->
-    <ul id="lessonList"></ul>
+<!-- GRAMMAR -->
+<section id="grammar" class="page hidden">
+  <h2>Grammar Lessons</h2>
 
-    <!-- LESSON CONTENT -->
-    <div id="lessonBox">
-      Select a lesson to start.
-    </div>
-  </section>
-</main>
+  <select id="levelSelect">
+    <option value="">Select level</option>
+    <option value="A1">A1</option>
+    <option value="A2">A2</option>
+    <option value="B1">B1</option>
+    <option value="B1+">B1+</option>
+    <option value="B2">B2</option>
+  </select>
+
+  <ul id="lessonList"></ul>
+
+  <div id="lessonBox">
+    Select a lesson.
+  </div>
+</section>
+
+<!-- PRACTICE -->
+<section id="practice" class="page hidden">
+  <h2>Practice</h2>
+  <p>Practice exercises will appear here.</p>
+</section>
 
 <script src="script.js"></script>
 </body>
