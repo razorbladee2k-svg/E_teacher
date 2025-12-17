@@ -4,9 +4,8 @@ const show=id=>{
   document.getElementById(id).classList.add("active");
 };
 
+let USERS=JSON.parse(localStorage.users||"{}");
 let currentUser=null;
-
-const USERS=JSON.parse(localStorage.users||"{}");
 
 const GRAMMAR={
   A1:["To be","Present simple","Present continuous"],
@@ -16,27 +15,28 @@ const GRAMMAR={
 };
 
 const PRACTICE={
-  A1:[{q:"She ___ happy.",a:["is","are"],c:0}],
-  A2:[{q:"I ___ finished.",a:["have","had"],c:0}],
-  B1:[{q:"If I ___ you.",a:["was","were"],c:1}]
+  A1:{q:"She ___ happy.",a:["is","are"],c:0},
+  A2:{q:"I ___ finished.",a:["have","had"],c:0},
+  B1:{q:"If I ___ you.",a:["was","were"],c:1},
+  B2:{q:"No sooner ___ arrived.",a:["had we","we had"],c:0}
 };
 
 const ESSAY_TOPICS={
   A1:["My daily routine","My family"],
   A2:["A memorable trip","My favorite movie"],
-  B1:["Technology in education","Social media pros & cons"],
+  B1:["Technology in education","Social media pros and cons"],
   B2:["Is AI a threat or opportunity?"]
 };
 
-login.onclick=()=>{
-  const u=username.value;
+loginBtn.onclick=()=>{
+  const u=username.value.trim();
   if(!USERS[u]) return alert("User not found");
   currentUser=u;
   show("level");
 };
 
-signup.onclick=()=>{
-  const u=username.value;
+signupBtn.onclick=()=>{
+  const u=username.value.trim();
   if(USERS[u]) return alert("User exists");
   USERS[u]={level:null};
   localStorage.users=JSON.stringify(USERS);
@@ -44,22 +44,22 @@ signup.onclick=()=>{
   show("level");
 };
 
-chooseLevel.onclick=()=>{
+chooseLevelBtn.onclick=()=>{
   const lvl=prompt("Choose A1 A2 B1 B2");
   USERS[currentUser].level=lvl;
   localStorage.users=JSON.stringify(USERS);
-  welcome.textContent=`Welcome ${currentUser} (${lvl})`;
+  welcomeText.textContent=`Welcome ${currentUser} (${lvl})`;
   show("hub");
 };
 
-testLevel.onclick=()=>{
+testLevelBtn.onclick=()=>{
   USERS[currentUser].level="B1";
   localStorage.users=JSON.stringify(USERS);
-  welcome.textContent=`Welcome ${currentUser} (B1)`;
+  welcomeText.textContent=`Welcome ${currentUser} (B1)`;
   show("hub");
 };
 
-goGrammar.onclick=()=>{
+grammarBtn.onclick=()=>{
   const lvl=USERS[currentUser].level;
   grammarList.innerHTML="";
   GRAMMAR[lvl].forEach(g=>{
@@ -70,9 +70,9 @@ goGrammar.onclick=()=>{
   show("grammar");
 };
 
-goPractice.onclick=()=>{
+practiceBtn.onclick=()=>{
   const lvl=USERS[currentUser].level;
-  const p=PRACTICE[lvl][0];
+  const p=PRACTICE[lvl];
   question.textContent=p.q;
   answers.innerHTML="";
   p.a.forEach((x,i)=>{
@@ -84,7 +84,7 @@ goPractice.onclick=()=>{
   show("practice");
 };
 
-goEssay.onclick=()=>{
+essayBtn.onclick=()=>{
   const lvl=USERS[currentUser].level;
   const t=ESSAY_TOPICS[lvl];
   essayTitle.textContent=t[Math.floor(Math.random()*t.length)];
@@ -97,11 +97,20 @@ essayText.oninput=()=>{
 };
 
 askAI.onclick=()=>{
-  aiText.textContent="Focus on sentence structure and verb tense consistency.";
+  aiText.textContent=
+    "Based on your recent activity:\n\n" +
+    "• Focus on verb tense consistency\n" +
+    "• Shorten long sentences\n" +
+    "• Practice conditionals\n\n" +
+    "Next step: try 5 related practice questions.";
   aiModal.classList.remove("hidden");
 };
 
 window.closeAI=()=>aiModal.classList.add("hidden");
 
 document.querySelectorAll(".back").forEach(b=>b.onclick=()=>show("hub"));
-logout.onclick=()=>location.reload();
+
+logoutBtn.onclick=()=>{
+  currentUser=null;
+  show("auth");
+};
