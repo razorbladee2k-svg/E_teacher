@@ -1,123 +1,96 @@
-const pages = document.querySelectorAll(".page");
-const navBtns = document.querySelectorAll("nav button");
+const pages=document.querySelectorAll(".page");
+const navBtns=document.querySelectorAll(".navBtn");
 
-function showPage(id) {
-  pages.forEach(p => p.classList.add("hidden"));
-  const page = document.getElementById(id);
-  if (page) page.classList.remove("hidden");
+function show(id){
+  pages.forEach(p=>p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
 }
 
-/* NAV ROUTING */
-navBtns.forEach(btn => {
-  btn.addEventListener("click", () => {
-    showPage(btn.dataset.page);
-    if (btn.dataset.page === "dashboard") renderLevels();
-    if (btn.dataset.page === "practice") loadPractice();
-  });
+/* LOGO = HOME */
+logo.onclick=()=>show("home");
+
+/* NAV */
+navBtns.forEach(b=>{
+  b.onclick=()=>{
+    show(b.dataset.page);
+    if(b.dataset.page==="dashboard") renderLevels();
+    if(b.dataset.page==="grammar") renderGrammar();
+    if(b.dataset.page==="practice") renderPractice();
+  };
 });
 
 /* DARK MODE */
-theme.onclick = () => document.body.classList.toggle("dark");
+themeBtn.onclick=()=>document.body.classList.toggle("dark");
 
 /* AUTH */
-let mode = "login";
+let mode="login";
+loginBtn.onclick=()=>{mode="login";authTitle.textContent="Login";show("auth");}
+signupBtn.onclick=()=>{mode="signup";authTitle.textContent="Sign Up";show("auth");}
 
-login.onclick = () => {
-  mode = "login";
-  authTitle.textContent = "Login";
-  showPage("authPage");
+authSubmit.onclick=()=>{
+  const u=authUser.value.trim();
+  if(!u)return alert("Username required");
+  const db=JSON.parse(localStorage.users||"{}");
+  if(mode==="signup"){if(db[u])return alert("Exists");db[u]={level:"A1"};}
+  else if(!db[u]) return alert("Not found");
+  localStorage.users=JSON.stringify(db);
+  localStorage.currentUser=u;
+  logoutBtn.classList.remove("hidden");
+  loginBtn.classList.add("hidden");
+  signupBtn.classList.add("hidden");
+  show("dashboard");
 };
 
-signup.onclick = () => {
-  mode = "signup";
-  authTitle.textContent = "Sign Up";
-  showPage("authPage");
-};
-
-submitAuth.onclick = () => {
-  const u = user.value.trim();
-  if (!u) return alert("Username required");
-
-  const db = JSON.parse(localStorage.users || "{}");
-
-  if (mode === "signup") {
-    if (db[u]) return alert("User exists");
-    db[u] = { level: "A1", essays: [] };
-  } else {
-    if (!db[u]) return alert("User not found");
-  }
-
-  localStorage.users = JSON.stringify(db);
-  localStorage.currentUser = u;
-
-  logout.classList.remove("hidden");
-  login.classList.add("hidden");
-  signup.classList.add("hidden");
-
-  renderLevels();
-  showPage("dashboard");
-};
-
-logout.onclick = () => {
+logoutBtn.onclick=()=>{
   localStorage.removeItem("currentUser");
-  login.classList.remove("hidden");
-  signup.classList.remove("hidden");
-  logout.classList.add("hidden");
-  showPage("home");
+  logoutBtn.classList.add("hidden");
+  loginBtn.classList.remove("hidden");
+  signupBtn.classList.remove("hidden");
+  show("home");
 };
 
-/* LEVELS */
-const levels = ["A1","A2","B1","B2","C1"];
+document.querySelectorAll(".back").forEach(b=>b.onclick=()=>show("home"));
 
-function renderLevels() {
-  levelsDiv.innerHTML = "";
-  levels.forEach(l => {
-    const d = document.createElement("div");
-    d.className = "card";
-    d.textContent = l;
-    d.onclick = () => {
-      const db = JSON.parse(localStorage.users);
-      db[currentUser()].level = l;
-      localStorage.users = JSON.stringify(db);
-      showGrammar(l);
+/* DASHBOARD */
+function renderLevels(){
+  levels.innerHTML="";
+  ["A1","A2","B1","B2","C1"].forEach(l=>{
+    const d=document.createElement("div");
+    d.className="card";
+    d.textContent=l;
+    d.onclick=()=>{
+      const db=JSON.parse(localStorage.users);
+      db[currentUser()].level=l;
+      localStorage.users=JSON.stringify(db);
+      show("grammar");
     };
-    levelsDiv.appendChild(d);
+    levels.appendChild(d);
   });
 }
 
-function showGrammar(level) {
-  grammarTitle.textContent = level + " Grammar";
-  grammarList.innerHTML = "";
-  ["Core structures","Tenses","Usage"].forEach(g => {
-    const div = document.createElement("div");
-    div.textContent = g;
-    div.onclick = () => startPractice(level);
-    grammarList.appendChild(div);
+/* GRAMMAR */
+function renderGrammar(){
+  grammarTitle.textContent="Grammar Topics";
+  grammarList.innerHTML="";
+  ["Tenses","Conditionals","Passive"].forEach(g=>{
+    const d=document.createElement("div");
+    d.textContent=g;
+    grammarList.appendChild(d);
   });
-  showPage("grammar");
 }
 
 /* PRACTICE */
-function loadPractice() {
-  const lvl = JSON.parse(localStorage.users || "{}")[currentUser()]?.level || "A1";
-  startPractice(lvl);
-}
-
-function startPractice(level) {
-  q.textContent = `Practice question for ${level}`;
-  opts.innerHTML = "";
-  ["Option A","Option B"].forEach(o => {
-    const b = document.createElement("button");
-    b.className = "primary";
-    b.textContent = o;
-    opts.appendChild(b);
+function renderPractice(){
+  question.textContent="Choose the correct answer:";
+  answers.innerHTML="";
+  ["Answer A","Answer B"].forEach(a=>{
+    const b=document.createElement("button");
+    b.className="btn primary";
+    b.textContent=a;
+    answers.appendChild(b);
   });
-  showPage("practice");
 }
 
-function currentUser() {
-  return localStorage.currentUser;
-}
+function currentUser(){return localStorage.currentUser}
 
-/* INIT */
-showPage("home");
+show("home");
