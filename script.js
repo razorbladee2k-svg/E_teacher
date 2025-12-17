@@ -1,82 +1,87 @@
-document.addEventListener("DOMContentLoaded", () => {
+const pages = document.querySelectorAll(".page");
+const navs = document.querySelectorAll(".nav");
 
-  const pages = document.querySelectorAll(".page");
-  const navBtns = document.querySelectorAll(".navBtn");
+const levels = ["A1","A2","B1","B2","C1"];
+const essayRules = {
+  A1:[60,80], A2:[80,120], B1:[150,180], B2:[200,250], C1:[280,350]
+};
 
-  const loginBtn = document.getElementById("loginBtn");
-  const signupBtn = document.getElementById("signupBtn");
-  const logoutBtn = document.getElementById("logoutBtn");
+let mode = "login";
 
-  const auth = document.getElementById("auth");
-  const authTitle = document.getElementById("authTitle");
-  const authUser = document.getElementById("authUser");
-  const authPass = document.getElementById("authPass");
-  const authSubmit = document.getElementById("authSubmit");
+function show(id){
+  pages.forEach(p=>p.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+}
 
-  const themeToggle = document.getElementById("themeToggle");
+navs.forEach(b=>b.onclick=()=>show(b.dataset.page));
 
-  let authMode = "login";
+theme.onclick=()=>document.body.classList.toggle("dark");
 
-  function showPage(id){
-    pages.forEach(p => p.classList.add("hidden"));
-    document.getElementById(id).classList.remove("hidden");
-  }
+login.onclick=()=>{mode="login"; authTitle.textContent="Login"; show("authPage");}
+signup.onclick=()=>{mode="signup"; authTitle.textContent="Sign Up"; show("authPage");}
 
-  navBtns.forEach(b=>{
-    b.onclick = ()=> showPage(b.dataset.page);
+submitAuth.onclick=()=>{
+  const u=user.value.trim();
+  if(!u) return alert("Username required");
+  const db=JSON.parse(localStorage.users||"{}");
+  if(mode==="signup"){ if(db[u])return alert("Exists"); db[u]={level:"A1", essays:[]}; }
+  else if(!db[u]) return alert("Not found");
+  localStorage.users=JSON.stringify(db);
+  localStorage.currentUser=u;
+  logout.classList.remove("hidden");
+  login.classList.add("hidden");
+  signup.classList.add("hidden");
+  renderLevels();
+  show("dashboard");
+}
+
+logout.onclick=()=>{
+  localStorage.removeItem("currentUser");
+  show("home");
+}
+
+document.querySelectorAll(".back").forEach(b=>b.onclick=()=>show("home"));
+
+function renderLevels(){
+  levelsDiv.innerHTML="";
+  levels.forEach(l=>{
+    const d=document.createElement("div");
+    d.className="card";
+    d.textContent=l;
+    d.onclick=()=>{
+      const db=JSON.parse(localStorage.users);
+      db[currentUser()].level=l;
+      localStorage.users=JSON.stringify(db);
+      loadEssayInfo();
+      show("grammar");
+    };
+    levelsDiv.appendChild(d);
   });
+}
 
-  themeToggle.onclick = ()=>{
-    document.body.classList.toggle("theme-dark");
-  };
+function currentUser(){return localStorage.currentUser;}
 
-  loginBtn.onclick = ()=>{
-    authMode = "login";
-    authTitle.textContent = "Log in";
-    showPage("auth");
-  };
+function loadEssayInfo(){
+  const db=JSON.parse(localStorage.users);
+  const lvl=db[currentUser()].level;
+  const [min,max]=essayRules[lvl];
+  essayInfo.textContent=`Your level: ${lvl}. Required words: ${min}-${max}`;
+}
 
-  signupBtn.onclick = ()=>{
-    authMode = "signup";
-    authTitle.textContent = "Sign up";
-    showPage("auth");
-  };
+essayText.oninput=()=>{
+  const words=essayText.value.trim().split(/\s+/).filter(Boolean).length;
+  count.textContent=`Words: ${words}`;
+}
 
-  authSubmit.onclick = ()=>{
-    const u = authUser.value.trim();
-    const p = authPass.value.trim();
-    if(!u || !p) return alert("Fill all fields");
+saveEssay.onclick=()=>{
+  const db=JSON.parse(localStorage.users);
+  const lvl=db[currentUser()].level;
+  const words=essayText.value.trim().split(/\s+/).length;
+  const [min,max]=essayRules[lvl];
+  if(words<min||words>max) return alert("Word count not valid for your level");
+  db[currentUser()].essays.push({text:essayText.value,time:new Date().toLocaleString()});
+  localStorage.users=JSON.stringify(db);
+  alert("Essay saved");
+}
 
-    const db = JSON.parse(localStorage.getItem("users") || "{}");
-
-    if(authMode === "signup"){
-      if(db[u]) return alert("User exists");
-      db[u] = { essays: [], level:"A1" };
-    }else{
-      if(!db[u]) return alert("User not found");
-    }
-
-    localStorage.setItem("users", JSON.stringify(db));
-    localStorage.setItem("currentUser", u);
-
-    loginBtn.classList.add("hidden");
-    signupBtn.classList.add("hidden");
-    logoutBtn.classList.remove("hidden");
-
-    showPage("dashboard");
-  };
-
-  logoutBtn.onclick = ()=>{
-    localStorage.removeItem("currentUser");
-    loginBtn.classList.remove("hidden");
-    signupBtn.classList.remove("hidden");
-    logoutBtn.classList.add("hidden");
-    showPage("home");
-  };
-
-  document.querySelectorAll(".backBtn").forEach(b=>{
-    b.onclick = ()=> showPage("home");
-  });
-
-  showPage("home");
-});
+show("home");
