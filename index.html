@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>eTeacher</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,66 +12,75 @@
 
   <!-- AUTH -->
   <section id="auth" class="page active">
-    <div class="card auth-card">
+    <div class="card auth">
       <h1>eTeacher</h1>
       <p>Learn English professionally</p>
       <input id="username" placeholder="Username">
       <input id="password" type="password" placeholder="Password">
-      <button id="login" class="btn primary">Login</button>
-      <button id="signup" class="btn outline">Sign Up</button>
+      <button id="loginBtn" class="btn primary">Login</button>
+      <button id="signupBtn" class="btn outline">Sign Up</button>
     </div>
   </section>
 
   <!-- LEVEL -->
   <section id="level" class="page">
     <div class="card">
-      <h2>Choose how to start</h2>
-      <button class="btn big primary" id="chooseLevel">Choose my level</button>
-      <button class="btn big outline" id="testLevel">What is my level?</button>
+      <h2>How would you like to start?</h2>
+      <button id="chooseLevelBtn" class="btn big primary">Choose my level</button>
+      <button id="testLevelBtn" class="btn big outline">What is my level?</button>
     </div>
   </section>
 
   <!-- HUB -->
   <section id="hub" class="page">
-    <h2 id="welcome"></h2>
-    <div class="hub-buttons">
-      <button class="btn big primary" id="goGrammar">Grammar</button>
-      <button class="btn big outline" id="goPractice">Practice</button>
-      <button class="btn big ghost" id="goEssay">Essay</button>
+    <div class="card">
+      <h2 id="welcomeText"></h2>
+      <div class="hub">
+        <button id="grammarBtn" class="btn big primary">Grammar</button>
+        <button id="practiceBtn" class="btn big outline">Practice</button>
+        <button id="essayBtn" class="btn big ghost">Essay</button>
+      </div>
+      <button id="logoutBtn" class="btn danger">Logout</button>
     </div>
-    <button class="btn ghost" id="logout">Logout</button>
   </section>
 
   <!-- GRAMMAR -->
   <section id="grammar" class="page">
-    <h2>Grammar</h2>
-    <div id="grammarList"></div>
-    <button class="btn ghost back">Back</button>
+    <div class="card">
+      <h2>Grammar topics</h2>
+      <div id="grammarList"></div>
+      <button class="btn ghost back">Back</button>
+    </div>
   </section>
 
   <!-- PRACTICE -->
   <section id="practice" class="page">
-    <h2 id="practiceTitle"></h2>
-    <p id="question"></p>
-    <div id="answers"></div>
-    <button class="btn outline" id="askAI">Ask AI</button>
-    <button class="btn ghost back">Back</button>
+    <div class="card">
+      <h2 id="practiceTitle"></h2>
+      <p id="question"></p>
+      <div id="answers"></div>
+      <button id="askAI" class="btn outline">Ask AI</button>
+      <button class="btn ghost back">Back</button>
+    </div>
   </section>
 
   <!-- ESSAY -->
   <section id="essay" class="page">
-    <h2 id="essayTitle"></h2>
-    <textarea id="essayText" placeholder="Start writing..."></textarea>
-    <p id="wordCount">0 / 180</p>
-    <button class="btn primary">Save Essay</button>
-    <button class="btn ghost back">Back</button>
+    <div class="card">
+      <h2 id="essayTitle"></h2>
+      <textarea id="essayText" placeholder="Start writing..."></textarea>
+      <p id="wordCount">0 / 180</p>
+      <button class="btn primary">Save Essay</button>
+      <button class="btn ghost back">Back</button>
+    </div>
   </section>
 
 </div>
 
+<!-- AI MODAL -->
 <div id="aiModal" class="modal hidden">
   <div class="card">
-    <h3>AI Assistant</h3>
+    <h3>AI Advisor</h3>
     <p id="aiText"></p>
     <button class="btn ghost" onclick="closeAI()">Close</button>
   </div>
