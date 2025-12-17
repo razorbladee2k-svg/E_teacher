@@ -1,116 +1,165 @@
-:root{
-  --bg:#f9fafb;
-  --card:#ffffff;
-  --text:#0f172a;
-  --muted:#6b7280;
-  --accent:#4f46e5;
-  --danger:#dc2626;
+/* ========= COLOR SYSTEM ========= */
+:root {
+  --bg-main: #f4f7ff;
+  --bg-card: #ffffff;
+  --bg-glass: rgba(255,255,255,0.85);
+
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+
+  --blue-1: #2563eb;
+  --blue-2: #4f46e5;
+  --blue-3: #1e40af;
+
+  --border-soft: rgba(0,0,0,0.08);
 }
 
-body.dark{
-  --bg:#0b1220;
-  --card:#111827;
-  --text:#e5e7eb;
-  --muted:#9ca3af;
+body.dark {
+  --bg-main: #020617;
+  --bg-card: #0b1220;
+  --bg-glass: rgba(15,23,42,0.8);
+
+  --text-main: #e5e7eb;
+  --text-muted: #94a3b8;
 }
 
-body{
-  margin:0;
-  font-family:Inter, system-ui, sans-serif;
-  background:var(--bg);
-  color:var(--text);
+/* ========= BASE ========= */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+  background: radial-gradient(circle at top, #0b1d4d, var(--bg-main));
+  color: var(--text-main);
+  transition: background 0.3s, color 0.3s;
 }
 
-.topbar{
-  display:flex;
-  justify-content:space-between;
-  padding:16px 32px;
-  border-bottom:1px solid #e5e7eb;
+/* ========= NAVBAR ========= */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 32px;
+  background: linear-gradient(90deg, #020617, #020617cc);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
-.brand{
-  font-weight:900;
-  font-size:22px;
-  color:var(--accent);
+.brand {
+  font-size: 22px;
+  font-weight: 900;
+  color: #93c5fd;
 }
 
-nav button{
-  background:none;
-  border:none;
-  margin:0 8px;
-  font-weight:700;
-  cursor:pointer;
+nav button {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-weight: 700;
+  margin: 0 10px;
+  cursor: pointer;
 }
 
-.auth button{
-  margin-left:8px;
+nav button:hover {
+  color: #93c5fd;
 }
 
-.page{
-  max-width:1000px;
-  margin:auto;
-  padding:64px 24px;
+.auth button {
+  margin-left: 10px;
 }
 
-h1{
-  font-size:36px;
+/* ========= BUTTONS ========= */
+button {
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 700;
 }
 
-.actions{
-  margin-top:24px;
+.primary {
+  background: linear-gradient(135deg, var(--blue-1), var(--blue-2));
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  box-shadow: 0 10px 30px rgba(37,99,235,0.35);
 }
 
-.big{
-  padding:14px 30px;
-  font-size:16px;
+.outline {
+  background: transparent;
+  border: 2px solid var(--blue-1);
+  color: #93c5fd;
+  padding: 14px 32px;
 }
 
-.primary{
-  background:var(--accent);
-  color:white;
-  border:none;
-  border-radius:12px;
+.big {
+  font-size: 16px;
 }
 
-.outline{
-  border:2px solid var(--accent);
-  background:none;
-  color:var(--accent);
-  border-radius:12px;
+.danger {
+  background: #dc2626;
+  color: white;
 }
 
-.danger{
-  background:var(--danger);
-  color:white;
+/* ========= LAYOUT ========= */
+.page {
+  max-width: 1100px;
+  margin: auto;
+  padding: 80px 24px;
 }
 
-.card{
-  background:var(--card);
-  padding:24px;
-  border-radius:16px;
-  box-shadow:0 10px 30px rgba(0,0,0,.08);
+.hidden { display: none; }
+
+/* ========= HERO ========= */
+#home h1 {
+  font-size: 42px;
+  font-weight: 900;
+  color: #dbeafe;
 }
 
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-  gap:16px;
+#home p {
+  color: #bfdbfe;
+  font-size: 18px;
 }
 
-.list div{
-  padding:14px;
-  background:var(--card);
-  border-radius:12px;
-  cursor:pointer;
+.actions {
+  margin-top: 30px;
 }
 
-textarea{
-  width:100%;
-  min-height:180px;
-  padding:16px;
-  border-radius:12px;
+/* ========= CARDS ========= */
+.card {
+  background: var(--bg-card);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  margin-top: 20px;
 }
 
-.hidden{display:none;}
-.full{width:100%;}
-.back{background:none;border:none;margin-top:16px;}
+/* ========= INPUTS ========= */
+input, textarea {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border-soft);
+  background: transparent;
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+
+/* ========= GRIDS ========= */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
+  gap: 20px;
+}
+
+.list div {
+  background: var(--bg-card);
+  padding: 16px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: transform .2s;
+}
+
+.list div:hover {
+  transform: translateY(-4px);
+  background: #1e3a8a;
+  color: white;
+}
