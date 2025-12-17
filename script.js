@@ -1,87 +1,123 @@
 const pages = document.querySelectorAll(".page");
-const navs = document.querySelectorAll(".nav");
+const navBtns = document.querySelectorAll("nav button");
 
-const levels = ["A1","A2","B1","B2","C1"];
-const essayRules = {
-  A1:[60,80], A2:[80,120], B1:[150,180], B2:[200,250], C1:[280,350]
-};
-
-let mode = "login";
-
-function show(id){
-  pages.forEach(p=>p.classList.add("hidden"));
-  document.getElementById(id).classList.remove("hidden");
+function showPage(id) {
+  pages.forEach(p => p.classList.add("hidden"));
+  const page = document.getElementById(id);
+  if (page) page.classList.remove("hidden");
 }
 
-navs.forEach(b=>b.onclick=()=>show(b.dataset.page));
+/* NAV ROUTING */
+navBtns.forEach(btn => {
+  btn.addEventListener("click", () => {
+    showPage(btn.dataset.page);
+    if (btn.dataset.page === "dashboard") renderLevels();
+    if (btn.dataset.page === "practice") loadPractice();
+  });
+});
 
-theme.onclick=()=>document.body.classList.toggle("dark");
+/* DARK MODE */
+theme.onclick = () => document.body.classList.toggle("dark");
 
-login.onclick=()=>{mode="login"; authTitle.textContent="Login"; show("authPage");}
-signup.onclick=()=>{mode="signup"; authTitle.textContent="Sign Up"; show("authPage");}
+/* AUTH */
+let mode = "login";
 
-submitAuth.onclick=()=>{
-  const u=user.value.trim();
-  if(!u) return alert("Username required");
-  const db=JSON.parse(localStorage.users||"{}");
-  if(mode==="signup"){ if(db[u])return alert("Exists"); db[u]={level:"A1", essays:[]}; }
-  else if(!db[u]) return alert("Not found");
-  localStorage.users=JSON.stringify(db);
-  localStorage.currentUser=u;
+login.onclick = () => {
+  mode = "login";
+  authTitle.textContent = "Login";
+  showPage("authPage");
+};
+
+signup.onclick = () => {
+  mode = "signup";
+  authTitle.textContent = "Sign Up";
+  showPage("authPage");
+};
+
+submitAuth.onclick = () => {
+  const u = user.value.trim();
+  if (!u) return alert("Username required");
+
+  const db = JSON.parse(localStorage.users || "{}");
+
+  if (mode === "signup") {
+    if (db[u]) return alert("User exists");
+    db[u] = { level: "A1", essays: [] };
+  } else {
+    if (!db[u]) return alert("User not found");
+  }
+
+  localStorage.users = JSON.stringify(db);
+  localStorage.currentUser = u;
+
   logout.classList.remove("hidden");
   login.classList.add("hidden");
   signup.classList.add("hidden");
+
   renderLevels();
-  show("dashboard");
-}
+  showPage("dashboard");
+};
 
-logout.onclick=()=>{
+logout.onclick = () => {
   localStorage.removeItem("currentUser");
-  show("home");
-}
+  login.classList.remove("hidden");
+  signup.classList.remove("hidden");
+  logout.classList.add("hidden");
+  showPage("home");
+};
 
-document.querySelectorAll(".back").forEach(b=>b.onclick=()=>show("home"));
+/* LEVELS */
+const levels = ["A1","A2","B1","B2","C1"];
 
-function renderLevels(){
-  levelsDiv.innerHTML="";
-  levels.forEach(l=>{
-    const d=document.createElement("div");
-    d.className="card";
-    d.textContent=l;
-    d.onclick=()=>{
-      const db=JSON.parse(localStorage.users);
-      db[currentUser()].level=l;
-      localStorage.users=JSON.stringify(db);
-      loadEssayInfo();
-      show("grammar");
+function renderLevels() {
+  levelsDiv.innerHTML = "";
+  levels.forEach(l => {
+    const d = document.createElement("div");
+    d.className = "card";
+    d.textContent = l;
+    d.onclick = () => {
+      const db = JSON.parse(localStorage.users);
+      db[currentUser()].level = l;
+      localStorage.users = JSON.stringify(db);
+      showGrammar(l);
     };
     levelsDiv.appendChild(d);
   });
 }
 
-function currentUser(){return localStorage.currentUser;}
-
-function loadEssayInfo(){
-  const db=JSON.parse(localStorage.users);
-  const lvl=db[currentUser()].level;
-  const [min,max]=essayRules[lvl];
-  essayInfo.textContent=`Your level: ${lvl}. Required words: ${min}-${max}`;
+function showGrammar(level) {
+  grammarTitle.textContent = level + " Grammar";
+  grammarList.innerHTML = "";
+  ["Core structures","Tenses","Usage"].forEach(g => {
+    const div = document.createElement("div");
+    div.textContent = g;
+    div.onclick = () => startPractice(level);
+    grammarList.appendChild(div);
+  });
+  showPage("grammar");
 }
 
-essayText.oninput=()=>{
-  const words=essayText.value.trim().split(/\s+/).filter(Boolean).length;
-  count.textContent=`Words: ${words}`;
+/* PRACTICE */
+function loadPractice() {
+  const lvl = JSON.parse(localStorage.users || "{}")[currentUser()]?.level || "A1";
+  startPractice(lvl);
 }
 
-saveEssay.onclick=()=>{
-  const db=JSON.parse(localStorage.users);
-  const lvl=db[currentUser()].level;
-  const words=essayText.value.trim().split(/\s+/).length;
-  const [min,max]=essayRules[lvl];
-  if(words<min||words>max) return alert("Word count not valid for your level");
-  db[currentUser()].essays.push({text:essayText.value,time:new Date().toLocaleString()});
-  localStorage.users=JSON.stringify(db);
-  alert("Essay saved");
+function startPractice(level) {
+  q.textContent = `Practice question for ${level}`;
+  opts.innerHTML = "";
+  ["Option A","Option B"].forEach(o => {
+    const b = document.createElement("button");
+    b.className = "primary";
+    b.textContent = o;
+    opts.appendChild(b);
+  });
+  showPage("practice");
 }
 
-show("home");
+function currentUser() {
+  return localStorage.currentUser;
+}
+
+/* INIT */
+showPage("home");
