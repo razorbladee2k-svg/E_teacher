@@ -6,75 +6,76 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="theme-light">
+<body class="light">
 
-<header class="navbar">
-  <div class="nav-left">
-    <span class="logo">eTeacher</span>
-    <button class="navBtn" data-page="home">Home</button>
-    <button class="navBtn" data-page="dashboard">Dashboard</button>
-    <button class="navBtn" data-page="grammar">Grammar</button>
-    <button class="navBtn" data-page="practice">Practice</button>
-    <button class="navBtn" data-page="essay">Essay</button>
-  </div>
+<header class="topbar">
+  <div class="brand">eTeacher</div>
 
-  <div class="nav-right">
-    <button id="themeToggle" class="iconBtn">🌙</button>
-    <button id="loginBtn" class="bigBtn ghost">Log in</button>
-    <button id="signupBtn" class="bigBtn primary">Sign up</button>
-    <button id="logoutBtn" class="bigBtn danger hidden">Logout</button>
+  <nav>
+    <button class="nav" data-page="home">Home</button>
+    <button class="nav" data-page="dashboard">Dashboard</button>
+    <button class="nav" data-page="grammar">Grammar</button>
+    <button class="nav" data-page="practice">Practice</button>
+    <button class="nav" data-page="essay">Essay</button>
+  </nav>
+
+  <div class="auth">
+    <button id="theme">🌙</button>
+    <button id="login">Login</button>
+    <button id="signup" class="primary">Sign Up</button>
+    <button id="logout" class="danger hidden">Logout</button>
   </div>
 </header>
 
 <main>
 
 <section id="home" class="page">
-  <div class="hero">
-    <h1>Learn English clearly and professionally</h1>
-    <p>Structured grammar · adaptive practice · writing</p>
-    <div class="hero-actions">
-      <button id="testLevelBtn" class="bigBtn primary">Test my level</button>
-      <button id="chooseLevelBtn" class="bigBtn outline">Choose my level</button>
-    </div>
+  <h1>Master English with structure and clarity</h1>
+  <p>Professional grammar · adaptive practice · guided writing</p>
+  <div class="actions">
+    <button id="testLevel" class="primary big">Test my level</button>
+    <button id="chooseLevel" class="outline big">Choose my level</button>
   </div>
 </section>
 
-<section id="auth" class="page hidden">
-  <div class="auth-card">
-    <h2 id="authTitle">Log in</h2>
-    <input id="authUser" placeholder="Username">
-    <input id="authPass" type="password" placeholder="Password">
-    <button id="authSubmit" class="bigBtn primary full">Continue</button>
-    <button class="bigBtn ghost backBtn full">Back</button>
+<section id="authPage" class="page hidden">
+  <div class="card authBox">
+    <h2 id="authTitle"></h2>
+    <input id="user" placeholder="Username">
+    <input id="pass" type="password" placeholder="Password">
+    <button id="submitAuth" class="primary big full">Continue</button>
+    <button class="back">Back</button>
   </div>
 </section>
 
 <section id="dashboard" class="page hidden">
-  <h2>Your level</h2>
-  <div id="levelGrid" class="grid"></div>
+  <h2>Select your level</h2>
+  <div id="levels" class="grid"></div>
 </section>
 
 <section id="grammar" class="page hidden">
   <h2 id="grammarTitle"></h2>
   <div id="grammarList" class="list"></div>
-  <button class="bigBtn ghost backBtn">Back</button>
+  <button class="back">Back</button>
 </section>
 
 <section id="practice" class="page hidden">
   <h2>Practice</h2>
-  <div class="practice-card">
-    <p id="question"></p>
-    <div id="answers"></div>
+  <div class="card">
+    <p id="q"></p>
+    <div id="opts"></div>
   </div>
-  <button class="bigBtn ghost backBtn">Back</button>
+  <button class="back">Back</button>
 </section>
 
 <section id="essay" class="page hidden">
-  <h2>Essay</h2>
-  <textarea id="essayText" placeholder="Write your essay..."></textarea>
-  <button id="saveEssay" class="bigBtn primary">Save Essay</button>
+  <h2>Essay Practice</h2>
+  <p id="essayInfo"></p>
+  <textarea id="essayText"></textarea>
+  <p id="count"></p>
+  <button id="saveEssay" class="primary big">Submit Essay</button>
   <ul id="essayList"></ul>
-  <button class="bigBtn ghost backBtn">Back</button>
+  <button class="back">Back</button>
 </section>
 
 </main>
