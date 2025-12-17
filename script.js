@@ -12,53 +12,28 @@ const username=document.getElementById("username");
 const password=document.getElementById("password");
 const loginBtn=document.getElementById("loginBtn");
 const signupBtn=document.getElementById("signupBtn");
+const logoutBtn=document.getElementById("logoutBtn");
+
+const chooseLevelBtn=document.getElementById("chooseLevelBtn");
+const testLevelBtn=document.getElementById("testLevelBtn");
+const levelOptions=document.getElementById("levelOptions");
+const levelTest=document.getElementById("levelTest");
+
+const testQ=document.getElementById("testQ");
+const testAnswers=document.getElementById("testAnswers");
 
 const welcome=document.getElementById("welcome");
-const grammarBtn=document.getElementById("grammarBtn");
-const practiceBtn=document.getElementById("practiceBtn");
-const essayBtn=document.getElementById("essayBtn");
-
-const grammarList=document.getElementById("grammarList");
-const question=document.getElementById("question");
-const answers=document.getElementById("answers");
-const practiceFeedback=document.getElementById("practiceFeedback");
-
-const essayTitle=document.getElementById("essayTitle");
-const essayText=document.getElementById("essayText");
-const wordCount=document.getElementById("wordCount");
-const sendEssay=document.getElementById("sendEssay");
-const essayFeedback=document.getElementById("essayFeedback");
-
-const adviceBox=document.getElementById("adviceBox");
 
 /* DATA */
 let USERS=JSON.parse(localStorage.users||"{}");
 let currentUser=null;
 
-const GRAMMAR={
-  B1:[
-    {
-      title:"First Conditional",
-      rule:"If + present, will + verb",
-      example:"If it rains, I will stay home.",
-      mistake:"❌ If it will rain, I will stay home."
-    },
-    {
-      title:"Passive Voice",
-      rule:"be + past participle",
-      example:"The letter was sent.",
-      mistake:"❌ The letter was send."
-    }
-  ]
-};
-
-const PRACTICE={
-  B1:{q:"If I ___ more time, I would help.",a:["have","had"],c:1,exp:"Unreal condition → use past simple."}
-};
-
-const ESSAYS={
-  B1:["Technology and education"]
-};
+const TEST=[
+  {q:"I ___ finished my work.",a:["have","has","had"],c:0},
+  {q:"She didn’t ___ yesterday.",a:["went","go","gone"],c:1},
+  {q:"If I were you, I ___ study more.",a:["will","would","am"],c:1},
+  {q:"The letter ___ yesterday.",a:["is sent","was sent","has send"],c:1}
+];
 
 /* AUTH */
 loginBtn.onclick=()=>{
@@ -73,97 +48,88 @@ signupBtn.onclick=()=>{
   const u=username.value.trim();
   const p=password.value.trim();
   if(USERS[u]) return alert("User exists");
-  USERS[u]={password:p,level:"B1"};
+  USERS[u]={password:p,level:null};
   localStorage.users=JSON.stringify(USERS);
   currentUser=u;
   show("level");
 };
 
-/* LEVEL */
-document.querySelectorAll(".lvl").forEach(b=>{
-  b.onclick=()=>{
-    USERS[currentUser].level=b.dataset.lvl;
+logoutBtn.onclick=()=>{
+  currentUser=null;
+  show("auth");
+};
+
+/* LEVEL FLOW FIX */
+chooseLevelBtn.onclick=()=>{
+  levelOptions.classList.remove("hidden");
+  levelTest.classList.add("hidden");
+};
+
+testLevelBtn.onclick=()=>{
+  levelOptions.classList.add("hidden");
+  levelTest.classList.remove("hidden");
+  startTest();
+};
+
+/* LEVEL BUTTONS */
+document.querySelectorAll(".lvl").forEach(btn=>{
+  btn.onclick=()=>{
+    const lvl=btn.dataset.lvl;
+    USERS[currentUser].level=lvl;
     localStorage.users=JSON.stringify(USERS);
-    welcome.textContent=`Welcome ${currentUser} (${b.dataset.lvl})`;
+    welcome.textContent=`Welcome ${currentUser} (${lvl})`;
     show("hub");
   };
 });
 
-/* HUB */
-grammarBtn.onclick=()=>{
-  grammarList.innerHTML="";
-  GRAMMAR[USERS[currentUser].level].forEach(g=>{
-    grammarList.innerHTML+=`
-      <div class="grammar-card">
-        <h3>${g.title}</h3>
-        <p><b>Rule:</b> ${g.rule}</p>
-        <p><b>Example:</b> ${g.example}</p>
-        <p class="mistake">${g.mistake}</p>
-      </div>`;
-  });
-  show("grammar");
-};
+/* LEVEL TEST */
+let idx=0,score=0;
 
-practiceBtn.onclick=()=>{
-  const p=PRACTICE[USERS[currentUser].level];
-  question.textContent=p.q;
-  answers.innerHTML="";
-  practiceFeedback.classList.add("hidden");
-  p.a.forEach((x,i)=>{
+function startTest(){
+  idx=0; score=0;
+  loadQ();
+}
+
+function loadQ(){
+  const t=TEST[idx];
+  testQ.textContent=t.q;
+  testAnswers.innerHTML="";
+  t.a.forEach((ans,i)=>{
     const b=document.createElement("button");
-    b.textContent=x;
+    b.textContent=ans;
     b.onclick=()=>{
-      practiceFeedback.innerHTML=
-        i===p.c?"✅ Correct. "+p.exp:"❌ Incorrect. "+p.exp;
-      practiceFeedback.classList.remove("hidden");
+      if(i===t.c) score++;
+      idx++;
+      idx<TEST.length ? loadQ() : finishTest();
     };
-    answers.appendChild(b);
+    testAnswers.appendChild(b);
   });
-  show("practice");
-};
+}
 
-essayBtn.onclick=()=>{
-  essayTitle.textContent=ESSAYS[USERS[currentUser].level][0];
-  essayFeedback.classList.add("hidden");
-  show("essay");
-};
+function finishTest(){
+  const lvl=
+    score<=1?"A1":
+    score===2?"A2":
+    score===3?"B1":"B2";
 
-/* ESSAY CHECKER */
-essayText.oninput=()=>{
-  const w=essayText.value.trim().split(/\s+/).filter(Boolean).length;
-  wordCount.textContent=`${w} / 180`;
-};
-
-sendEssay.onclick=()=>{
-  const t=essayText.value;
-  let f=[];
-  if(t.length<80) f.push("Essay is too short.");
-  if(t.includes("I am agree")) f.push("❌ 'I am agree' → 'I agree'");
-  if(t.includes("didn't went")) f.push("❌ 'didn't went' → 'didn't go'");
-  if(!/[A-Z]/.test(t[0])) f.push("Start with a capital letter.");
-  if(f.length===0) f.push("Good work. Minor mistakes only.");
-  essayFeedback.innerHTML="<b>AI feedback:</b><br>"+f.join("<br>");
-  essayFeedback.classList.remove("hidden");
-};
+  USERS[currentUser].level=lvl;
+  localStorage.users=JSON.stringify(USERS);
+  welcome.textContent=`Welcome ${currentUser} (${lvl})`;
+  show("hub");
+}
 
 /* BACK */
-document.querySelectorAll(".back").forEach(b=>b.onclick=()=>show("hub"));
+document.querySelectorAll(".back").forEach(b=>{
+  b.onclick=()=>{
+    levelOptions.classList.add("hidden");
+    levelTest.classList.add("hidden");
+    show("auth");
+  };
+});
 
 /* DARK MODE */
 document.getElementById("darkToggle").onclick=()=>{
   document.documentElement.classList.toggle("dark");
 };
-
-/* ADVICE */
-const tips=[
-  "Practice daily for 10 minutes.",
-  "Mistakes mean progress.",
-  "Write first, correct later.",
-  "Grammar improves with use."
-];
-let i=0;
-setInterval(()=>{
-  adviceBox.textContent="Tip: "+tips[i++%tips.length];
-},5000);
 
 });
