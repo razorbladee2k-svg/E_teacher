@@ -8,15 +8,19 @@ body{
 #app{min-height:100vh}
 
 header{
-  padding:16px 24px;
-  font-weight:700;
+  padding:20px 26px;
 }
 
-.logo{cursor:pointer;color:#6366f1}
+.logo{
+  font-size:32px;
+  font-weight:800;
+  color:#6366f1;
+  cursor:pointer;
+}
 
 .page{
   display:none;
-  min-height:calc(100vh - 60px);
+  min-height:calc(100vh - 80px);
   align-items:center;
   justify-content:center;
 }
@@ -24,9 +28,9 @@ header{
 
 .card{
   background:#111827;
-  padding:30px;
-  border-radius:18px;
-  width:320px;
+  padding:32px;
+  border-radius:20px;
+  width:340px;
   text-align:center;
 }
 
@@ -38,12 +42,12 @@ input,textarea{
   margin:10px 0;
 }
 
-textarea{height:120px}
+textarea{height:140px}
 
 button{
   width:100%;
   padding:14px;
-  border-radius:16px;
+  border-radius:18px;
   border:none;
   background:#4f46e5;
   color:white;
@@ -59,10 +63,16 @@ button.secondary{
 
 button.back{
   background:#374151;
-  margin-top:16px;
+  margin-top:18px;
 }
 
 .hidden{display:none}
 
-#levelOptions button{margin-top:8px}
-#answers button{margin-top:8px}
+.feedback{
+  margin-top:14px;
+  padding:14px;
+  border-radius:14px;
+  background:#020617;
+  text-align:left;
+  font-size:14px;
+}
