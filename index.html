@@ -1,128 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8">
   <title>eTeacher</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header class="topbar">
-  <div id="logo" class="brand">eTeacher</div>
-
-  <nav class="nav-center" role="navigation" aria-label="main">
-    <button class="navBtn" data-page="dashboard">Dashboard</button>
-    <button class="navBtn" data-page="grammar">Grammar</button>
-    <button class="navBtn" data-page="practice">Practice</button>
-    <button class="navBtn" data-page="essay">Essay</button>
-  </nav>
-
-  <div class="nav-right">
-    <button id="themeBtn" class="icon" title="Toggle theme">🌙</button>
-    <button id="loginBtn" class="btn ghost">Login</button>
-    <button id="signupBtn" class="btn primary">Sign Up</button>
-    <button id="logoutBtn" class="btn danger hidden">Logout</button>
-  </div>
-</header>
-
-<main>
-
-  <!-- HOME -->
-  <section id="home" class="page active">
-    <div class="hero">
-      <h1>Master English with structure & clarity</h1>
-      <p class="sub">Grammar • Adaptive practice • Guided writing • AI suggestions</p>
-
-      <div class="actions">
-        <button id="testLevelBtn" class="primary big">Test my level</button>
-        <button id="chooseLevelBtn" class="outline big">Choose my level</button>
-      </div>
-    </div>
-  </section>
+<div id="app">
 
   <!-- AUTH -->
-  <section id="auth" class="page">
+  <section id="auth" class="page active">
     <div class="card auth-card">
-      <h2 id="authTitle">Login</h2>
-      <input id="authUser" placeholder="Username" autocomplete="username" />
-      <input id="authPass" placeholder="Password" autocomplete="current-password" type="password" />
-      <div class="row">
-        <button id="authSubmit" class="primary full">Continue</button>
-        <button class="ghost full backBtn">Back</button>
-      </div>
+      <h1>eTeacher</h1>
+      <p>Learn English professionally</p>
+      <input id="username" placeholder="Username">
+      <input id="password" type="password" placeholder="Password">
+      <button id="login" class="btn primary">Login</button>
+      <button id="signup" class="btn outline">Sign Up</button>
     </div>
   </section>
 
-  <!-- LEVEL CHOICE -->
-  <section id="levelChoice" class="page">
+  <!-- LEVEL -->
+  <section id="level" class="page">
     <div class="card">
-      <h2>Welcome — choose how to start</h2>
-      <p>If you already know your level choose it, or take a short placement test.</p>
-      <div class="row">
-        <button id="quickChooseBtn" class="outline">Choose a level</button>
-        <button id="quickTestBtn" class="primary">Take placement test</button>
-      </div>
-      <button class="ghost backBtn">Back</button>
+      <h2>Choose how to start</h2>
+      <button class="btn big primary" id="chooseLevel">Choose my level</button>
+      <button class="btn big outline" id="testLevel">What is my level?</button>
     </div>
   </section>
 
-  <!-- DASHBOARD -->
-  <section id="dashboard" class="page">
-    <h2>Your level & recommendations</h2>
-    <div id="levelDisplay" class="card"></div>
-    <h3>Recommended grammar focus</h3>
-    <div id="recList" class="list card"></div>
-    <button class="ghost backBtn">Back</button>
+  <!-- HUB -->
+  <section id="hub" class="page">
+    <h2 id="welcome"></h2>
+    <div class="hub-buttons">
+      <button class="btn big primary" id="goGrammar">Grammar</button>
+      <button class="btn big outline" id="goPractice">Practice</button>
+      <button class="btn big ghost" id="goEssay">Essay</button>
+    </div>
+    <button class="btn ghost" id="logout">Logout</button>
   </section>
 
   <!-- GRAMMAR -->
   <section id="grammar" class="page">
-    <h2 id="grammarTitle">Grammar</h2>
-    <div id="grammarList" class="grid"></div>
-    <button class="ghost backBtn">Back</button>
+    <h2>Grammar</h2>
+    <div id="grammarList"></div>
+    <button class="btn ghost back">Back</button>
   </section>
 
   <!-- PRACTICE -->
   <section id="practice" class="page">
-    <h2 id="practiceTitle">Practice</h2>
-    <div class="card practice-card">
-      <p id="question" class="q-text"></p>
-      <div id="answers" class="answers"></div>
-      <p id="practiceFeedback" class="muted"></p>
-      <div class="row" style="margin-top:14px">
-        <button id="askAiBtn" class="outline">Ask AI about my mistakes</button>
-        <button class="ghost backBtn">Back</button>
-      </div>
-    </div>
+    <h2 id="practiceTitle"></h2>
+    <p id="question"></p>
+    <div id="answers"></div>
+    <button class="btn outline" id="askAI">Ask AI</button>
+    <button class="btn ghost back">Back</button>
   </section>
 
   <!-- ESSAY -->
   <section id="essay" class="page">
-    <h2>Essay practice</h2>
-    <div class="card">
-      <p id="essayInfo" class="muted">You must meet the word-range for your level.</p>
-      <textarea id="essayText" placeholder="Write your essay..."></textarea>
-      <p id="essayCount" class="muted">0 / 180 words</p>
-      <div class="row">
-        <button id="saveEssay" class="primary">Submit Essay</button>
-        <button class="ghost backBtn">Back</button>
-      </div>
-      <h3>Your saved essays</h3>
-      <ul id="essayList" class="list"></ul>
-    </div>
+    <h2 id="essayTitle"></h2>
+    <textarea id="essayText" placeholder="Start writing..."></textarea>
+    <p id="wordCount">0 / 180</p>
+    <button class="btn primary">Save Essay</button>
+    <button class="btn ghost back">Back</button>
   </section>
 
-  <!-- AI modal (simple) -->
-  <div id="aiModal" class="modal hidden">
-    <div class="modal-card">
-      <h3>AI Advisor</h3>
-      <div id="aiResponse" class="ai-response"></div>
-      <button id="aiClose" class="ghost full">Close</button>
-    </div>
-  </div>
+</div>
 
-</main>
+<div id="aiModal" class="modal hidden">
+  <div class="card">
+    <h3>AI Assistant</h3>
+    <p id="aiText"></p>
+    <button class="btn ghost" onclick="closeAI()">Close</button>
+  </div>
+</div>
 
 <script src="script.js"></script>
 </body>
