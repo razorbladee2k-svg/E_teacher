@@ -1,99 +1,176 @@
+/* ---------- BASIC ROUTING ---------- */
+const pages = document.querySelectorAll(".page");
+const hero = document.getElementById("hero");
 const body = document.body;
-const app = document.getElementById("app");
 
+function show(id) {
+  pages.forEach(p => p.classList.add("hidden"));
+  hero.classList.add("hidden");
+  document.getElementById(id)?.classList.remove("hidden");
+}
+
+document.querySelectorAll(".backBtn").forEach(b =>
+  b.onclick = () => {
+    pages.forEach(p => p.classList.add("hidden"));
+    hero.classList.remove("hidden");
+  }
+);
+
+/* ---------- DARK MODE ---------- */
 themeToggle.onclick = () => body.classList.toggle("dark");
 
-/* ENTRY */
-startPractice.onclick = () => {
-  app.classList.remove("hidden");
-  document.querySelector(".hero").classList.add("hidden");
-  document.querySelector(".features").classList.add("hidden");
-  loadPractice("A1");
+/* ---------- AUTH ---------- */
+let mode = "login";
+const users = () => JSON.parse(localStorage.getItem("users") || "{}");
+const saveUsers = u => localStorage.setItem("users", JSON.stringify(u));
+
+loginBtn.onclick = () => {
+  mode = "login";
+  authTitle.textContent = "Log in";
+  show("auth");
 };
 
-chooseLevel.onclick = () => {
-  app.classList.remove("hidden");
-  document.querySelector(".hero").classList.add("hidden");
-  document.querySelector(".features").classList.add("hidden");
+signupBtn.onclick = () => {
+  mode = "signup";
+  authTitle.textContent = "Sign up";
+  show("auth");
+};
+
+authSubmit.onclick = () => {
+  const u = authUser.value.trim();
+  const p = authPass.value.trim();
+  if (!u || !p) return alert("Fill all fields");
+
+  const db = users();
+  if (mode === "signup") {
+    if (db[u]) return alert("User exists");
+    db[u] = { model: createUserModel() };
+    saveUsers(db);
+  } else {
+    if (!db[u]) return alert("User not found");
+  }
+
+  localStorage.setItem("currentUser", u);
+  loginBtn.classList.add("hidden");
+  signupBtn.classList.add("hidden");
+  logoutBtn.classList.remove("hidden");
+  loadUserModel();
   renderLevels();
+  show("dashboard");
 };
 
-/* DATA */
-const grammar = {
-  A1: [
-    "To be (am / is / are)",
-    "Present simple",
-    "Present continuous",
-    "Have got",
-    "Was / were"
-  ],
-  B1: [
-    "Present simple vs continuous",
-    "Past simple vs present perfect",
-    "Conditionals",
-    "Passive voice",
-    "Reported speech",
-    "Modal verbs"
-  ]
+logoutBtn.onclick = () => {
+  localStorage.removeItem("currentUser");
+  logoutBtn.classList.add("hidden");
+  loginBtn.classList.remove("hidden");
+  signupBtn.classList.remove("hidden");
 };
 
-const questions = {
-  A1: [
-    { q: "She ___ happy.", o: ["is", "are"], a: 0 },
-    { q: "They ___ here.", o: ["is", "are"], a: 1 }
-  ],
-  B1: [
-    { q: "I ___ here since 2020.", o: ["have been", "was"], a: 0 }
-  ]
-};
+/* ---------- USER MODEL (AI CORE) ---------- */
+let userModel = {};
 
-/* LEVELS */
+function createUserModel() {
+  return { skills: {}, confidence: {}, mistakes: [] };
+}
+
+function loadUserModel() {
+  const user = localStorage.getItem("currentUser");
+  if (!user) return;
+  userModel = users()[user].model || createUserModel();
+}
+
+function saveUserModel() {
+  const user = localStorage.getItem("currentUser");
+  if (!user) return;
+  const db = users();
+  db[user].model = userModel;
+  saveUsers(db);
+}
+
+/* ---------- LEVELS ---------- */
+const levels = ["A1", "A2", "B1", "B2", "C1"];
+
 function renderLevels() {
-  const grid = document.getElementById("levels");
-  grid.innerHTML = "";
-  Object.keys(grammar).forEach(level => {
-    const card = document.createElement("div");
-    card.className = "feature";
-    card.textContent = level;
-    card.onclick = () => showGrammar(level);
-    grid.appendChild(card);
+  levelGrid.innerHTML = "";
+  levels.forEach(l => {
+    const d = document.createElement("div");
+    d.className = "card";
+    d.textContent = l;
+    d.onclick = () => showGrammar(l);
+    levelGrid.appendChild(d);
   });
 }
+
+chooseLevelBtn.onclick = () => {
+  renderLevels();
+  show("dashboard");
+};
+
+/* ---------- GRAMMAR ---------- */
+const grammar = {
+  A1: ["To be", "Present simple", "Present continuous"],
+  A2: ["Past simple", "Present perfect"],
+  B1: ["Conditionals", "Passive", "Reported speech"],
+  B2: ["Advanced modals", "Cleft sentences"],
+  C1: ["Inversion", "Advanced discourse"]
+};
 
 function showGrammar(level) {
-  document.getElementById("dashboard").classList.add("hidden");
-  document.getElementById("grammar").classList.remove("hidden");
   grammarTitle.textContent = level + " Grammar";
   grammarList.innerHTML = "";
-  grammar[level].forEach(item => {
+  grammar[level].forEach(g => {
     const div = document.createElement("div");
-    div.className = "card";
-    div.textContent = item;
-    div.onclick = () => loadPractice(level);
+    div.textContent = g;
+    div.onclick = () => startPractice(level);
     grammarList.appendChild(div);
   });
+  show("grammar");
 }
 
-function goBack() {
-  document.getElementById("grammar").classList.add("hidden");
-  document.getElementById("dashboard").classList.remove("hidden");
-}
+/* ---------- QUESTIONS (TAGGED BY SKILL) ---------- */
+const questions = {
+  A1: [
+    { q: "She ___ happy.", o: ["is", "are"], a: 0, skill: "to_be" },
+    { q: "They ___ students.", o: ["is", "are"], a: 1, skill: "to_be" }
+  ],
+  B1: [
+    { q: "I ___ here since 2020.", o: ["have been", "was"], a: 0, skill: "present_perfect" },
+    { q: "If I ___ you, I would study.", o: ["am", "were"], a: 1, skill: "conditional" }
+  ]
+};
 
-/* PRACTICE */
+/* ---------- PRACTICE ENGINE (ADAPTIVE) ---------- */
+let currentSet = [];
 let index = 0;
-let set = [];
 
-function loadPractice(level) {
-  document.getElementById("grammar").classList.add("hidden");
-  document.getElementById("practice").classList.remove("hidden");
+function startPractice(level) {
   practiceTitle.textContent = level + " Practice";
-  set = questions[level];
+  currentSet = questions[level];
   index = 0;
+  show("practice");
   renderQuestion();
 }
 
+function recordAnswer(q, correct) {
+  if (!userModel.skills[q.skill]) {
+    userModel.skills[q.skill] = { correct: 0, wrong: 0 };
+  }
+
+  correct
+    ? userModel.skills[q.skill].correct++
+    : userModel.skills[q.skill].wrong++;
+
+  const s = userModel.skills[q.skill];
+  userModel.confidence[q.skill] = Math.round(
+    (s.correct / (s.correct + s.wrong)) * 100
+  );
+
+  if (!correct) userModel.mistakes.push(q.q);
+  saveUserModel();
+}
+
 function renderQuestion() {
-  const q = set[index];
+  const q = currentSet[index];
   question.textContent = q.q;
   answers.innerHTML = "";
   feedback.textContent = "";
@@ -102,21 +179,27 @@ function renderQuestion() {
     const btn = document.createElement("button");
     btn.textContent = opt;
     btn.onclick = () => {
-      btn.classList.add(i === q.a ? "correct" : "wrong");
-      setTimeout(next, 600);
+      const correct = i === q.a;
+      btn.classList.add(correct ? "correct" : "wrong");
+      recordAnswer(q, correct);
+      setTimeout(nextQuestion, 600);
     };
     answers.appendChild(btn);
   });
 }
 
-function next() {
+function nextQuestion() {
   index++;
-  if (index >= set.length) {
-    document.getElementById("practice").classList.add("hidden");
+  if (index >= currentSet.length) {
     renderLevels();
-    document.getElementById("dashboard").classList.remove("hidden");
+    show("dashboard");
     return;
   }
   renderQuestion();
 }
+
+/* ---------- LEVEL TEST ---------- */
+testLevelBtn.onclick = () => {
+  alert("Level test logic ready. Add more questions to expand.");
+};
 
