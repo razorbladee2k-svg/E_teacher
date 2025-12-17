@@ -6,76 +6,64 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="light">
+<body>
 
 <header class="topbar">
-  <div class="brand">eTeacher</div>
+  <div id="logo" class="brand">eTeacher</div>
 
-  <nav>
-    <button class="nav" data-page="home">Home</button>
-    <button class="nav" data-page="dashboard">Dashboard</button>
-    <button class="nav" data-page="grammar">Grammar</button>
-    <button class="nav" data-page="practice">Practice</button>
-    <button class="nav" data-page="essay">Essay</button>
+  <nav class="nav-center">
+    <button class="navBtn" data-page="dashboard">Dashboard</button>
+    <button class="navBtn" data-page="grammar">Grammar</button>
+    <button class="navBtn" data-page="practice">Practice</button>
+    <button class="navBtn" data-page="essay">Essay</button>
   </nav>
 
-  <div class="auth">
-    <button id="theme">🌙</button>
-    <button id="login">Login</button>
-    <button id="signup" class="primary">Sign Up</button>
-    <button id="logout" class="danger hidden">Logout</button>
+  <div class="nav-right">
+    <button id="themeBtn" class="icon">🌙</button>
+    <button id="loginBtn" class="btn ghost">Login</button>
+    <button id="signupBtn" class="btn primary">Sign Up</button>
+    <button id="logoutBtn" class="btn danger hidden">Logout</button>
   </div>
 </header>
 
 <main>
 
-<section id="home" class="page">
-  <h1>Master English with structure and clarity</h1>
-  <p>Professional grammar · adaptive practice · guided writing</p>
-  <div class="actions">
-    <button id="testLevel" class="primary big">Test my level</button>
-    <button id="chooseLevel" class="outline big">Choose my level</button>
-  </div>
+<section id="home" class="page active">
+  <h1>Master English with clarity</h1>
+  <p>Grammar · Practice · Writing · Progress</p>
 </section>
 
-<section id="authPage" class="page hidden">
-  <div class="card authBox">
+<section id="auth" class="page">
+  <div class="card auth">
     <h2 id="authTitle"></h2>
-    <input id="user" placeholder="Username">
-    <input id="pass" type="password" placeholder="Password">
-    <button id="submitAuth" class="primary big full">Continue</button>
-    <button class="back">Back</button>
+    <input id="authUser" placeholder="Username">
+    <input id="authPass" type="password" placeholder="Password">
+    <button id="authSubmit" class="btn primary full">Continue</button>
+    <button class="btn ghost full back">Back</button>
   </div>
 </section>
 
-<section id="dashboard" class="page hidden">
+<section id="dashboard" class="page">
   <h2>Select your level</h2>
   <div id="levels" class="grid"></div>
 </section>
 
-<section id="grammar" class="page hidden">
+<section id="grammar" class="page">
   <h2 id="grammarTitle"></h2>
   <div id="grammarList" class="list"></div>
-  <button class="back">Back</button>
 </section>
 
-<section id="practice" class="page hidden">
+<section id="practice" class="page">
   <h2>Practice</h2>
   <div class="card">
-    <p id="q"></p>
-    <div id="opts"></div>
+    <p id="question"></p>
+    <div id="answers"></div>
   </div>
-  <button class="back">Back</button>
 </section>
 
-<section id="essay" class="page hidden">
-  <h2>Essay Practice</h2>
-  <p id="essayInfo"></p>
+<section id="essay" class="page">
+  <h2>Essay</h2>
   <textarea id="essayText"></textarea>
-  <p id="count"></p>
-  <button id="saveEssay" class="primary big">Submit Essay</button>
-  <ul id="essayList"></ul>
-  <button class="back">Back</button>
 </section>
 
 </main>
