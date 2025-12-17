@@ -1,80 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>eTeacher</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <title>eTeacher — Learn English</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body class="theme-light">
 
 <header class="navbar">
   <div class="nav-left">
-    <span class="logo">eTeacher</span>
-    <button class="navBtn" data-page="dashboard">Dashboard</button>
-    <button class="navBtn" data-page="grammar">Grammar</button>
-    <button class="navBtn" data-page="practice">Practice</button>
-    <button class="navBtn" data-page="essay">Essay</button>
+    <div class="brand">eTeacher</div>
+    <nav class="main-nav" aria-label="Main navigation">
+      <button class="navBtn" data-page="home">Home</button>
+      <button class="navBtn" data-page="dashboard">Dashboard</button>
+      <button class="navBtn" data-page="grammar">Grammar</button>
+      <button class="navBtn" data-page="practice">Practice</button>
+      <button class="navBtn" data-page="essay">Essay</button>
+    </nav>
   </div>
 
   <div class="nav-right">
-    <button id="themeToggle">🌙</button>
-    <button id="loginBtn">Log in</button>
-    <button id="signupBtn" class="primary">Sign up</button>
-    <button id="logoutBtn" class="hidden">Logout</button>
+    <button id="themeToggle" aria-label="Toggle theme">🌙</button>
+    <button id="loginBtn" class="authBtn">Log in</button>
+    <button id="signupBtn" class="authBtn primary">Sign up</button>
+    <button id="logoutBtn" class="authBtn hidden">Logout</button>
   </div>
 </header>
 
-<section id="hero">
-  <h1>Learn English with clarity</h1>
-  <p>Grammar • Practice • Writing • Progress</p>
-  <div class="hero-actions">
-    <button id="testLevelBtn" class="primary large">Test my level</button>
-    <button id="chooseLevelBtn" class="outline large">Choose my level</button>
-  </div>
-</section>
+<main>
 
-<!-- AUTH -->
-<section id="auth" class="page hidden auth-card">
-  <h2 id="authTitle"></h2>
-  <input id="authUser" placeholder="Username">
-  <input id="authPass" type="password" placeholder="Password">
-  <button id="authSubmit" class="primary full">Continue</button>
-  <button class="ghost backBtn">← Back</button>
-</section>
+  <!-- HOME (hero) -->
+  <section id="home" class="page">
+    <div class="hero">
+      <h1>Learn English clearly and professionally</h1>
+      <p>Structured grammar, adaptive practice, real progress.</p>
+      <div class="hero-actions">
+        <button id="testLevelBtn" class="primary">Test my level</button>
+        <button id="chooseLevelBtn" class="outline">Choose my level</button>
+      </div>
+    </div>
+  </section>
 
-<!-- DASHBOARD -->
-<section id="dashboard" class="page hidden">
-  <h2>Your learning dashboard</h2>
-  <div class="grid" id="levelGrid"></div>
-</section>
+  <!-- AUTH -->
+  <section id="auth" class="page hidden">
+    <div class="card auth-card">
+      <h2 id="authTitle">Log in</h2>
+      <input id="authUser" placeholder="Username" autocomplete="username" />
+      <input id="authPass" placeholder="Password" type="password" autocomplete="current-password" />
+      <div class="row">
+        <button id="authSubmit" class="primary full">Continue</button>
+        <button class="ghost backBtn">Back</button>
+      </div>
+    </div>
+  </section>
 
-<!-- GRAMMAR -->
-<section id="grammar" class="page hidden">
-  <h2 id="grammarTitle"></h2>
-  <div id="grammarList" class="list"></div>
-  <button class="ghost backBtn">← Back</button>
-</section>
+  <!-- DASHBOARD -->
+  <section id="dashboard" class="page hidden">
+    <h2>Your Levels</h2>
+    <div id="levelGrid" class="grid"></div>
+    <button class="ghost backBtn">Back</button>
+  </section>
 
-<!-- PRACTICE -->
-<section id="practice" class="page hidden">
-  <h2>Practice</h2>
-  <div class="practice-card">
-    <p id="question"></p>
-    <div id="answers"></div>
-    <p id="feedback"></p>
-  </div>
-  <button class="ghost backBtn">← Back</button>
-</section>
+  <!-- GRAMMAR -->
+  <section id="grammar" class="page hidden">
+    <h2 id="grammarTitle">Grammar</h2>
+    <div id="grammarList" class="list"></div>
+    <button class="ghost backBtn">Back</button>
+  </section>
 
-<!-- ESSAY -->
-<section id="essay" class="page hidden">
-  <h2>Essay Practice</h2>
-  <textarea id="essayText" placeholder="Write your essay here..."></textarea>
-  <button id="saveEssay" class="primary">Save Essay</button>
-  <h3>Your Essays</h3>
-  <ul id="essayList"></ul>
-  <button class="ghost backBtn">← Back</button>
-</section>
+  <!-- PRACTICE -->
+  <section id="practice" class="page hidden">
+    <h2 id="practiceTitle">Practice</h2>
+    <div class="card practice-card">
+      <p id="question">Question will appear here</p>
+      <div id="answers"></div>
+      <p id="feedback"></p>
+    </div>
+    <button class="ghost backBtn">Back</button>
+  </section>
+
+  <!-- ESSAY -->
+  <section id="essay" class="page hidden">
+    <h2>Essay Practice</h2>
+    <div class="card">
+      <textarea id="essayText" placeholder="Write your essay..."></textarea>
+      <div class="row">
+        <button id="saveEssay" class="primary">Save Essay</button>
+        <button class="ghost backBtn">Back</button>
+      </div>
+      <h3>Your Essays</h3>
+      <ul id="essayList" class="essay-list"></ul>
+    </div>
+  </section>
+
+</main>
 
 <script src="script.js"></script>
 </body>
