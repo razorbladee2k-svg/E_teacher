@@ -13,17 +13,18 @@
   <div class="logo" onclick="show('auth')">eTeacher</div>
 </header>
 
-<!-- AUTH PAGE -->
+<!-- AUTH -->
 <section id="auth" class="page active">
   <div class="card">
-    <h1>Welcome to eTeacher</h1>
+    <h1>Log in or Sign up</h1>
     <input id="username" placeholder="Username">
+    <input id="password" type="password" placeholder="Password">
     <button id="loginBtn">Log in</button>
     <button id="signupBtn" class="secondary">Sign up</button>
   </div>
 </section>
 
-<!-- LEVEL PAGE -->
+<!-- LEVEL -->
 <section id="level" class="page">
   <div class="card">
     <h2>How would you like to start?</h2>
@@ -60,7 +61,7 @@
 <!-- GRAMMAR -->
 <section id="grammar" class="page">
   <div class="card">
-    <h2>Grammar</h2>
+    <h2>Grammar topics</h2>
     <div id="grammarList"></div>
     <button class="back">← Back</button>
   </div>
@@ -71,6 +72,7 @@
   <div class="card">
     <p id="question"></p>
     <div id="answers"></div>
+    <div id="practiceFeedback" class="feedback hidden"></div>
     <button class="back">← Back</button>
   </div>
 </section>
@@ -81,12 +83,13 @@
     <h3 id="essayTitle"></h3>
     <textarea id="essayText" placeholder="Write your essay here..."></textarea>
     <p id="wordCount">0 / 180</p>
+    <button id="sendEssay">Send</button>
+    <div id="essayFeedback" class="feedback hidden"></div>
     <button class="back">← Back</button>
   </div>
 </section>
 
 </div>
-
 <script src="script.js"></script>
 </body>
 </html>
