@@ -3,23 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <title>eTeacher</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-<div id="app">
 
 <header>
-  <div class="logo" onclick="show('auth')">eTeacher</div>
+  <div class="logo">eTeacher</div>
+  <button id="darkToggle">🌙</button>
 </header>
+
+<div id="app">
 
 <!-- AUTH -->
 <section id="auth" class="page active">
   <div class="card">
-    <h1>Log in or Sign up</h1>
+    <h1>Login / Sign up</h1>
     <input id="username" placeholder="Username">
     <input id="password" type="password" placeholder="Password">
-    <button id="loginBtn">Log in</button>
+    <button id="loginBtn">Login</button>
     <button id="signupBtn" class="secondary">Sign up</button>
   </div>
 </section>
@@ -27,22 +29,11 @@
 <!-- LEVEL -->
 <section id="level" class="page">
   <div class="card">
-    <h2>How would you like to start?</h2>
-    <button id="chooseLevelBtn">Choose my level</button>
-    <button id="testLevelBtn" class="secondary">What is my level?</button>
-
-    <div id="levelOptions" class="hidden">
-      <button class="lvl" data-lvl="A1">A1</button>
-      <button class="lvl" data-lvl="A2">A2</button>
-      <button class="lvl" data-lvl="B1">B1</button>
-      <button class="lvl" data-lvl="B2">B2</button>
-    </div>
-
-    <div id="levelTest" class="hidden">
-      <p id="testQ"></p>
-      <div id="testAnswers"></div>
-    </div>
-
+    <h2>Choose your level</h2>
+    <button class="lvl" data-lvl="A1">A1</button>
+    <button class="lvl" data-lvl="A2">A2</button>
+    <button class="lvl" data-lvl="B1">B1</button>
+    <button class="lvl" data-lvl="B2">B2</button>
     <button class="back">← Back</button>
   </div>
 </section>
@@ -50,7 +41,7 @@
 <!-- HUB -->
 <section id="hub" class="page">
   <div class="card">
-    <h2 id="welcomeText"></h2>
+    <h2 id="welcome"></h2>
     <button id="grammarBtn">Grammar</button>
     <button id="practiceBtn" class="secondary">Practice</button>
     <button id="essayBtn" class="secondary">Essay</button>
@@ -61,7 +52,7 @@
 <!-- GRAMMAR -->
 <section id="grammar" class="page">
   <div class="card">
-    <h2>Grammar topics</h2>
+    <h2>Grammar</h2>
     <div id="grammarList"></div>
     <button class="back">← Back</button>
   </div>
@@ -81,7 +72,7 @@
 <section id="essay" class="page">
   <div class="card">
     <h3 id="essayTitle"></h3>
-    <textarea id="essayText" placeholder="Write your essay here..."></textarea>
+    <textarea id="essayText" placeholder="Write your essay..."></textarea>
     <p id="wordCount">0 / 180</p>
     <button id="sendEssay">Send</button>
     <div id="essayFeedback" class="feedback hidden"></div>
@@ -90,6 +81,9 @@
 </section>
 
 </div>
+
+<div id="adviceBox">Tip: Practice every day.</div>
+
 <script src="script.js"></script>
 </body>
 </html>
