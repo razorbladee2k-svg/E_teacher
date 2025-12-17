@@ -2,7 +2,7 @@
 
 body{
   margin:0;
-  font-family:Inter,system-ui;
+  font-family:system-ui,Segoe UI;
   background:linear-gradient(180deg,#020617,#0f172a);
   color:white;
 }
@@ -11,18 +11,18 @@ header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:18px 26px;
+  padding:20px 26px;
 }
 
 .logo{
-  font-size:34px;
+  font-size:36px;
   font-weight:900;
   color:#818cf8;
 }
 
 #darkToggle{
-  border:none;
   background:#1e293b;
+  border:none;
   color:white;
   border-radius:50%;
   width:42px;
@@ -36,78 +36,52 @@ header{
   justify-content:center;
   align-items:center;
 }
+
 .page.active{display:flex}
 
 .card{
   background:#111827;
   padding:30px;
-  border-radius:20px;
+  border-radius:22px;
   width:340px;
   text-align:center;
 }
 
-input,textarea{
+input{
   width:100%;
   padding:12px;
+  margin:10px 0;
   border-radius:12px;
   border:none;
-  margin:10px 0;
 }
-
-textarea{height:150px}
 
 button{
   width:100%;
   padding:14px;
-  border-radius:16px;
+  margin-top:10px;
+  border-radius:18px;
   border:none;
   background:#4f46e5;
   color:white;
   font-size:16px;
-  margin-top:10px;
   cursor:pointer;
 }
 
-button.secondary{
+button.outline{
   background:transparent;
   border:2px solid #4f46e5;
 }
 
+button.danger{
+  background:#dc2626;
+}
+
 button.back{
   background:#374151;
-  margin-top:16px;
 }
 
-.feedback{
-  margin-top:12px;
-  padding:12px;
-  background:#020617;
-  border-radius:12px;
-  font-size:14px;
-  text-align:left;
-}
-
-.hidden{display:none}
-
-.grammar-card{
-  background:#020617;
-  padding:14px;
-  border-radius:12px;
-  margin-top:10px;
-  text-align:left;
-}
-
-.grammar-card .mistake{color:#f87171}
-
-#adviceBox{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  background:#020617;
-  padding:14px;
-  border-radius:14px;
-  font-size:13px;
-  opacity:.85;
+.hidden{
+  display:none;
 }
 
 .dark body{
