@@ -13,7 +13,7 @@
   <button id="darkToggle">🌙</button>
 </header>
 
-<div id="app">
+<main>
 
 <!-- AUTH -->
 <section id="auth" class="page active">
@@ -22,18 +22,32 @@
     <input id="username" placeholder="Username">
     <input id="password" type="password" placeholder="Password">
     <button id="loginBtn">Login</button>
-    <button id="signupBtn" class="secondary">Sign up</button>
+    <button id="signupBtn" class="outline">Sign up</button>
   </div>
 </section>
 
 <!-- LEVEL -->
 <section id="level" class="page">
   <div class="card">
-    <h2>Choose your level</h2>
-    <button class="lvl" data-lvl="A1">A1</button>
-    <button class="lvl" data-lvl="A2">A2</button>
-    <button class="lvl" data-lvl="B1">B1</button>
-    <button class="lvl" data-lvl="B2">B2</button>
+    <h2>How would you like to start?</h2>
+
+    <button id="chooseLevelBtn">Choose my level</button>
+    <button id="testLevelBtn" class="outline">What is my level?</button>
+
+    <!-- LEVEL OPTIONS -->
+    <div id="levelOptions" class="hidden">
+      <button class="lvl" data-lvl="A1">A1</button>
+      <button class="lvl" data-lvl="A2">A2</button>
+      <button class="lvl" data-lvl="B1">B1</button>
+      <button class="lvl" data-lvl="B2">B2</button>
+    </div>
+
+    <!-- LEVEL TEST -->
+    <div id="levelTest" class="hidden">
+      <p id="testQ"></p>
+      <div id="testAnswers"></div>
+    </div>
+
     <button class="back">← Back</button>
   </div>
 </section>
@@ -43,46 +57,13 @@
   <div class="card">
     <h2 id="welcome"></h2>
     <button id="grammarBtn">Grammar</button>
-    <button id="practiceBtn" class="secondary">Practice</button>
-    <button id="essayBtn" class="secondary">Essay</button>
-    <button class="back">← Back</button>
+    <button id="practiceBtn" class="outline">Practice</button>
+    <button id="essayBtn" class="outline">Essay</button>
+    <button id="logoutBtn" class="danger">Logout</button>
   </div>
 </section>
 
-<!-- GRAMMAR -->
-<section id="grammar" class="page">
-  <div class="card">
-    <h2>Grammar</h2>
-    <div id="grammarList"></div>
-    <button class="back">← Back</button>
-  </div>
-</section>
-
-<!-- PRACTICE -->
-<section id="practice" class="page">
-  <div class="card">
-    <p id="question"></p>
-    <div id="answers"></div>
-    <div id="practiceFeedback" class="feedback hidden"></div>
-    <button class="back">← Back</button>
-  </div>
-</section>
-
-<!-- ESSAY -->
-<section id="essay" class="page">
-  <div class="card">
-    <h3 id="essayTitle"></h3>
-    <textarea id="essayText" placeholder="Write your essay..."></textarea>
-    <p id="wordCount">0 / 180</p>
-    <button id="sendEssay">Send</button>
-    <div id="essayFeedback" class="feedback hidden"></div>
-    <button class="back">← Back</button>
-  </div>
-</section>
-
-</div>
-
-<div id="adviceBox">Tip: Practice every day.</div>
+</main>
 
 <script src="script.js"></script>
 </body>
