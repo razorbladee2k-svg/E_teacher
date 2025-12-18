@@ -84,6 +84,16 @@ button.back{
   display:none;
 }
 
+.feedback{
+  margin-top:12px;
+  padding:12px;
+  border-radius:12px;
+  font-size:14px;
+}
+
+.correct{color:#22c55e}
+.incorrect{color:#ef4444}
+
 .dark body{
   background:#020617;
 }
