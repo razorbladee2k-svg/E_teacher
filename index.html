@@ -15,27 +15,48 @@
 
 <main>
 
+<!-- LOGIN -->
+<section id="auth" class="page active">
+  <div class="card">
+    <h2>Welcome to eTeacher</h2>
+    <input id="username" placeholder="Username">
+    <input id="password" type="password" placeholder="Password">
+    <button onclick="login()">Log in</button>
+    <button class="outline" onclick="signup()">Sign up</button>
+  </div>
+</section>
+
 <!-- HOME -->
-<section id="home" class="page active">
-  <h1 class="main-title">Learn English with us</h1>
-  <p class="tagline">Grammar • Practice • Writing</p>
+<section id="home" class="page">
+  <h1 class="title-up">Learn English with us</h1>
+  <p class="subtitle">Grammar • Practice • Writing</p>
 
   <div class="home-buttons">
     <button onclick="go('grammar')">Grammar</button>
-    <button onclick="go('practice')" class="outline">Practice</button>
-    <button onclick="go('essay')" class="outline">Essay</button>
+    <button class="outline" onclick="go('practice')">Practice</button>
+    <button class="outline" onclick="go('essay')">Essay</button>
   </div>
+
+  <button class="logout" onclick="logout()">Logout</button>
 </section>
 
 <!-- GRAMMAR -->
 <section id="grammar" class="page">
-  <div class="card">
+  <div class="card wide">
     <h2>Grammar (B1)</h2>
-    <ul>
-      <li>Present perfect vs past simple</li>
-      <li>First & second conditionals</li>
-      <li>Passive voice</li>
-    </ul>
+
+    <div class="grammar-box">
+      <h3>Conditionals</h3>
+      <p>If + past simple → would + verb</p>
+      <p><b>Example:</b> If I had time, I would study.</p>
+    </div>
+
+    <div class="grammar-box">
+      <h3>Passive Voice</h3>
+      <p>be + past participle</p>
+      <p><b>Example:</b> The letter was written yesterday.</p>
+    </div>
+
     <button class="back" onclick="go('home')">← Back</button>
   </div>
 </section>
@@ -44,26 +65,33 @@
 <section id="practice" class="page">
   <div class="card">
     <h2>Practice</h2>
-    <p id="question">If I ___ more time, I would study.</p>
+
+    <p id="question">If she ___ harder, she would pass.</p>
 
     <div class="answers">
-      <button onclick="answer(false)">have</button>
-      <button onclick="answer(true)">had</button>
+      <button onclick="answer(false)">studies</button>
+      <button onclick="answer(true)">studied</button>
     </div>
 
     <p id="feedback"></p>
+
     <button class="back" onclick="go('home')">← Back</button>
   </div>
 </section>
 
 <!-- ESSAY -->
 <section id="essay" class="page">
-  <div class="card">
+  <div class="card wide">
     <h2>Essay</h2>
-    <textarea id="essayText" placeholder="Write 50–150 words..."></textarea>
+    <p>Topic: <b>Should students study online?</b></p>
+
+    <textarea id="essayText" placeholder="Write 80–150 words..."></textarea>
     <p id="wordCount">0 words</p>
-    <button onclick="checkEssay()">Check essay</button>
+
+    <button onclick="checkEssay()">Send</button>
+
     <div id="essayFeedback"></div>
+
     <button class="back" onclick="go('home')">← Back</button>
   </div>
 </section>
