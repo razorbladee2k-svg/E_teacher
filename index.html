@@ -9,62 +9,22 @@
 <body>
 
 <header>
-  <div class="logo" id="goHome">eTeacher</div>
+  <div class="logo">
+    <img src="logo.png" alt="eTeacher logo">
+  </div>
   <button id="darkToggle">🌙</button>
 </header>
 
 <main>
 
-<!-- LOGIN -->
-<section id="auth" class="page active">
+<section id="hub" class="page active">
   <div class="card">
-    <h1>Login / Sign up</h1>
-    <input id="username" placeholder="Username">
-    <input id="password" type="password" placeholder="Password">
-    <button id="loginBtn">Login</button>
-    <button id="signupBtn" class="outline">Sign up</button>
-  </div>
-</section>
+    <h2>Welcome test1234 (B2)</h2>
 
-<!-- START -->
-<section id="start" class="page">
-  <div class="card">
-    <h2>How would you like to start?</h2>
-    <button id="chooseLevelBtn">Choose my level</button>
-    <button id="testLevelBtn" class="outline">What is my level?</button>
-    <button class="back">← Back</button>
-  </div>
-</section>
+    <button id="grammarBtn">Grammar</button>
+    <button id="practiceBtn" class="outline">Practice</button>
+    <button id="essayBtn" class="outline">Essay</button>
 
-<!-- LEVEL SELECT -->
-<section id="levelSelect" class="page">
-  <div class="card">
-    <h2>Select your level</h2>
-    <button class="lvl" data-lvl="A1">A1</button>
-    <button class="lvl" data-lvl="A2">A2</button>
-    <button class="lvl" data-lvl="B1">B1</button>
-    <button class="lvl" data-lvl="B2">B2</button>
-    <button class="back">← Back</button>
-  </div>
-</section>
-
-<!-- LEVEL TEST -->
-<section id="levelTest" class="page">
-  <div class="card">
-    <p id="testQ"></p>
-    <div id="testAnswers"></div>
-    <div id="testFeedback" class="feedback hidden"></div>
-    <button class="back">← Back</button>
-  </div>
-</section>
-
-<!-- DASHBOARD -->
-<section id="hub" class="page">
-  <div class="card">
-    <h2 id="welcome"></h2>
-    <button>Grammar</button>
-    <button class="outline">Practice</button>
-    <button class="outline">Essay</button>
     <button id="logoutBtn" class="danger">Logout</button>
   </div>
 </section>
