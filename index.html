@@ -2,300 +2,223 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>eTeacher – Learn English with us</title>
+<title>eTeacher – Learn English with Us</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 :root{
-  --bg:#1f4fd8;
+  --bg:#2563eb;
   --card:#ffffff;
-  --text:#111;
-  --btn:#5a55ea;
+  --text:#111827;
+  --btn:#4f46e5;
 }
 .dark{
-  --bg:#0b1020;
-  --card:#121a2f;
-  --text:#fff;
-  --btn:#6c7cff;
+  --bg:#020617;
+  --card:#0f172a;
+  --text:#e5e7eb;
+  --btn:#6366f1;
 }
-*{box-sizing:border-box;font-family:Segoe UI,Arial}
+*{box-sizing:border-box;font-family:system-ui}
 body{
   margin:0;
-  background:linear-gradient(180deg,var(--bg),#123);
-  min-height:100vh;
+  background:var(--bg);
   color:var(--text);
+  min-height:100vh;
 }
 header{
-  padding:20px 30px;
   display:flex;
   justify-content:space-between;
-  align-items:center;
-  color:#fff;
-}
-header h1{margin:0}
-header button{
-  margin-left:10px;
-  padding:10px 18px;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-}
-.main{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-height:80vh;
-}
-.card{
-  background:var(--card);
-  padding:30px;
-  border-radius:18px;
-  width:95%;
-  max-width:420px;
-  box-shadow:0 30px 60px rgba(0,0,0,.35);
-  text-align:center;
+  padding:18px;
+  color:white;
 }
 button{
   width:100%;
   padding:14px;
   margin:8px 0;
-  border-radius:12px;
   border:none;
+  border-radius:12px;
   background:var(--btn);
-  color:#fff;
+  color:white;
   font-size:16px;
   cursor:pointer;
 }
-button.outline{
+.outline{
   background:none;
   border:2px solid var(--btn);
   color:var(--btn);
 }
-button.red{background:#d72626}
-input,textarea{
-  width:100%;
-  padding:12px;
-  margin:8px 0;
-  border-radius:10px;
-  border:1px solid #ccc;
+.card{
+  background:var(--card);
+  max-width:420px;
+  margin:40px auto;
+  padding:25px;
+  border-radius:18px;
 }
 .hidden{display:none}
-.small{font-size:14px;opacity:.7}
 .rule{
-  background:#f1f3ff;
+  background:#eef2ff;
   padding:12px;
   border-radius:10px;
-  margin:10px 0;
+  margin:12px 0;
 }
-.dark .rule{background:#1c2440}
-.progress{height:6px;background:#ccc;border-radius:4px;overflow:hidden}
-.progress div{height:100%;width:0;background:var(--btn)}
+.dark .rule{background:#1e293b}
 </style>
 </head>
 
 <body>
 <header>
-  <h1>eTeacher</h1>
-  <div>
-    <button onclick="toggleDark()">🌙</button>
-    <button onclick="show('login')">Login</button>
-    <button onclick="show('signup')">Sign Up</button>
-  </div>
+  <strong>eTeacher</strong>
+  <button onclick="toggleDark()">🌙</button>
 </header>
 
-<div class="main">
-
 <!-- LOGIN -->
-<div class="card hidden" id="login">
-<h2>Login</h2>
-<input id="loginUser" placeholder="Username">
-<input id="loginPass" type="password" placeholder="Password">
-<button onclick="login()">Continue</button>
-<button class="outline" onclick="show('home')">Back</button>
-</div>
-
-<!-- SIGNUP -->
-<div class="card hidden" id="signup">
-<h2>Sign Up</h2>
-<input id="signUser" placeholder="Username">
-<input id="signPass" type="password" placeholder="Password">
-<button onclick="signup()">Create account</button>
-<button class="outline" onclick="show('home')">Back</button>
-</div>
-
-<!-- HOME -->
-<div class="card" id="home">
-<h2>Learn English with us</h2>
-<p class="small">Grammar • Practice • Writing</p>
-<button onclick="show('ready')">What is my level?</button>
-<button onclick="show('chooseLevel')">Choose my level</button>
+<div class="card" id="login">
+  <h2>Login</h2>
+  <input id="user" placeholder="Username">
+  <input id="pass" type="password" placeholder="Password">
+  <button onclick="login()">Continue</button>
 </div>
 
 <!-- READY -->
 <div class="card hidden" id="ready">
-<h2>Ready for a test?</h2>
-<p class="small">This short test checks your level</p>
-<button onclick="startTest()">Start test</button>
-<button class="outline" onclick="show('home')">Back</button>
+  <h2>Ready for a test?</h2>
+  <p>This test checks your real grammar level.</p>
+  <button onclick="startTest()">Start test</button>
 </div>
 
 <!-- TEST -->
 <div class="card hidden" id="test">
-<div class="progress"><div id="bar"></div></div>
-<p id="q"></p>
-<button onclick="answer(true)">Correct</button>
-<button onclick="answer(false)">Incorrect</button>
-</div>
-
-<!-- CHOOSE LEVEL -->
-<div class="card hidden" id="chooseLevel">
-<h2>Choose your level</h2>
-<button onclick="setLevel('A2')">A2</button>
-<button onclick="setLevel('B1')">B1</button>
-<button onclick="setLevel('B2')">B2</button>
-<button class="outline" onclick="show('home')">Back</button>
+  <h3 id="testQ"></h3>
+  <div id="testA"></div>
 </div>
 
 <!-- DASHBOARD -->
 <div class="card hidden" id="dash">
-<h2 id="welcome"></h2>
-<button onclick="openGrammar()">Grammar</button>
-<button onclick="openPractice()">Practice</button>
-<button onclick="openEssay()">Essay</button>
-<button class="outline" onclick="window.open('https://www.youtube.com/@4000EssentialEnglishWords','_blank')">📺 Need vocabulary?</button>
-<button class="red" onclick="logout()">Logout</button>
+  <h2 id="welcome"></h2>
+  <button onclick="openGrammar()">Grammar</button>
+  <button onclick="openPractice()">Practice</button>
+  <button onclick="window.open('https://www.youtube.com/@4000EssentialEnglishWords','_blank')">
+    📺 Need vocabulary?
+  </button>
 </div>
 
 <!-- GRAMMAR -->
-<div class="card hidden" id="grammar"></div>
+<div class="card hidden" id="grammar">
+  <h3>Grammar</h3>
+  <div id="grammarBox"></div>
+  <button class="outline" onclick="show('dash')">Back</button>
+</div>
 
 <!-- PRACTICE -->
 <div class="card hidden" id="practice">
-<p id="practiceQ"></p>
-<input id="practiceInput">
-<button onclick="checkPractice()">Check</button>
-<button class="outline" onclick="openPractice()">Next</button>
-<button class="outline" onclick="show('dash')">Back</button>
-</div>
-
-<!-- ESSAY -->
-<div class="card hidden" id="essay">
-<h3 id="essayTitle"></h3>
-<textarea id="essayText" rows="6" placeholder="Write your essay..."></textarea>
-<p class="small" id="count">0 / 180</p>
-<button onclick="checkEssay()">Send</button>
-<button class="outline" onclick="show('dash')">Back</button>
-<p id="essayFeedback"></p>
-</div>
-
+  <h3 id="pQ"></h3>
+  <div id="pOptions"></div>
+  <p id="pFeedback"></p>
+  <button onclick="nextPractice()">Next</button>
+  <button class="outline" onclick="show('dash')">Back</button>
 </div>
 
 <script>
-let user=null,level="B1",score=0,step=0;
-const questions=[
-"Do you use conditionals?",
-"Can you use present perfect?",
-"Do you understand passive voice?"
-];
-
+/* ---------- BASIC NAV ---------- */
 function show(id){
-document.querySelectorAll('.card').forEach(c=>c.classList.add('hidden'));
-document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.card').forEach(c=>c.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
 }
-
-function signup(){
-localStorage.setItem(signUser.value,signPass.value);
-alert("Account created");
-show('login');
-}
-
-function login(){
-if(localStorage.getItem(loginUser.value)===loginPass.value){
-user=loginUser.value;
-show('home');
-}else alert("Wrong login");
-}
-
-function logout(){user=null;show('home');}
-
-function startTest(){
-score=0;step=0;show('test');nextQ();
-}
-
-function nextQ(){
-if(step>=questions.length){
-level=score>=2?"B2":score===1?"B1":"A2";
-setLevel(level);return;
-}
-q.innerText=questions[step];
-bar.style.width=((step/questions.length)*100)+"%";
-}
-
-function answer(ok){if(ok)score++;step++;nextQ();}
-
-function setLevel(l){
-level=l;
-welcome.innerText=`Welcome ${user||"Guest"} (${level})`;
-show('dash');
-}
-
-function openGrammar(){
-const g={
-A2:`<h3>Present Simple</h3>
-<div class="rule">Subject + Verb + Object</div>
-I eat apples.<br>She likes music.`,
-B1:`<h3>Present Perfect</h3>
-<div class="rule">Subject + have/has + Past Participle + Object</div>
-I have finished my homework.`,
-B2:`<h3>Second Conditional</h3>
-<div class="rule">If + Past Simple, would + Verb</div>
-If I were rich, I would travel.`
-};
-grammar.innerHTML=g[level]+'<button onclick="show(\'dash\')">Back</button>';
-show('grammar');
-}
-
-const practices={
-A2:["I ___ apples.","eat"],
-B1:["I have ___ my work.","finished"],
-B2:["If I ___ rich...","were"]
-};
-
-function openPractice(){
-practiceQ.innerText=practices[level][0];
-practiceInput.value="";
-show('practice');
-}
-
-function checkPractice(){
-alert(practiceInput.value.toLowerCase()===practices[level][1]?"Correct":"Wrong. Answer: "+practices[level][1]);
-}
-
-const titles=[
-"Is technology good for students?",
-"Should school be online?",
-"Benefits of learning English"
-];
-
-function openEssay(){
-essayTitle.innerText=titles[Math.floor(Math.random()*titles.length)];
-essayText.value="";
-essayFeedback.innerText="";
-count.innerText="0 / 180";
-show('essay');
-}
-
-essayText.oninput=()=>count.innerText=essayText.value.split(" ").length+" / 180";
-
-function checkEssay(){
-let text=essayText.value;
-let errors=[];
-if(!text.includes("."))errors.push("Add punctuation.");
-if(text.split(" ").length<30)errors.push("Too short.");
-essayFeedback.innerHTML=errors.length?("Mistakes:<br>"+errors.join("<br>")):"Good essay!";
-}
-
 function toggleDark(){document.body.classList.toggle('dark')}
+
+/* ---------- LOGIN ---------- */
+function login(){
+  if(!user.value||!pass.value) return;
+  show('ready');
+}
+
+/* ---------- LEVEL TEST (LOGICAL) ---------- */
+const testBank=[
+{q:"If I ___ more time, I would study.",o:["have","had","will have"],c:1},
+{q:"She has ___ her homework.",o:["do","did","done"],c:2},
+{q:"The book ___ by him.",o:["wrote","was written","is writing"],c:1}
+];
+let ti=0,score=0,level="";
+
+function startTest(){ti=0;score=0;loadTest();show('test')}
+function loadTest(){
+  if(ti>=testBank.length){
+    level=score<=1?"A2":score==2?"B1":"B2";
+    welcome.innerText=`Welcome (${level})`;
+    show('dash');return;
+  }
+  testQ.innerText=testBank[ti].q;
+  testA.innerHTML="";
+  testBank[ti].o.forEach((x,i)=>{
+    let b=document.createElement("button");
+    b.innerText=x;
+    b.onclick=()=>{if(i===testBank[ti].c)score++;ti++;loadTest()};
+    testA.appendChild(b);
+  });
+}
+
+/* ---------- GRAMMAR (STRUCTURED) ---------- */
+function openGrammar(){
+  grammarBox.innerHTML={
+    A2:`
+      <h4>Present Simple</h4>
+      <div class="rule">Subject + Verb + Object</div>
+      I eat apples.<br>She likes music.
+    `,
+    B1:`
+      <h4>Present Perfect</h4>
+      <div class="rule">Subject + have/has + Past Participle + Object</div>
+      I have finished my homework.
+    `,
+    B2:`
+      <h4>Second Conditional</h4>
+      <div class="rule">If + Past Simple, would + Verb</div>
+      If I were rich, I would travel.
+    `
+  }[level];
+  show('grammar');
+}
+
+/* ---------- PRACTICE ENGINE (REAL) ---------- */
+const practiceBank={
+  B1:[
+    {
+      q:"She has ___ here for 5 years.",
+      o:["live","lived","living"],
+      c:1,
+      e:"Use past participle in present perfect."
+    },
+    {
+      q:"If I ___ you, I would study.",
+      o:["am","was","were"],
+      c:2,
+      e:"Second conditional uses 'were'."
+    }
+  ]
+};
+let pi=0;
+
+function openPractice(){pi=0;loadPractice();show('practice')}
+function loadPractice(){
+  const p=practiceBank[level][pi];
+  pQ.innerText=p.q;
+  pFeedback.innerText="";
+  pOptions.innerHTML="";
+  p.o.forEach((x,i)=>{
+    let b=document.createElement("button");
+    b.innerText=x;
+    b.onclick=()=>{
+      pFeedback.innerText=i===p.c
+        ?"✅ Correct"
+        :`❌ Wrong. Correct: ${p.o[p.c]}. ${p.e}`;
+    };
+    pOptions.appendChild(b);
+  });
+}
+function nextPractice(){
+  pi=(pi+1)%practiceBank[level].length;
+  loadPractice();
+}
 </script>
 </body>
 </html>
