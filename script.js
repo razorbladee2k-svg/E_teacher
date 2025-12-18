@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded",()=>{
 
+/* NAV */
 const pages=document.querySelectorAll(".page");
 const show=id=>{
   pages.forEach(p=>p.classList.remove("active"));
@@ -9,29 +10,44 @@ const show=id=>{
 /* ELEMENTS */
 const username=document.getElementById("username");
 const password=document.getElementById("password");
-const loginBtn=document.getElementById("loginBtn");
-const signupBtn=document.getElementById("signupBtn");
-const logoutBtn=document.getElementById("logoutBtn");
-
-const chooseLevelBtn=document.getElementById("chooseLevelBtn");
-const testLevelBtn=document.getElementById("testLevelBtn");
-
-const testQ=document.getElementById("testQ");
-const testAnswers=document.getElementById("testAnswers");
-const testFeedback=document.getElementById("testFeedback");
-
 const welcome=document.getElementById("welcome");
+
+const grammarBtn=document.getElementById("grammarBtn");
+const essayBtn=document.getElementById("essayBtn");
+const grammarContent=document.getElementById("grammarContent");
+
+const essayInput=document.getElementById("essayInput");
+const essayResult=document.getElementById("essayResult");
+const wordCount=document.getElementById("wordCount");
+const essayTitle=document.getElementById("essayTitle");
 
 /* DATA */
 let USERS=JSON.parse(localStorage.users||"{}");
 let currentUser=null;
 
-const TEST=[
-  {q:"I ___ finished my work.",a:["have","has","had"],c:0},
-  {q:"She didn’t ___ yesterday.",a:["went","go","gone"],c:1},
-  {q:"If I were you, I ___ study more.",a:["will","would","am"],c:1},
-  {q:"The letter ___ yesterday.",a:["is sent","was sent","has send"],c:1}
-];
+/* GRAMMAR BY LEVEL */
+const GRAMMAR={
+  A1:[
+    "Present simple: I am, you are",
+    "Basic word order",
+    "A / An"
+  ],
+  A2:[
+    "Past simple",
+    "Comparatives",
+    "Countable vs uncountable"
+  ],
+  B1:[
+    "First & second conditional",
+    "Present perfect vs past simple",
+    "Passive voice"
+  ],
+  B2:[
+    "Mixed conditionals",
+    "Advanced passive",
+    "Inversion for emphasis"
+  ]
+};
 
 /* AUTH */
 loginBtn.onclick=()=>{
@@ -59,10 +75,7 @@ logoutBtn.onclick=()=>{
 
 /* START */
 chooseLevelBtn.onclick=()=>show("levelSelect");
-testLevelBtn.onclick=()=>{
-  show("levelTest");
-  startTest();
-};
+testLevelBtn.onclick=()=>show("levelTest");
 
 /* LEVEL SELECT */
 document.querySelectorAll(".lvl").forEach(btn=>{
@@ -75,62 +88,64 @@ document.querySelectorAll(".lvl").forEach(btn=>{
   };
 });
 
-/* TEST */
-let idx=0,score=0;
-
-function startTest(){
-  idx=0; score=0;
-  loadQ();
-}
-
-function loadQ(){
-  const t=TEST[idx];
-  testQ.textContent=`Q${idx+1}. ${t.q}`;
-  testAnswers.innerHTML="";
-  testFeedback.classList.add("hidden");
-
-  t.a.forEach((ans,i)=>{
-    const b=document.createElement("button");
-    b.textContent=ans;
-    b.onclick=()=>{
-      if(i===t.c){
-        score++;
-        testFeedback.textContent="✅ Correct";
-        testFeedback.className="feedback correct";
-      }else{
-        testFeedback.innerHTML=`❌ Incorrect. Correct: <b>${t.a[t.c]}</b>`;
-        testFeedback.className="feedback incorrect";
-      }
-      testFeedback.classList.remove("hidden");
-      setTimeout(()=>{
-        idx++;
-        idx<TEST.length?loadQ():finishTest();
-      },1200);
-    };
-    testAnswers.appendChild(b);
+/* GRAMMAR */
+grammarBtn.onclick=()=>{
+  const lvl=USERS[currentUser].level;
+  grammarContent.innerHTML="";
+  GRAMMAR[lvl].forEach(g=>{
+    grammarContent.innerHTML+=`<p>• ${g}</p>`;
   });
-}
+  show("grammar");
+};
 
-function finishTest(){
-  const lvl=score<=1?"A1":score===2?"A2":score===3?"B1":"B2";
-  USERS[currentUser].level=lvl;
-  localStorage.users=JSON.stringify(USERS);
-  welcome.textContent=`Welcome ${currentUser} (${lvl})`;
-  show("hub");
-}
+/* ESSAY */
+essayBtn.onclick=()=>{
+  const lvl=USERS[currentUser].level;
+  essayTitle.textContent=`Essay practice (${lvl})`;
+  essayInput.value="";
+  essayResult.classList.add("hidden");
+  show("essay");
+};
+
+essayInput.oninput=()=>{
+  const w=essayInput.value.trim().split(/\s+/).filter(Boolean).length;
+  wordCount.textContent=`${w} words`;
+};
+
+checkEssay.onclick=()=>{
+  let text=essayInput.value;
+  let feedback=[];
+  let marked=text;
+
+  if(text.includes("I am agree")){
+    marked=marked.replace("I am agree","<span class='incorrect'>I am agree</span>");
+    feedback.push("❌ Use 'I agree', not 'I am agree'");
+  }
+  if(text.includes("didn't went")){
+    marked=marked.replace("didn't went","<span class='incorrect'>didn't went</span>");
+    feedback.push("❌ Use 'didn't go'");
+  }
+
+  if(feedback.length===0){
+    feedback.push("✅ Good structure. Minor or no mistakes.");
+  }
+
+  essayResult.innerHTML="<b>Feedback:</b><br>"+feedback.join("<br>")+"<hr>"+marked;
+  essayResult.classList.remove("hidden");
+};
 
 /* BACK */
 document.querySelectorAll(".back").forEach(b=>{
-  b.onclick=()=>show("start");
+  b.onclick=()=>show("hub");
 });
 
 /* DARK MODE */
-document.getElementById("darkToggle").onclick=()=>{
+darkToggle.onclick=()=>{
   document.documentElement.classList.toggle("dark");
 };
 
-/* LOGO HOME */
-document.getElementById("goHome").onclick=()=>{
+/* LOGO */
+goHome.onclick=()=>{
   currentUser?show("hub"):show("auth");
 };
 
