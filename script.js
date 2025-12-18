@@ -1,106 +1,133 @@
-let currentUser = null;
-let currentLevel = null;
-
 const pages = document.querySelectorAll(".page");
+let user = null;
+let level = null;
 
-function showPage(id) {
+// PAGE CONTROL
+function show(id) {
   pages.forEach(p => p.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
 
-// NAV
-document.getElementById("loginBtn").onclick = () => showPage("loginPage");
-document.getElementById("signupBtn").onclick = () => showPage("signupPage");
-document.getElementById("darkBtn").onclick = () =>
-  document.body.classList.toggle("dark");
+// TOP BUTTONS
+loginBtn.onclick = () => show("loginPage");
+signupBtn.onclick = () => show("signupPage");
+darkToggle.onclick = () => document.body.classList.toggle("dark");
 
 // AUTH
 function signup() {
-  const u = signupUser.value;
-  const p = signupPass.value;
-  if (!u || !p) return alert("Fill all fields");
-  localStorage.setItem("user", JSON.stringify({ u, p }));
+  if (!signupUser.value || !signupPass.value) return alert("Fill fields");
+  localStorage.setItem("user", JSON.stringify({
+    u: signupUser.value,
+    p: signupPass.value
+  }));
   alert("Account created");
-  showPage("loginPage");
+  show("loginPage");
 }
 
 function login() {
   const saved = JSON.parse(localStorage.getItem("user"));
-  if (!saved) return alert("No user");
-  if (
-    loginUser.value === saved.u &&
-    loginPass.value === saved.p
-  ) {
-    currentUser = saved.u;
-    showPage("levelPage");
+  if (!saved) return alert("No account");
+  if (loginUser.value === saved.u && loginPass.value === saved.p) {
+    user = saved.u;
+    show("levelPage");
   } else alert("Wrong login");
 }
 
 function logout() {
-  currentUser = null;
-  showPage("loginPage");
+  user = null;
+  show("loginPage");
 }
 
+function goLogin(){ show("loginPage"); }
+function goDashboard(){ show("dashboardPage"); }
+
 // LEVEL
-function setLevel(level) {
-  currentLevel = level;
-  welcomeText.innerText = `Welcome ${currentUser} (${level})`;
-  showPage("dashboardPage");
+function setLevel(l) {
+  level = l;
+  welcome.innerText = `Welcome ${user} (${l})`;
+  show("dashboardPage");
 }
 
 // GRAMMAR
 function openGrammar() {
   grammarList.innerHTML = "";
-  const topics = {
-    A1: ["Present simple", "There is / are"],
-    A2: ["Past simple", "Comparatives"],
-    B1: ["Conditionals", "Passive voice"],
-    B2: ["Reported speech", "Modal verbs"]
+  const data = {
+    A1: ["Present simple","There is/are","Articles","Prepositions"],
+    A2: ["Past simple","Future (will/going)","Comparatives"],
+    B1: ["Conditionals","Passive voice","Relative clauses"],
+    B2: ["Reported speech","Modal verbs","Inversion"]
   };
-  topics[currentLevel].forEach(t => {
-    const li = document.createElement("li");
-    li.innerText = t;
+  data[level].forEach(t=>{
+    const li=document.createElement("li");
+    li.textContent=t;
     grammarList.appendChild(li);
   });
-  showPage("grammarPage");
+  show("grammarPage");
 }
 
 // PRACTICE
-let correct = "went";
+const practiceQs = [
+  {q:"I ___ to school yesterday.", a:"went"},
+  {q:"She has ___ her homework.", a:"done"},
+  {q:"If I were you, I ___ study.", a:"would"}
+];
+let qi = 0;
 
 function openPractice() {
-  question.innerText = "I ___ to school yesterday.";
-  showPage("practicePage");
+  qi = 0;
+  loadPractice();
+  show("practicePage");
 }
 
-function checkAnswer() {
-  result.innerText =
-    answer.value.toLowerCase() === correct
-      ? "Correct ✅"
-      : "Incorrect ❌";
+function loadPractice(){
+  practiceQuestion.innerText = practiceQs[qi].q;
+  practiceResult.innerText = "";
+  practiceInput.value = "";
 }
 
-// ESSAY
-function openEssay() {
-  const topics = [
-    "Describe your favorite movie",
-    "Why do you want to learn English?",
-    "Talk about your future goals"
-  ];
-  essayTopic.innerText =
-    topics[Math.floor(Math.random() * topics.length)];
-  showPage("essayPage");
+function checkPractice(){
+  practiceResult.innerText =
+    practiceInput.value.toLowerCase() === practiceQs[qi].a
+    ? "Correct ✅"
+    : "Incorrect ❌";
 }
 
-essayText.oninput = () => {
-  const count = essayText.value.split(/\s+/).filter(Boolean).length;
-  wordCount.innerText = `${count} / 150 words`;
-};
-
-function submitEssay() {
-  alert("Essay submitted (AI checking coming soon)");
+function nextPractice(){
+  qi = (qi + 1) % practiceQs.length;
+  loadPractice();
 }
 
-function goBack() {
-  showPage("dashboardPage");
+// ESSAY (AI SIMULATION)
+const essayTitles = [
+  "Why learning English matters",
+  "My future goals",
+  "Technology in education",
+  "Traveling abroad"
+];
+
+function openEssay(){
+  essayTitle.innerText =
+    essayTitles[Math.floor(Math.random()*essayTitles.length)];
+  essayText.value="";
+  essayFeedback.innerHTML="";
+  updateCount();
+  show("essayPage");
+}
+
+essayText.oninput = updateCount;
+
+function updateCount(){
+  const words = essayText.value.trim().split(/\s+/).filter(Boolean).length;
+  essayCount.innerText = `${words} / 150 words`;
+}
+
+function checkEssay(){
+  const text = essayText.value;
+  let feedback = "<b>AI feedback:</b><br>";
+  if (text.length < 100) feedback += "• Essay is too short<br>";
+  if (!text.includes(".")) feedback += "• Use more sentences<br>";
+  if (text.match(/\bi\b/g)) feedback += "• Capitalize 'I'<br>";
+  if (feedback === "<b>AI feedback:</b><br>")
+    feedback += "• Good job! Minor mistakes only.";
+  essayFeedback.innerHTML = feedback;
 }
