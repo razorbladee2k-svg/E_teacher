@@ -3,7 +3,7 @@
 body{
   margin:0;
   font-family:system-ui,Segoe UI;
-  background:linear-gradient(180deg,#020617,#0f172a);
+  background:linear-gradient(180deg,#1e3a8a,#2563eb);
   color:white;
 }
 
@@ -17,11 +17,12 @@ header{
 .logo{
   font-size:36px;
   font-weight:900;
-  color:#818cf8;
+  color:#e0e7ff;
+  cursor:pointer;
 }
 
 #darkToggle{
-  background:#1e293b;
+  background:#1e40af;
   border:none;
   color:white;
   border-radius:50%;
@@ -40,11 +41,12 @@ header{
 .page.active{display:flex}
 
 .card{
-  background:#111827;
-  padding:30px;
+  background:#0f172a;
+  padding:32px;
   border-radius:22px;
   width:340px;
   text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,.35);
 }
 
 input{
@@ -61,7 +63,7 @@ button{
   margin-top:10px;
   border-radius:18px;
   border:none;
-  background:#4f46e5;
+  background:#6366f1;
   color:white;
   font-size:16px;
   cursor:pointer;
@@ -69,7 +71,7 @@ button{
 
 button.outline{
   background:transparent;
-  border:2px solid #4f46e5;
+  border:2px solid #6366f1;
 }
 
 button.danger{
@@ -77,12 +79,10 @@ button.danger{
 }
 
 button.back{
-  background:#374151;
+  background:#334155;
 }
 
-.hidden{
-  display:none;
-}
+.hidden{display:none}
 
 .feedback{
   margin-top:12px;
@@ -94,8 +94,9 @@ button.back{
 .correct{color:#22c55e}
 .incorrect{color:#ef4444}
 
+/* DARK MODE */
 .dark body{
-  background:#020617;
+  background:linear-gradient(180deg,#020617,#020617);
 }
 .dark .card{
   background:#020617;
