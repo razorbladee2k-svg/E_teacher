@@ -9,7 +9,7 @@
 <body>
 
 <header>
-  <div class="logo">eTeacher</div>
+  <div class="logo" id="goHome">eTeacher</div>
   <button id="darkToggle">🌙</button>
 </header>
 
@@ -26,32 +26,39 @@
   </div>
 </section>
 
-<!-- LEVEL -->
-<section id="level" class="page">
+<!-- START -->
+<section id="start" class="page">
   <div class="card">
     <h2>How would you like to start?</h2>
-
     <button id="chooseLevelBtn">Choose my level</button>
     <button id="testLevelBtn" class="outline">What is my level?</button>
-
-    <div id="levelOptions" class="hidden">
-      <button class="lvl" data-lvl="A1">A1</button>
-      <button class="lvl" data-lvl="A2">A2</button>
-      <button class="lvl" data-lvl="B1">B1</button>
-      <button class="lvl" data-lvl="B2">B2</button>
-    </div>
-
-    <div id="levelTest" class="hidden">
-      <p id="testQ"></p>
-      <div id="testAnswers"></div>
-      <div id="testFeedback" class="feedback hidden"></div>
-    </div>
-
     <button class="back">← Back</button>
   </div>
 </section>
 
-<!-- HUB -->
+<!-- LEVEL SELECT -->
+<section id="levelSelect" class="page">
+  <div class="card">
+    <h2>Select your level</h2>
+    <button class="lvl" data-lvl="A1">A1</button>
+    <button class="lvl" data-lvl="A2">A2</button>
+    <button class="lvl" data-lvl="B1">B1</button>
+    <button class="lvl" data-lvl="B2">B2</button>
+    <button class="back">← Back</button>
+  </div>
+</section>
+
+<!-- LEVEL TEST -->
+<section id="levelTest" class="page">
+  <div class="card">
+    <p id="testQ"></p>
+    <div id="testAnswers"></div>
+    <div id="testFeedback" class="feedback hidden"></div>
+    <button class="back">← Back</button>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
 <section id="hub" class="page">
   <div class="card">
     <h2 id="welcome"></h2>
