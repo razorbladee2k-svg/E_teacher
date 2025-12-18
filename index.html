@@ -1,93 +1,260 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>eTeacher – Learn English with us</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+<meta charset="UTF-8">
+<title>eTeacher – Learn English with Us</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<header class="topbar">
-  <div class="logo">eTeacher</div>
-  <div class="actions">
-    <button id="loginBtn">Login</button>
-    <button id="signupBtn">Sign Up</button>
-    <button id="darkToggle">🌙</button>
-  </div>
+<style>
+:root {
+  --bg: linear-gradient(135deg,#2563eb,#1e40af);
+  --card: #ffffff;
+  --text: #111;
+  --btn: #4f46e5;
+}
+.dark {
+  --bg: linear-gradient(135deg,#020617,#020617);
+  --card: #0f172a;
+  --text: #f8fafc;
+  --btn: #6366f1;
+}
+
+* { box-sizing: border-box; font-family: system-ui; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+header {
+  display:flex;
+  justify-content:space-between;
+  padding:20px;
+  color:white;
+}
+button {
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:var(--btn);
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+  transition:.2s;
+}
+button:hover { transform:scale(1.03); }
+.secondary {
+  background:transparent;
+  border:2px solid var(--btn);
+  color:var(--btn);
+}
+.page {
+  display:none;
+  animation: fade .3s ease;
+}
+.page.active { display:block; }
+@keyframes fade {
+  from { opacity:0; transform:translateY(15px); }
+  to { opacity:1; transform:none; }
+}
+.card {
+  background:var(--card);
+  width:92%;
+  max-width:420px;
+  margin:40px auto;
+  padding:25px;
+  border-radius:18px;
+}
+input, textarea {
+  width:100%;
+  padding:14px;
+  margin:10px 0;
+  border-radius:10px;
+  border:1px solid #ccc;
+}
+.center { text-align:center; }
+.back { margin-top:10px; background:#64748b; }
+.small { font-size:14px; opacity:.7; }
+</style>
+</head>
+
+<body>
+<header>
+  <strong>eTeacher</strong>
+  <button onclick="toggleDark()">🌙</button>
 </header>
 
-<main>
-
 <!-- LOGIN -->
-<section id="loginPage" class="page active">
-  <h1>Login</h1>
-  <input id="loginUser" placeholder="Username">
-  <input id="loginPass" type="password" placeholder="Password">
-  <button onclick="login()">Continue</button>
-</section>
-
-<!-- SIGN UP -->
-<section id="signupPage" class="page">
-  <h1>Sign Up</h1>
-  <input id="signupUser" placeholder="Username">
-  <input id="signupPass" type="password" placeholder="Password">
-  <button onclick="signup()">Create account</button>
-  <button onclick="goLogin()">← Back</button>
-</section>
-
-<!-- LEVEL -->
-<section id="levelPage" class="page">
-  <h1>Choose your level</h1>
-  <div class="levels">
-    <button onclick="setLevel('A1')">A1</button>
-    <button onclick="setLevel('A2')">A2</button>
-    <button onclick="setLevel('B1')">B1</button>
-    <button onclick="setLevel('B2')">B2</button>
+<section id="login" class="page active">
+  <div class="card">
+    <h2 class="center">Login</h2>
+    <input id="loginName" placeholder="Username">
+    <input id="loginPass" type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <p class="center small">No account?</p>
+    <button class="secondary" onclick="show('signup')">Sign Up</button>
   </div>
-  <button onclick="goLogin()">← Back</button>
+</section>
+
+<!-- SIGNUP -->
+<section id="signup" class="page">
+  <div class="card">
+    <h2 class="center">Sign Up</h2>
+    <input id="signName" placeholder="Username">
+    <input id="signPass" type="password" placeholder="Password">
+    <button onclick="signup()">Create Account</button>
+    <button class="back" onclick="show('login')">Back</button>
+  </div>
+</section>
+
+<!-- LEVEL TEST -->
+<section id="test" class="page">
+  <div class="card">
+    <h3 id="question"></h3>
+    <div id="answers"></div>
+    <button class="back" onclick="show('login')">Back</button>
+  </div>
 </section>
 
 <!-- DASHBOARD -->
-<section id="dashboardPage" class="page">
-  <h1 id="welcome"></h1>
-  <button onclick="openGrammar()">Grammar</button>
-  <button onclick="openPractice()">Practice</button>
-  <button onclick="openEssay()">Essay</button>
-  <button class="danger" onclick="logout()">Logout</button>
+<section id="dashboard" class="page">
+  <div class="card center">
+    <h2 id="welcome"></h2>
+    <button onclick="openGrammar()">Grammar</button>
+    <button onclick="openPractice()">Practice</button>
+    <button onclick="openEssay()">Essay</button>
+  </div>
 </section>
 
 <!-- GRAMMAR -->
-<section id="grammarPage" class="page">
-  <h1>Grammar topics</h1>
-  <ul id="grammarList"></ul>
-  <button onclick="goDashboard()">← Back</button>
+<section id="grammar" class="page">
+  <div class="card">
+    <h3>Grammar</h3>
+    <ul id="grammarList"></ul>
+    <button class="back" onclick="show('dashboard')">Back</button>
+  </div>
 </section>
 
 <!-- PRACTICE -->
-<section id="practicePage" class="page">
-  <h1>Practice</h1>
-  <p id="practiceQuestion"></p>
-  <input id="practiceInput" placeholder="Your answer">
-  <button onclick="checkPractice()">Check</button>
-  <p id="practiceResult"></p>
-  <button onclick="nextPractice()">Next</button>
-  <button onclick="goDashboard()">← Back</button>
+<section id="practice" class="page">
+  <div class="card">
+    <h3 id="pQuestion"></h3>
+    <div id="pAnswers"></div>
+    <button onclick="nextPractice()">Next</button>
+    <button class="back" onclick="show('dashboard')">Back</button>
+  </div>
 </section>
 
 <!-- ESSAY -->
-<section id="essayPage" class="page">
-  <h1>Essay</h1>
-  <p id="essayTitle"></p>
-  <textarea id="essayText" placeholder="Write here..."></textarea>
-  <p id="essayCount">0 / 150 words</p>
-  <button onclick="checkEssay()">Check with AI</button>
-  <div id="essayFeedback"></div>
-  <button onclick="goDashboard()">← Back</button>
+<section id="essay" class="page">
+  <div class="card">
+    <h3 id="essayTitle"></h3>
+    <textarea id="essayText" rows="6" placeholder="Write your essay..."></textarea>
+    <button onclick="checkEssay()">Check Essay</button>
+    <p id="essayResult"></p>
+    <button class="back" onclick="show('dashboard')">Back</button>
+  </div>
 </section>
 
-</main>
+<script>
+let users = JSON.parse(localStorage.getItem("users")||"{}");
+let currentUser="", level="", score=0, qi=0;
 
-<script src="script.js"></script>
+function show(id){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+function signup(){
+  users[signName.value]=signPass.value;
+  localStorage.setItem("users",JSON.stringify(users));
+  show("login");
+}
+
+function login(){
+  if(users[loginName.value]===loginPass.value){
+    currentUser=loginName.value;
+    score=0; qi=0;
+    loadQuestion();
+    show("test");
+  }
+}
+
+const testQ=[
+{q:"I ___ yesterday.",a:[["go",0],["went",2],["gone",1]]},
+{q:"If I ___ rich, I would travel.",a:[["am",0],["was",1],["were",2]]},
+{q:"She has lived here ___ 5 years.",a:[["since",1],["for",2],["during",0]]}
+];
+
+function loadQuestion(){
+  if(qi>=testQ.length){
+    level = score<=2?"A1":score<=4?"A2":score<=6?"B1":"B2";
+    welcome.innerText=`Welcome ${currentUser} (${level})`;
+    show("dashboard"); return;
+  }
+  question.innerText=testQ[qi].q;
+  answers.innerHTML="";
+  testQ[qi].a.forEach(x=>{
+    let b=document.createElement("button");
+    b.innerText=x[0];
+    b.onclick=()=>{ score+=x[1]; qi++; loadQuestion(); };
+    answers.appendChild(b);
+  });
+}
+
+function openGrammar(){
+  grammarList.innerHTML="";
+  ({
+    A1:["Present Simple","Basic questions"],
+    A2:["Past Simple","Comparatives"],
+    B1:["Conditionals","Passive voice"],
+    B2:["Reported speech","Modal verbs"]
+  })[level].forEach(g=>{
+    let li=document.createElement("li");
+    li.innerText=g; grammarList.appendChild(li);
+  });
+  show("grammar");
+}
+
+const practiceQ=[
+{q:"She ___ already eaten.",a:["has","have","had"],c:0},
+{q:"If it rains, we ___ stay home.",a:["will","would","did"],c:0}
+];
+let pi=0;
+function openPractice(){ pi=0; loadPractice(); show("practice"); }
+function loadPractice(){
+  pQuestion.innerText=practiceQ[pi].q;
+  pAnswers.innerHTML="";
+  practiceQ[pi].a.forEach((t,i)=>{
+    let b=document.createElement("button");
+    b.innerText=t;
+    b.onclick=()=>alert(i===practiceQ[pi].c?"Correct":"Wrong");
+    pAnswers.appendChild(b);
+  });
+}
+function nextPractice(){ pi=(pi+1)%practiceQ.length; loadPractice(); }
+
+const titles=[
+"Technology in Modern Life",
+"Is Social Media Good?",
+"My Dream Job",
+"Education in the Future"
+];
+function openEssay(){
+  essayTitle.innerText=titles[Math.floor(Math.random()*titles.length)];
+  essayText.value="";
+  essayResult.innerText="";
+  show("essay");
+}
+function checkEssay(){
+  let t=essayText.value;
+  let errors=[];
+  if(t.split(" ").length<30) errors.push("Essay too short");
+  if(!/[A-Z]/.test(t)) errors.push("No capital letters");
+  essayResult.innerText=errors.length?("Issues: "+errors.join(", ")):"Good job!";
+}
+
+function toggleDark(){ document.body.classList.toggle("dark"); }
+</script>
 </body>
 </html>
