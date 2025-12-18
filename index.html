@@ -9,26 +9,41 @@
 <body>
 
 <header class="top">
-  <div class="brand" onclick="go('home')">eTeacher</div>
-  <button id="darkToggle">🌙</button>
+  <div class="brand" onclick="go('auth')">eTeacher</div>
+  <div class="auth-buttons">
+    <button onclick="go('auth')">Login</button>
+    <button class="outline" onclick="go('auth')">Sign Up</button>
+  </div>
 </header>
 
 <main>
 
-<!-- LOGIN -->
+<!-- AUTH -->
 <section id="auth" class="page active">
   <div class="card">
-    <h2>Welcome to eTeacher</h2>
+    <h2>Login / Sign Up</h2>
     <input id="username" placeholder="Username">
     <input id="password" type="password" placeholder="Password">
-    <button onclick="login()">Log in</button>
-    <button class="outline" onclick="signup()">Sign up</button>
+    <button onclick="login()">Login</button>
+    <button class="outline" onclick="signup()">Sign Up</button>
+  </div>
+</section>
+
+<!-- LEVEL SELECT -->
+<section id="level" class="page">
+  <div class="card">
+    <h2>Choose your level</h2>
+    <button onclick="setLevel('A1')">A1</button>
+    <button onclick="setLevel('A2')">A2</button>
+    <button onclick="setLevel('B1')">B1</button>
+    <button onclick="setLevel('B2')">B2</button>
+    <button class="back" onclick="go('auth')">← Back</button>
   </div>
 </section>
 
 <!-- HOME -->
 <section id="home" class="page">
-  <h1 class="title-up">Learn English with us</h1>
+  <h1 class="title">Learn English with us</h1>
   <p class="subtitle">Grammar • Practice • Writing</p>
 
   <div class="home-buttons">
@@ -43,20 +58,8 @@
 <!-- GRAMMAR -->
 <section id="grammar" class="page">
   <div class="card wide">
-    <h2>Grammar (B1)</h2>
-
-    <div class="grammar-box">
-      <h3>Conditionals</h3>
-      <p>If + past simple → would + verb</p>
-      <p><b>Example:</b> If I had time, I would study.</p>
-    </div>
-
-    <div class="grammar-box">
-      <h3>Passive Voice</h3>
-      <p>be + past participle</p>
-      <p><b>Example:</b> The letter was written yesterday.</p>
-    </div>
-
+    <h2 id="grammarTitle"></h2>
+    <div id="grammarContent"></div>
     <button class="back" onclick="go('home')">← Back</button>
   </div>
 </section>
@@ -65,16 +68,9 @@
 <section id="practice" class="page">
   <div class="card">
     <h2>Practice</h2>
-
-    <p id="question">If she ___ harder, she would pass.</p>
-
-    <div class="answers">
-      <button onclick="answer(false)">studies</button>
-      <button onclick="answer(true)">studied</button>
-    </div>
-
+    <p id="question"></p>
+    <div id="answers"></div>
     <p id="feedback"></p>
-
     <button class="back" onclick="go('home')">← Back</button>
   </div>
 </section>
@@ -83,15 +79,11 @@
 <section id="essay" class="page">
   <div class="card wide">
     <h2>Essay</h2>
-    <p>Topic: <b>Should students study online?</b></p>
-
+    <p id="essayTopic"></p>
     <textarea id="essayText" placeholder="Write 80–150 words..."></textarea>
     <p id="wordCount">0 words</p>
-
     <button onclick="checkEssay()">Send</button>
-
     <div id="essayFeedback"></div>
-
     <button class="back" onclick="go('home')">← Back</button>
   </div>
 </section>
