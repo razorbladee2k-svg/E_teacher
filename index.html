@@ -1,92 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>eTeacher</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Learn English with us</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<header class="top">
-  <div class="brand" onclick="go('auth')">eTeacher</div>
-  <div class="auth-buttons">
-    <button onclick="go('auth')">Login</button>
-    <button class="outline" onclick="go('auth')">Sign Up</button>
+<header class="topbar">
+  <div class="logo">eTeacher</div>
+
+  <div class="top-actions">
+    <button id="loginBtn">Login</button>
+    <button id="signupBtn">Sign Up</button>
+    <button id="darkBtn">🌙</button>
   </div>
 </header>
 
 <main>
 
-<!-- AUTH -->
-<section id="auth" class="page active">
-  <div class="card">
-    <h2>Login / Sign Up</h2>
-    <input id="username" placeholder="Username">
-    <input id="password" type="password" placeholder="Password">
+  <!-- LOGIN -->
+  <section id="loginPage" class="page active">
+    <h1>Welcome back</h1>
+    <input id="loginUser" placeholder="Username">
+    <input id="loginPass" type="password" placeholder="Password">
     <button onclick="login()">Login</button>
-    <button class="outline" onclick="signup()">Sign Up</button>
-  </div>
-</section>
+  </section>
 
-<!-- LEVEL SELECT -->
-<section id="level" class="page">
-  <div class="card">
-    <h2>Choose your level</h2>
-    <button onclick="setLevel('A1')">A1</button>
-    <button onclick="setLevel('A2')">A2</button>
-    <button onclick="setLevel('B1')">B1</button>
-    <button onclick="setLevel('B2')">B2</button>
-    <button class="back" onclick="go('auth')">← Back</button>
-  </div>
-</section>
+  <!-- SIGN UP -->
+  <section id="signupPage" class="page">
+    <h1>Create account</h1>
+    <input id="signupUser" placeholder="Username">
+    <input id="signupPass" type="password" placeholder="Password">
+    <button onclick="signup()">Sign Up</button>
+  </section>
 
-<!-- HOME -->
-<section id="home" class="page">
-  <h1 class="title">Learn English with us</h1>
-  <p class="subtitle">Grammar • Practice • Writing</p>
+  <!-- LEVEL CHOICE -->
+  <section id="levelPage" class="page">
+    <h1>Choose your English level</h1>
+    <div class="levels">
+      <button onclick="setLevel('A1')">A1</button>
+      <button onclick="setLevel('A2')">A2</button>
+      <button onclick="setLevel('B1')">B1</button>
+      <button onclick="setLevel('B2')">B2</button>
+    </div>
+  </section>
 
-  <div class="home-buttons">
-    <button onclick="go('grammar')">Grammar</button>
-    <button class="outline" onclick="go('practice')">Practice</button>
-    <button class="outline" onclick="go('essay')">Essay</button>
-  </div>
+  <!-- DASHBOARD -->
+  <section id="dashboardPage" class="page">
+    <h1 id="welcomeText"></h1>
+    <p>Choose what you want to practice</p>
 
-  <button class="logout" onclick="logout()">Logout</button>
-</section>
+    <button onclick="openGrammar()">Grammar</button>
+    <button onclick="openPractice()">Practice</button>
+    <button onclick="openEssay()">Essay</button>
 
-<!-- GRAMMAR -->
-<section id="grammar" class="page">
-  <div class="card wide">
-    <h2 id="grammarTitle"></h2>
-    <div id="grammarContent"></div>
-    <button class="back" onclick="go('home')">← Back</button>
-  </div>
-</section>
+    <button class="logout" onclick="logout()">Logout</button>
+  </section>
 
-<!-- PRACTICE -->
-<section id="practice" class="page">
-  <div class="card">
-    <h2>Practice</h2>
+  <!-- GRAMMAR -->
+  <section id="grammarPage" class="page">
+    <h1>Grammar</h1>
+    <ul id="grammarList"></ul>
+    <button onclick="goBack()">← Back</button>
+  </section>
+
+  <!-- PRACTICE -->
+  <section id="practicePage" class="page">
+    <h1>Practice</h1>
     <p id="question"></p>
-    <div id="answers"></div>
-    <p id="feedback"></p>
-    <button class="back" onclick="go('home')">← Back</button>
-  </div>
-</section>
+    <input id="answer" placeholder="Your answer">
+    <button onclick="checkAnswer()">Check</button>
+    <p id="result"></p>
+    <button onclick="goBack()">← Back</button>
+  </section>
 
-<!-- ESSAY -->
-<section id="essay" class="page">
-  <div class="card wide">
-    <h2>Essay</h2>
+  <!-- ESSAY -->
+  <section id="essayPage" class="page">
+    <h1>Essay</h1>
     <p id="essayTopic"></p>
-    <textarea id="essayText" placeholder="Write 80–150 words..."></textarea>
-    <p id="wordCount">0 words</p>
-    <button onclick="checkEssay()">Send</button>
-    <div id="essayFeedback"></div>
-    <button class="back" onclick="go('home')">← Back</button>
-  </div>
-</section>
+    <textarea id="essayText" placeholder="Write your essay here..."></textarea>
+    <p id="wordCount">0 / 150 words</p>
+    <button onclick="submitEssay()">Send</button>
+    <button onclick="goBack()">← Back</button>
+  </section>
 
 </main>
 
