@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded",()=>{
 
-/* NAV */
 const pages=document.querySelectorAll(".page");
 const show=id=>{
   pages.forEach(p=>p.classList.remove("active"));
@@ -16,8 +15,6 @@ const logoutBtn=document.getElementById("logoutBtn");
 
 const chooseLevelBtn=document.getElementById("chooseLevelBtn");
 const testLevelBtn=document.getElementById("testLevelBtn");
-const levelOptions=document.getElementById("levelOptions");
-const levelTest=document.getElementById("levelTest");
 
 const testQ=document.getElementById("testQ");
 const testAnswers=document.getElementById("testAnswers");
@@ -42,7 +39,7 @@ loginBtn.onclick=()=>{
   const p=password.value.trim();
   if(!USERS[u]||USERS[u].password!==p) return alert("Wrong login");
   currentUser=u;
-  show("level");
+  show("start");
 };
 
 signupBtn.onclick=()=>{
@@ -52,7 +49,7 @@ signupBtn.onclick=()=>{
   USERS[u]={password:p,level:null};
   localStorage.users=JSON.stringify(USERS);
   currentUser=u;
-  show("level");
+  show("start");
 };
 
 logoutBtn.onclick=()=>{
@@ -60,18 +57,14 @@ logoutBtn.onclick=()=>{
   show("auth");
 };
 
-/* LEVEL FLOW */
-chooseLevelBtn.onclick=()=>{
-  levelOptions.classList.remove("hidden");
-  levelTest.classList.add("hidden");
-};
-
+/* START */
+chooseLevelBtn.onclick=()=>show("levelSelect");
 testLevelBtn.onclick=()=>{
-  levelOptions.classList.add("hidden");
-  levelTest.classList.remove("hidden");
+  show("levelTest");
   startTest();
 };
 
+/* LEVEL SELECT */
 document.querySelectorAll(".lvl").forEach(btn=>{
   btn.onclick=()=>{
     const lvl=btn.dataset.lvl;
@@ -82,13 +75,11 @@ document.querySelectorAll(".lvl").forEach(btn=>{
   };
 });
 
-/* TEST LOGIC WITH FEEDBACK */
+/* TEST */
 let idx=0,score=0;
 
 function startTest(){
-  idx=0;
-  score=0;
-  testFeedback.classList.add("hidden");
+  idx=0; score=0;
   loadQ();
 }
 
@@ -104,14 +95,13 @@ function loadQ(){
     b.onclick=()=>{
       if(i===t.c){
         score++;
-        testFeedback.innerHTML="✅ Correct!";
+        testFeedback.textContent="✅ Correct";
         testFeedback.className="feedback correct";
       }else{
-        testFeedback.innerHTML=`❌ Incorrect. Correct answer: <b>${t.a[t.c]}</b>`;
+        testFeedback.innerHTML=`❌ Incorrect. Correct: <b>${t.a[t.c]}</b>`;
         testFeedback.className="feedback incorrect";
       }
       testFeedback.classList.remove("hidden");
-
       setTimeout(()=>{
         idx++;
         idx<TEST.length?loadQ():finishTest();
@@ -122,11 +112,7 @@ function loadQ(){
 }
 
 function finishTest(){
-  const lvl=
-    score<=1?"A1":
-    score===2?"A2":
-    score===3?"B1":"B2";
-
+  const lvl=score<=1?"A1":score===2?"A2":score===3?"B1":"B2";
   USERS[currentUser].level=lvl;
   localStorage.users=JSON.stringify(USERS);
   welcome.textContent=`Welcome ${currentUser} (${lvl})`;
@@ -135,16 +121,17 @@ function finishTest(){
 
 /* BACK */
 document.querySelectorAll(".back").forEach(b=>{
-  b.onclick=()=>{
-    levelOptions.classList.add("hidden");
-    levelTest.classList.add("hidden");
-    show("auth");
-  };
+  b.onclick=()=>show("start");
 });
 
 /* DARK MODE */
 document.getElementById("darkToggle").onclick=()=>{
   document.documentElement.classList.toggle("dark");
+};
+
+/* LOGO HOME */
+document.getElementById("goHome").onclick=()=>{
+  currentUser?show("hub"):show("auth");
 };
 
 });
