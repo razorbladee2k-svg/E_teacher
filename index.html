@@ -8,25 +8,22 @@
 </head>
 <body>
 
-<header class="topbar">
-  <div class="brand" onclick="go('dashboard')">
-    <img src="logo.png" class="logo" alt="logo">
-    <span class="brand-name">eTeacher</span>
-  </div>
+<header class="top">
+  <div class="brand" onclick="go('home')">eTeacher</div>
   <button id="darkToggle">🌙</button>
 </header>
 
 <main>
 
-<!-- DASHBOARD -->
-<section id="dashboard" class="page active">
-  <div class="card">
-    <h1>Learn English with us</h1>
-    <p class="subtitle">Grammar • Practice • Essay</p>
+<!-- HOME -->
+<section id="home" class="page active">
+  <h1 class="main-title">Learn English with us</h1>
+  <p class="tagline">Grammar • Practice • Writing</p>
 
-    <button onclick="go('grammar')">📘 Grammar</button>
-    <button onclick="go('practice')" class="outline">🧠 Practice</button>
-    <button onclick="go('essay')" class="outline">✍ Essay</button>
+  <div class="home-buttons">
+    <button onclick="go('grammar')">Grammar</button>
+    <button onclick="go('practice')" class="outline">Practice</button>
+    <button onclick="go('essay')" class="outline">Essay</button>
   </div>
 </section>
 
@@ -34,12 +31,12 @@
 <section id="grammar" class="page">
   <div class="card">
     <h2>Grammar (B1)</h2>
-    <ul class="list">
+    <ul>
       <li>Present perfect vs past simple</li>
       <li>First & second conditionals</li>
       <li>Passive voice</li>
     </ul>
-    <button class="back" onclick="go('dashboard')">← Back</button>
+    <button class="back" onclick="go('home')">← Back</button>
   </div>
 </section>
 
@@ -47,13 +44,15 @@
 <section id="practice" class="page">
   <div class="card">
     <h2>Practice</h2>
-    <p id="question">If I ___ more time, I would travel.</p>
+    <p id="question">If I ___ more time, I would study.</p>
 
-    <button onclick="answer(false)">have</button>
-    <button onclick="answer(true)">had</button>
+    <div class="answers">
+      <button onclick="answer(false)">have</button>
+      <button onclick="answer(true)">had</button>
+    </div>
 
     <p id="feedback"></p>
-    <button class="back" onclick="go('dashboard')">← Back</button>
+    <button class="back" onclick="go('home')">← Back</button>
   </div>
 </section>
 
@@ -65,7 +64,7 @@
     <p id="wordCount">0 words</p>
     <button onclick="checkEssay()">Check essay</button>
     <div id="essayFeedback"></div>
-    <button class="back" onclick="go('dashboard')">← Back</button>
+    <button class="back" onclick="go('home')">← Back</button>
   </div>
 </section>
 
