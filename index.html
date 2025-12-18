@@ -8,39 +8,38 @@
 </head>
 <body>
 
-<header>
-  <img src="logo.png" class="logo" alt="logo">
+<header class="topbar">
+  <div class="brand" onclick="go('dashboard')">
+    <img src="logo.png" class="logo" alt="logo">
+    <span class="brand-name">eTeacher</span>
+  </div>
   <button id="darkToggle">🌙</button>
 </header>
 
 <main>
 
 <!-- DASHBOARD -->
-<section id="hub" class="page active">
+<section id="dashboard" class="page active">
   <div class="card">
-    <h1 class="title">Learn English with us</h1>
-    <p class="subtitle">Grammar • Practice • Writing</p>
+    <h1>Learn English with us</h1>
+    <p class="subtitle">Grammar • Practice • Essay</p>
 
-    <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" class="hero">
-
-    <button id="grammarBtn">📘 Grammar</button>
-    <button id="practiceBtn" class="outline">🧠 Practice</button>
-    <button id="essayBtn" class="outline">✍ Essay</button>
-
-    <button id="logoutBtn" class="danger">Logout</button>
+    <button onclick="go('grammar')">📘 Grammar</button>
+    <button onclick="go('practice')" class="outline">🧠 Practice</button>
+    <button onclick="go('essay')" class="outline">✍ Essay</button>
   </div>
 </section>
 
 <!-- GRAMMAR -->
 <section id="grammar" class="page">
   <div class="card">
-    <h2>Grammar (B2)</h2>
+    <h2>Grammar (B1)</h2>
     <ul class="list">
-      <li>✔ Mixed conditionals</li>
-      <li>✔ Passive voice (advanced)</li>
-      <li>✔ Inversion for emphasis</li>
+      <li>Present perfect vs past simple</li>
+      <li>First & second conditionals</li>
+      <li>Passive voice</li>
     </ul>
-    <button class="back">← Back</button>
+    <button class="back" onclick="go('dashboard')">← Back</button>
   </div>
 </section>
 
@@ -48,13 +47,13 @@
 <section id="practice" class="page">
   <div class="card">
     <h2>Practice</h2>
-    <p id="q">If I ___ more time, I would travel.</p>
+    <p id="question">If I ___ more time, I would travel.</p>
 
-    <button class="ans">have</button>
-    <button class="ans">had</button>
+    <button onclick="answer(false)">have</button>
+    <button onclick="answer(true)">had</button>
 
-    <p id="pFeedback"></p>
-    <button class="back">← Back</button>
+    <p id="feedback"></p>
+    <button class="back" onclick="go('dashboard')">← Back</button>
   </div>
 </section>
 
@@ -62,11 +61,11 @@
 <section id="essay" class="page">
   <div class="card">
     <h2>Essay</h2>
-    <textarea id="essayInput" placeholder="Write your essay..."></textarea>
+    <textarea id="essayText" placeholder="Write 50–150 words..."></textarea>
     <p id="wordCount">0 words</p>
-    <button id="checkEssay">Check Essay</button>
-    <div id="essayResult"></div>
-    <button class="back">← Back</button>
+    <button onclick="checkEssay()">Check essay</button>
+    <div id="essayFeedback"></div>
+    <button class="back" onclick="go('dashboard')">← Back</button>
   </div>
 </section>
 
