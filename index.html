@@ -2,223 +2,321 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>eTeacher – Learn English with Us</title>
+<title>Learn English with us</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 :root{
   --bg:#2563eb;
   --card:#ffffff;
-  --text:#111827;
-  --btn:#4f46e5;
+  --text:#0f172a;
+  --primary:#4f46e5;
 }
 .dark{
   --bg:#020617;
   --card:#0f172a;
   --text:#e5e7eb;
-  --btn:#6366f1;
+  --primary:#6366f1;
 }
-*{box-sizing:border-box;font-family:system-ui}
+*{
+  box-sizing:border-box;
+  font-family:system-ui,Segoe UI,Arial;
+}
 body{
   margin:0;
+  min-height:100vh;
   background:var(--bg);
   color:var(--text);
-  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
 }
 header{
+  width:100%;
+  max-width:1200px;
+  padding:20px 24px;
   display:flex;
   justify-content:space-between;
-  padding:18px;
+  align-items:center;
   color:white;
+}
+header h1{
+  margin:0;
+  font-size:26px;
+}
+header .actions button{
+  margin-left:10px;
+  padding:10px 16px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  background:var(--primary);
+  color:white;
+}
+main{
+  width:100%;
+  max-width:420px;
+  padding:20px;
+}
+.page{
+  display:none;
+}
+.page.active{
+  display:block;
+}
+.card{
+  background:var(--card);
+  padding:26px;
+  border-radius:18px;
+  box-shadow:0 20px 40px rgba(0,0,0,.25);
+}
+h2{
+  margin-top:0;
+  text-align:center;
 }
 button{
   width:100%;
   padding:14px;
-  margin:8px 0;
-  border:none;
+  margin-top:10px;
   border-radius:12px;
-  background:var(--btn);
+  border:none;
+  background:var(--primary);
   color:white;
   font-size:16px;
   cursor:pointer;
 }
-.outline{
-  background:none;
-  border:2px solid var(--btn);
-  color:var(--btn);
+button.secondary{
+  background:transparent;
+  border:2px solid var(--primary);
+  color:var(--primary);
 }
-.card{
-  background:var(--card);
-  max-width:420px;
-  margin:40px auto;
-  padding:25px;
-  border-radius:18px;
+button.back{
+  background:#64748b;
 }
-.hidden{display:none}
+input,textarea{
+  width:100%;
+  padding:14px;
+  margin-top:10px;
+  border-radius:10px;
+  border:1px solid #ccc;
+}
 .rule{
   background:#eef2ff;
   padding:12px;
   border-radius:10px;
-  margin:12px 0;
+  margin:10px 0;
 }
-.dark .rule{background:#1e293b}
+.dark .rule{
+  background:#1e293b;
+}
+.small{
+  text-align:center;
+  opacity:.7;
+  font-size:14px;
+}
 </style>
 </head>
 
 <body>
+
 <header>
-  <strong>eTeacher</strong>
-  <button onclick="toggleDark()">🌙</button>
+  <h1>eTeacher</h1>
+  <div class="actions">
+    <button onclick="toggleDark()">🌙</button>
+    <button onclick="showPage('login')">Login</button>
+    <button onclick="showPage('signup')">Sign Up</button>
+  </div>
 </header>
 
+<main>
+
+<!-- HOME -->
+<section id="home" class="page active">
+  <div class="card">
+    <h2>Learn English with us</h2>
+    <p class="small">Grammar • Practice • Writing</p>
+    <button onclick="showPage('login')">Get Started</button>
+  </div>
+</section>
+
 <!-- LOGIN -->
-<div class="card" id="login">
-  <h2>Login</h2>
-  <input id="user" placeholder="Username">
-  <input id="pass" type="password" placeholder="Password">
-  <button onclick="login()">Continue</button>
-</div>
+<section id="login" class="page">
+  <div class="card">
+    <h2>Login</h2>
+    <input id="loginUser" placeholder="Username">
+    <input id="loginPass" type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <button class="secondary" onclick="showPage('signup')">Create account</button>
+    <button class="back" onclick="showPage('home')">Back</button>
+  </div>
+</section>
+
+<!-- SIGN UP -->
+<section id="signup" class="page">
+  <div class="card">
+    <h2>Sign Up</h2>
+    <input id="signUser" placeholder="Username">
+    <input id="signPass" type="password" placeholder="Password">
+    <button onclick="signup()">Sign Up</button>
+    <button class="back" onclick="showPage('login')">Back</button>
+  </div>
+</section>
 
 <!-- READY -->
-<div class="card hidden" id="ready">
-  <h2>Ready for a test?</h2>
-  <p>This test checks your real grammar level.</p>
-  <button onclick="startTest()">Start test</button>
-</div>
+<section id="ready" class="page">
+  <div class="card">
+    <h2>Ready for a test?</h2>
+    <p class="small">This short test checks your real English level.</p>
+    <button onclick="startTest()">Start Test</button>
+    <button class="back" onclick="showPage('home')">Back</button>
+  </div>
+</section>
 
 <!-- TEST -->
-<div class="card hidden" id="test">
-  <h3 id="testQ"></h3>
-  <div id="testA"></div>
-</div>
+<section id="test" class="page">
+  <div class="card">
+    <h2 id="testQuestion"></h2>
+    <div id="testAnswers"></div>
+  </div>
+</section>
 
 <!-- DASHBOARD -->
-<div class="card hidden" id="dash">
-  <h2 id="welcome"></h2>
-  <button onclick="openGrammar()">Grammar</button>
-  <button onclick="openPractice()">Practice</button>
-  <button onclick="window.open('https://www.youtube.com/@4000EssentialEnglishWords','_blank')">
-    📺 Need vocabulary?
-  </button>
-</div>
+<section id="dashboard" class="page">
+  <div class="card">
+    <h2 id="welcome"></h2>
+    <button onclick="openGrammar()">Grammar</button>
+    <button onclick="openPractice()">Practice</button>
+    <button onclick="window.open('https://www.youtube.com/@4000EssentialEnglishWords','_blank')">
+      📺 Need vocabulary?
+    </button>
+  </div>
+</section>
 
 <!-- GRAMMAR -->
-<div class="card hidden" id="grammar">
-  <h3>Grammar</h3>
-  <div id="grammarBox"></div>
-  <button class="outline" onclick="show('dash')">Back</button>
-</div>
+<section id="grammar" class="page">
+  <div class="card">
+    <h2>Grammar</h2>
+    <div id="grammarBox"></div>
+    <button class="back" onclick="showPage('dashboard')">Back</button>
+  </div>
+</section>
 
 <!-- PRACTICE -->
-<div class="card hidden" id="practice">
-  <h3 id="pQ"></h3>
-  <div id="pOptions"></div>
-  <p id="pFeedback"></p>
-  <button onclick="nextPractice()">Next</button>
-  <button class="outline" onclick="show('dash')">Back</button>
-</div>
+<section id="practice" class="page">
+  <div class="card">
+    <h2 id="practiceQ"></h2>
+    <div id="practiceOptions"></div>
+    <p id="practiceFeedback"></p>
+    <button onclick="nextPractice()">Next</button>
+    <button class="back" onclick="showPage('dashboard')">Back</button>
+  </div>
+</section>
+
+</main>
 
 <script>
-/* ---------- BASIC NAV ---------- */
-function show(id){
-  document.querySelectorAll('.card').forEach(c=>c.classList.add('hidden'));
-  document.getElementById(id).classList.remove('hidden');
+/* ---------- NAV ---------- */
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
 }
-function toggleDark(){document.body.classList.toggle('dark')}
+function toggleDark(){
+  document.body.classList.toggle('dark');
+}
 
-/* ---------- LOGIN ---------- */
+/* ---------- AUTH ---------- */
+function signup(){
+  if(!signUser.value||!signPass.value)return alert("Fill all fields");
+  localStorage.setItem(signUser.value,signPass.value);
+  showPage('login');
+}
 function login(){
-  if(!user.value||!pass.value) return;
-  show('ready');
+  if(localStorage.getItem(loginUser.value)===loginPass.value){
+    showPage('ready');
+  } else alert("Wrong login");
 }
 
-/* ---------- LEVEL TEST (LOGICAL) ---------- */
-const testBank=[
-{q:"If I ___ more time, I would study.",o:["have","had","will have"],c:1},
-{q:"She has ___ her homework.",o:["do","did","done"],c:2},
-{q:"The book ___ by him.",o:["wrote","was written","is writing"],c:1}
+/* ---------- TEST ---------- */
+const test=[
+  {q:"If I ___ more time, I would study.",o:["have","had","will have"],c:1},
+  {q:"She has ___ her homework.",o:["do","did","done"],c:2},
+  {q:"The book ___ by him.",o:["wrote","was written","is writing"],c:1}
 ];
 let ti=0,score=0,level="";
 
-function startTest(){ti=0;score=0;loadTest();show('test')}
+function startTest(){
+  ti=0;score=0;
+  loadTest();
+  showPage('test');
+}
 function loadTest(){
-  if(ti>=testBank.length){
+  if(ti>=test.length){
     level=score<=1?"A2":score==2?"B1":"B2";
     welcome.innerText=`Welcome (${level})`;
-    show('dash');return;
+    showPage('dashboard');
+    return;
   }
-  testQ.innerText=testBank[ti].q;
-  testA.innerHTML="";
-  testBank[ti].o.forEach((x,i)=>{
+  testQuestion.innerText=test[ti].q;
+  testAnswers.innerHTML="";
+  test[ti].o.forEach((x,i)=>{
     let b=document.createElement("button");
     b.innerText=x;
-    b.onclick=()=>{if(i===testBank[ti].c)score++;ti++;loadTest()};
-    testA.appendChild(b);
+    b.onclick=()=>{ if(i===test[ti].c)score++; ti++; loadTest(); };
+    testAnswers.appendChild(b);
   });
 }
 
-/* ---------- GRAMMAR (STRUCTURED) ---------- */
+/* ---------- GRAMMAR ---------- */
 function openGrammar(){
   grammarBox.innerHTML={
-    A2:`
-      <h4>Present Simple</h4>
-      <div class="rule">Subject + Verb + Object</div>
-      I eat apples.<br>She likes music.
-    `,
-    B1:`
-      <h4>Present Perfect</h4>
-      <div class="rule">Subject + have/has + Past Participle + Object</div>
-      I have finished my homework.
-    `,
-    B2:`
-      <h4>Second Conditional</h4>
-      <div class="rule">If + Past Simple, would + Verb</div>
-      If I were rich, I would travel.
-    `
+    A2:`<h3>Present Simple</h3>
+        <div class="rule">Subject + Verb + Object</div>
+        I eat apples.<br>She likes music.`,
+    B1:`<h3>Present Perfect</h3>
+        <div class="rule">Subject + have/has + Past Participle + Object</div>
+        I have finished my homework.`,
+    B2:`<h3>Second Conditional</h3>
+        <div class="rule">If + Past Simple, would + Verb</div>
+        If I were rich, I would travel.`
   }[level];
-  show('grammar');
+  showPage('grammar');
 }
 
-/* ---------- PRACTICE ENGINE (REAL) ---------- */
-const practiceBank={
+/* ---------- PRACTICE ---------- */
+const practice={
   B1:[
-    {
-      q:"She has ___ here for 5 years.",
-      o:["live","lived","living"],
-      c:1,
-      e:"Use past participle in present perfect."
-    },
-    {
-      q:"If I ___ you, I would study.",
-      o:["am","was","were"],
-      c:2,
-      e:"Second conditional uses 'were'."
-    }
+    {q:"She has ___ here for 5 years.",o:["live","lived","living"],c:1,e:"Use past participle"},
+    {q:"If I ___ you, I would study.",o:["am","was","were"],c:2,e:"Use 'were' in second conditional"}
   ]
 };
 let pi=0;
 
-function openPractice(){pi=0;loadPractice();show('practice')}
+function openPractice(){
+  pi=0;
+  loadPractice();
+  showPage('practice');
+}
 function loadPractice(){
-  const p=practiceBank[level][pi];
-  pQ.innerText=p.q;
-  pFeedback.innerText="";
-  pOptions.innerHTML="";
+  const p=practice[level][pi];
+  practiceQ.innerText=p.q;
+  practiceFeedback.innerText="";
+  practiceOptions.innerHTML="";
   p.o.forEach((x,i)=>{
     let b=document.createElement("button");
     b.innerText=x;
     b.onclick=()=>{
-      pFeedback.innerText=i===p.c
-        ?"✅ Correct"
-        :`❌ Wrong. Correct: ${p.o[p.c]}. ${p.e}`;
+      practiceFeedback.innerText=
+        i===p.c ? "✅ Correct" :
+        `❌ Wrong. Correct: ${p.o[p.c]} (${p.e})`;
     };
-    pOptions.appendChild(b);
+    practiceOptions.appendChild(b);
   });
 }
 function nextPractice(){
-  pi=(pi+1)%practiceBank[level].length;
+  pi=(pi+1)%practice[level].length;
   loadPractice();
 }
 </script>
+
 </body>
 </html>
