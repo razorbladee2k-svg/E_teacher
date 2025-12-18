@@ -1,4 +1,3 @@
-/* PAGE NAVIGATION */
 function go(page){
   document.querySelectorAll(".page").forEach(p=>{
     p.classList.remove("active");
@@ -8,19 +7,17 @@ function go(page){
 
 /* PRACTICE */
 function answer(correct){
-  const f = document.getElementById("feedback");
-  f.textContent = correct
-    ? "✅ Correct!"
-    : "❌ Incorrect. Use past simple: had";
+  document.getElementById("feedback").textContent =
+    correct ? "✅ Correct!" : "❌ Incorrect. Try again.";
 }
 
 /* ESSAY */
 const essay = document.getElementById("essayText");
-const count = document.getElementById("wordCount");
+const wc = document.getElementById("wordCount");
 
 essay.addEventListener("input", ()=>{
   const words = essay.value.trim().split(/\s+/).filter(Boolean).length;
-  count.textContent = `${words} words`;
+  wc.textContent = `${words} words`;
 });
 
 function checkEssay(){
@@ -28,14 +25,11 @@ function checkEssay(){
   let errors = [];
 
   if(text.includes("I am agree")){
-    errors.push("❌ Use 'I agree', not 'I am agree'");
-  }
-  if(text.includes("didn't went")){
-    errors.push("❌ Use 'didn't go'");
+    errors.push("❌ Use 'I agree'");
   }
 
   document.getElementById("essayFeedback").innerHTML =
-    errors.length ? errors.join("<br>") : "✅ Good essay!";
+    errors.length ? errors.join("<br>") : "✅ Good writing!";
 }
 
 /* DARK MODE */
