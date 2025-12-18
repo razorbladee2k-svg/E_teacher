@@ -3,29 +3,70 @@
 <head>
 <meta charset="UTF-8">
 <title>eTeacher</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
-  <div class="logo">
-    <img src="logo.png" alt="eTeacher logo">
-  </div>
+  <img src="logo.png" class="logo" alt="logo">
   <button id="darkToggle">🌙</button>
 </header>
 
 <main>
 
+<!-- DASHBOARD -->
 <section id="hub" class="page active">
   <div class="card">
-    <h2>Welcome test1234 (B2)</h2>
+    <h1 class="title">Learn English with us</h1>
+    <p class="subtitle">Grammar • Practice • Writing</p>
 
-    <button id="grammarBtn">Grammar</button>
-    <button id="practiceBtn" class="outline">Practice</button>
-    <button id="essayBtn" class="outline">Essay</button>
+    <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" class="hero">
+
+    <button id="grammarBtn">📘 Grammar</button>
+    <button id="practiceBtn" class="outline">🧠 Practice</button>
+    <button id="essayBtn" class="outline">✍ Essay</button>
 
     <button id="logoutBtn" class="danger">Logout</button>
+  </div>
+</section>
+
+<!-- GRAMMAR -->
+<section id="grammar" class="page">
+  <div class="card">
+    <h2>Grammar (B2)</h2>
+    <ul class="list">
+      <li>✔ Mixed conditionals</li>
+      <li>✔ Passive voice (advanced)</li>
+      <li>✔ Inversion for emphasis</li>
+    </ul>
+    <button class="back">← Back</button>
+  </div>
+</section>
+
+<!-- PRACTICE -->
+<section id="practice" class="page">
+  <div class="card">
+    <h2>Practice</h2>
+    <p id="q">If I ___ more time, I would travel.</p>
+
+    <button class="ans">have</button>
+    <button class="ans">had</button>
+
+    <p id="pFeedback"></p>
+    <button class="back">← Back</button>
+  </div>
+</section>
+
+<!-- ESSAY -->
+<section id="essay" class="page">
+  <div class="card">
+    <h2>Essay</h2>
+    <textarea id="essayInput" placeholder="Write your essay..."></textarea>
+    <p id="wordCount">0 words</p>
+    <button id="checkEssay">Check Essay</button>
+    <div id="essayResult"></div>
+    <button class="back">← Back</button>
   </div>
 </section>
 
