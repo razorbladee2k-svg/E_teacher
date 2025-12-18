@@ -21,6 +21,7 @@ const levelTest=document.getElementById("levelTest");
 
 const testQ=document.getElementById("testQ");
 const testAnswers=document.getElementById("testAnswers");
+const testFeedback=document.getElementById("testFeedback");
 
 const welcome=document.getElementById("welcome");
 
@@ -59,7 +60,7 @@ logoutBtn.onclick=()=>{
   show("auth");
 };
 
-/* LEVEL FLOW FIX */
+/* LEVEL FLOW */
 chooseLevelBtn.onclick=()=>{
   levelOptions.classList.remove("hidden");
   levelTest.classList.add("hidden");
@@ -71,7 +72,6 @@ testLevelBtn.onclick=()=>{
   startTest();
 };
 
-/* LEVEL BUTTONS */
 document.querySelectorAll(".lvl").forEach(btn=>{
   btn.onclick=()=>{
     const lvl=btn.dataset.lvl;
@@ -82,25 +82,40 @@ document.querySelectorAll(".lvl").forEach(btn=>{
   };
 });
 
-/* LEVEL TEST */
+/* TEST LOGIC WITH FEEDBACK */
 let idx=0,score=0;
 
 function startTest(){
-  idx=0; score=0;
+  idx=0;
+  score=0;
+  testFeedback.classList.add("hidden");
   loadQ();
 }
 
 function loadQ(){
   const t=TEST[idx];
-  testQ.textContent=t.q;
+  testQ.textContent=`Q${idx+1}. ${t.q}`;
   testAnswers.innerHTML="";
+  testFeedback.classList.add("hidden");
+
   t.a.forEach((ans,i)=>{
     const b=document.createElement("button");
     b.textContent=ans;
     b.onclick=()=>{
-      if(i===t.c) score++;
-      idx++;
-      idx<TEST.length ? loadQ() : finishTest();
+      if(i===t.c){
+        score++;
+        testFeedback.innerHTML="✅ Correct!";
+        testFeedback.className="feedback correct";
+      }else{
+        testFeedback.innerHTML=`❌ Incorrect. Correct answer: <b>${t.a[t.c]}</b>`;
+        testFeedback.className="feedback incorrect";
+      }
+      testFeedback.classList.remove("hidden");
+
+      setTimeout(()=>{
+        idx++;
+        idx<TEST.length?loadQ():finishTest();
+      },1200);
     };
     testAnswers.appendChild(b);
   });
