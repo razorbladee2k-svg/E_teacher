@@ -5,7 +5,7 @@
 body{
   margin:0;
   font-family:system-ui,Segoe UI;
-  background:#2563eb; /* BLUE BACKGROUND */
+  background:#2563eb;
   color:#0f172a;
 }
 
@@ -14,12 +14,11 @@ header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:18px 30px;
+  padding:16px 20px;
 }
 
-/* LOGO */
-.logo img{
-  height:70px;
+.logo{
+  height:55px;
 }
 
 /* DARK MODE BUTTON */
@@ -27,59 +26,95 @@ header{
   background:#1e40af;
   border:none;
   color:white;
+  width:42px;
+  height:42px;
   border-radius:50%;
-  width:46px;
-  height:46px;
-  cursor:pointer;
   font-size:18px;
 }
 
 /* PAGE */
 .page{
-  min-height:calc(100vh - 90px);
-  display:flex;
+  display:none;
+  min-height:calc(100vh - 80px);
   justify-content:center;
   align-items:center;
+  padding:16px;
 }
 
-/* CENTER CARD */
+.page.active{
+  display:flex;
+}
+
+/* CARD */
 .card{
-  background:white;               /* WHITE MIDDLE */
-  padding:36px;
-  border-radius:28px;
-  width:360px;
+  background:white;
+  width:100%;
+  max-width:380px;
+  padding:26px;
+  border-radius:26px;
   text-align:center;
-  box-shadow:0 30px 60px rgba(0,0,0,.35);
+  box-shadow:0 25px 50px rgba(0,0,0,.3);
 }
 
-/* HEADINGS */
-.card h2{
-  margin-bottom:20px;
-  font-size:22px;
+/* TEXT */
+.title{
+  font-size:26px;
+  margin-bottom:4px;
+}
+
+.subtitle{
+  font-size:14px;
+  opacity:.7;
+  margin-bottom:16px;
+}
+
+/* IMAGE */
+.hero{
+  width:120px;
+  margin:12px auto 18px;
+  display:block;
 }
 
 /* BUTTONS */
 button{
   width:100%;
-  padding:16px;
-  margin-top:14px;
+  padding:15px;
+  margin-top:12px;
   border-radius:22px;
   border:none;
   background:#4f46e5;
   color:white;
-  font-size:17px;
+  font-size:16px;
   font-weight:600;
-  cursor:pointer;
 }
 
 button.outline{
   background:white;
-  border:2px solid #4f46e5;
   color:#4f46e5;
+  border:2px solid #4f46e5;
 }
 
 button.danger{
   background:#dc2626;
+}
+
+button.back{
+  background:#334155;
+}
+
+/* LIST */
+.list{
+  text-align:left;
+  padding-left:18px;
+}
+
+/* TEXTAREA */
+textarea{
+  width:100%;
+  height:120px;
+  border-radius:16px;
+  border:1px solid #c7d2fe;
+  padding:12px;
 }
 
 /* DARK MODE */
@@ -92,8 +127,7 @@ button.danger{
   color:white;
 }
 
-.dark button.outline{
-  background:#0f172a;
-  color:#818cf8;
-  border-color:#818cf8;
+.dark textarea{
+  background:#020617;
+  color:white;
 }
