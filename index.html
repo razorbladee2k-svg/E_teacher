@@ -18,10 +18,7 @@
   --text:#e5e7eb;
   --primary:#6366f1;
 }
-*{
-  box-sizing:border-box;
-  font-family:system-ui,Segoe UI,Arial;
-}
+*{box-sizing:border-box;font-family:system-ui,Segoe UI}
 body{
   margin:0;
   min-height:100vh;
@@ -34,46 +31,35 @@ body{
 header{
   width:100%;
   max-width:1200px;
-  padding:20px 24px;
+  padding:18px 24px;
   display:flex;
   justify-content:space-between;
   align-items:center;
   color:white;
 }
-header h1{
-  margin:0;
-  font-size:26px;
-}
-header .actions button{
-  margin-left:10px;
-  padding:10px 16px;
+header h1{margin:0;font-size:26px}
+header button{
+  padding:10px 14px;
   border-radius:10px;
   border:none;
-  cursor:pointer;
   background:var(--primary);
   color:white;
+  cursor:pointer;
 }
 main{
   width:100%;
   max-width:420px;
   padding:20px;
 }
-.page{
-  display:none;
-}
-.page.active{
-  display:block;
-}
+.page{display:none}
+.page.active{display:block}
 .card{
   background:var(--card);
-  padding:26px;
-  border-radius:18px;
-  box-shadow:0 20px 40px rgba(0,0,0,.25);
+  padding:28px;
+  border-radius:20px;
+  box-shadow:0 25px 50px rgba(0,0,0,.3);
 }
-h2{
-  margin-top:0;
-  text-align:center;
-}
+h2{text-align:center;margin-top:0}
 button{
   width:100%;
   padding:14px;
@@ -90,30 +76,22 @@ button.secondary{
   border:2px solid var(--primary);
   color:var(--primary);
 }
-button.back{
-  background:#64748b;
-}
-input,textarea{
+button.back{background:#64748b}
+input{
   width:100%;
   padding:14px;
   margin-top:10px;
   border-radius:10px;
   border:1px solid #ccc;
 }
+.small{text-align:center;opacity:.7;font-size:14px}
 .rule{
   background:#eef2ff;
   padding:12px;
   border-radius:10px;
-  margin:10px 0;
+  margin:12px 0;
 }
-.dark .rule{
-  background:#1e293b;
-}
-.small{
-  text-align:center;
-  opacity:.7;
-  font-size:14px;
-}
+.dark .rule{background:#1e293b}
 </style>
 </head>
 
@@ -121,11 +99,7 @@ input,textarea{
 
 <header>
   <h1>eTeacher</h1>
-  <div class="actions">
-    <button onclick="toggleDark()">🌙</button>
-    <button onclick="showPage('login')">Login</button>
-    <button onclick="showPage('signup')">Sign Up</button>
-  </div>
+  <button onclick="toggleDark()">🌙</button>
 </header>
 
 <main>
@@ -146,7 +120,7 @@ input,textarea{
     <input id="loginUser" placeholder="Username">
     <input id="loginPass" type="password" placeholder="Password">
     <button onclick="login()">Login</button>
-    <button class="secondary" onclick="showPage('signup')">Create account</button>
+    <button class="secondary" onclick="showPage('signup')">Sign Up</button>
     <button class="back" onclick="showPage('home')">Back</button>
   </div>
 </section>
@@ -157,7 +131,7 @@ input,textarea{
     <h2>Sign Up</h2>
     <input id="signUser" placeholder="Username">
     <input id="signPass" type="password" placeholder="Password">
-    <button onclick="signup()">Sign Up</button>
+    <button onclick="signup()">Create Account</button>
     <button class="back" onclick="showPage('login')">Back</button>
   </div>
 </section>
@@ -166,7 +140,7 @@ input,textarea{
 <section id="ready" class="page">
   <div class="card">
     <h2>Ready for a test?</h2>
-    <p class="small">This short test checks your real English level.</p>
+    <p class="small">10 grammar questions to check your real level</p>
     <button onclick="startTest()">Start Test</button>
     <button class="back" onclick="showPage('home')">Back</button>
   </div>
@@ -177,6 +151,7 @@ input,textarea{
   <div class="card">
     <h2 id="testQuestion"></h2>
     <div id="testAnswers"></div>
+    <p class="small" id="testProgress"></p>
   </div>
 </section>
 
@@ -215,16 +190,13 @@ input,textarea{
 </main>
 
 <script>
-/* ---------- NAV ---------- */
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
-function toggleDark(){
-  document.body.classList.toggle('dark');
-}
+function toggleDark(){document.body.classList.toggle('dark')}
 
-/* ---------- AUTH ---------- */
+/* AUTH */
 function signup(){
   if(!signUser.value||!signPass.value)return alert("Fill all fields");
   localStorage.setItem(signUser.value,signPass.value);
@@ -236,11 +208,18 @@ function login(){
   } else alert("Wrong login");
 }
 
-/* ---------- TEST ---------- */
+/* TEST – 10 QUESTIONS */
 const test=[
-  {q:"If I ___ more time, I would study.",o:["have","had","will have"],c:1},
-  {q:"She has ___ her homework.",o:["do","did","done"],c:2},
-  {q:"The book ___ by him.",o:["wrote","was written","is writing"],c:1}
+{q:"If I ___ more time, I would study.",o:["have","had","will have"],c:1},
+{q:"She has ___ her homework.",o:["do","did","done"],c:2},
+{q:"The book ___ by him.",o:["wrote","was written","is writing"],c:1},
+{q:"I’ve lived here ___ 2015.",o:["since","for","during"],c:0},
+{q:"He speaks ___ than me.",o:["more confident","confidently","most confident"],c:1},
+{q:"She didn’t ___ the email.",o:["received","receive","receiving"],c:1},
+{q:"If it rains, we ___ stay home.",o:["will","would","did"],c:0},
+{q:"I’m not used to ___ early.",o:["wake","waking","woke"],c:1},
+{q:"The meeting has been ___.",o:["cancel","cancelled","cancelling"],c:1},
+{q:"He suggested ___ earlier.",o:["leave","leaving","to leave"],c:1}
 ];
 let ti=0,score=0,level="";
 
@@ -251,12 +230,13 @@ function startTest(){
 }
 function loadTest(){
   if(ti>=test.length){
-    level=score<=1?"A2":score==2?"B1":"B2";
-    welcome.innerText=`Welcome (${level})`;
+    level=score<=3?"A2":score<=7?"B1":"B2";
+    welcome.innerText=`Your level: ${level}`;
     showPage('dashboard');
     return;
   }
   testQuestion.innerText=test[ti].q;
+  testProgress.innerText=`Question ${ti+1} / ${test.length}`;
   testAnswers.innerHTML="";
   test[ti].o.forEach((x,i)=>{
     let b=document.createElement("button");
@@ -266,36 +246,26 @@ function loadTest(){
   });
 }
 
-/* ---------- GRAMMAR ---------- */
+/* GRAMMAR */
 function openGrammar(){
   grammarBox.innerHTML={
-    A2:`<h3>Present Simple</h3>
-        <div class="rule">Subject + Verb + Object</div>
-        I eat apples.<br>She likes music.`,
-    B1:`<h3>Present Perfect</h3>
-        <div class="rule">Subject + have/has + Past Participle + Object</div>
-        I have finished my homework.`,
-    B2:`<h3>Second Conditional</h3>
-        <div class="rule">If + Past Simple, would + Verb</div>
-        If I were rich, I would travel.`
+    A2:`<div class="rule">Present Simple<br><strong>Subject + Verb + Object</strong></div>I eat apples.`,
+    B1:`<div class="rule">Present Perfect<br><strong>Subject + have/has + Past Participle</strong></div>I have finished.`,
+    B2:`<div class="rule">Second Conditional<br><strong>If + Past Simple, would + Verb</strong></div>If I were rich…`
   }[level];
   showPage('grammar');
 }
 
-/* ---------- PRACTICE ---------- */
+/* PRACTICE */
 const practice={
   B1:[
-    {q:"She has ___ here for 5 years.",o:["live","lived","living"],c:1,e:"Use past participle"},
-    {q:"If I ___ you, I would study.",o:["am","was","were"],c:2,e:"Use 'were' in second conditional"}
+    {q:"She has ___ here for 5 years.",o:["live","lived","living"],c:1,e:"Past participle is required"},
+    {q:"If I ___ you, I would study.",o:["am","was","were"],c:2,e:"Use 'were' in unreal conditionals"}
   ]
 };
 let pi=0;
 
-function openPractice(){
-  pi=0;
-  loadPractice();
-  showPage('practice');
-}
+function openPractice(){pi=0;loadPractice();showPage('practice')}
 function loadPractice(){
   const p=practice[level][pi];
   practiceQ.innerText=p.q;
@@ -306,7 +276,7 @@ function loadPractice(){
     b.innerText=x;
     b.onclick=()=>{
       practiceFeedback.innerText=
-        i===p.c ? "✅ Correct" :
+        i===p.c?"✅ Correct":
         `❌ Wrong. Correct: ${p.o[p.c]} (${p.e})`;
     };
     practiceOptions.appendChild(b);
