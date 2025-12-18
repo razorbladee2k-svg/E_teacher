@@ -1,112 +1,99 @@
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
   font-family:system-ui,Segoe UI;
-  background:linear-gradient(180deg,#2563eb,#1e40af);
-  color:white;
+  background:#2563eb; /* BLUE BACKGROUND */
+  color:#0f172a;
 }
 
+/* HEADER */
 header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:20px 26px;
+  padding:18px 30px;
 }
 
-.logo{
-  font-size:38px;
-  font-weight:900;
-  cursor:pointer;
+/* LOGO */
+.logo img{
+  height:70px;
 }
 
+/* DARK MODE BUTTON */
 #darkToggle{
-  background:#1e3a8a;
+  background:#1e40af;
   border:none;
   color:white;
   border-radius:50%;
-  width:44px;
-  height:44px;
+  width:46px;
+  height:46px;
   cursor:pointer;
+  font-size:18px;
 }
 
+/* PAGE */
 .page{
-  display:none;
-  min-height:calc(100vh - 80px);
+  min-height:calc(100vh - 90px);
+  display:flex;
   justify-content:center;
   align-items:center;
 }
 
-.page.active{display:flex}
-
+/* CENTER CARD */
 .card{
-  background:#0f172a;
-  padding:32px;
-  border-radius:24px;
-  width:340px;
+  background:white;               /* WHITE MIDDLE */
+  padding:36px;
+  border-radius:28px;
+  width:360px;
   text-align:center;
-  box-shadow:0 20px 40px rgba(0,0,0,.4);
+  box-shadow:0 30px 60px rgba(0,0,0,.35);
 }
 
-.card.wide{
-  width:420px;
+/* HEADINGS */
+.card h2{
+  margin-bottom:20px;
+  font-size:22px;
 }
 
-input, textarea{
-  width:100%;
-  padding:14px;
-  border-radius:14px;
-  border:none;
-  margin:10px 0;
-}
-
-textarea{
-  height:160px;
-}
-
+/* BUTTONS */
 button{
   width:100%;
-  padding:15px;
-  margin-top:12px;
-  border-radius:20px;
+  padding:16px;
+  margin-top:14px;
+  border-radius:22px;
   border:none;
-  background:#6366f1;
+  background:#4f46e5;
   color:white;
-  font-size:16px;
+  font-size:17px;
+  font-weight:600;
   cursor:pointer;
 }
 
 button.outline{
-  background:transparent;
-  border:2px solid #6366f1;
+  background:white;
+  border:2px solid #4f46e5;
+  color:#4f46e5;
 }
 
 button.danger{
   background:#dc2626;
 }
 
-button.back{
-  background:#334155;
-}
-
-.hidden{display:none}
-
-.feedback{
-  margin-top:14px;
-  padding:14px;
-  border-radius:14px;
-  background:#020617;
-  text-align:left;
-  font-size:14px;
-}
-
-.correct{color:#22c55e}
-.incorrect{color:#ef4444}
-
-/* Dark mode */
+/* DARK MODE */
 .dark body{
-  background:linear-gradient(180deg,#020617,#020617);
-}
-.dark .card{
   background:#020617;
+}
+
+.dark .card{
+  background:#0f172a;
+  color:white;
+}
+
+.dark button.outline{
+  background:#0f172a;
+  color:#818cf8;
+  border-color:#818cf8;
 }
