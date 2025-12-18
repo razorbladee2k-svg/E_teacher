@@ -2,9 +2,11 @@ let users = JSON.parse(localStorage.users || "{}");
 let currentUser = null;
 
 function go(page){
-  document.querySelectorAll(".page").forEach(p=>{
-    p.classList.remove("active");
-  });
+  if(page !== "auth" && !currentUser){
+    alert("Please log in first");
+    return;
+  }
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.getElementById(page).classList.add("active");
 }
 
@@ -12,7 +14,6 @@ function go(page){
 function login(){
   const u = username.value.trim();
   const p = password.value.trim();
-
   if(!users[u] || users[u] !== p){
     alert("Wrong username or password");
     return;
@@ -24,7 +25,6 @@ function login(){
 function signup(){
   const u = username.value.trim();
   const p = password.value.trim();
-
   if(users[u]){
     alert("User already exists");
     return;
@@ -42,8 +42,7 @@ function logout(){
 
 /* PRACTICE */
 function answer(correct){
-  document.getElementById("feedback").textContent =
-    correct ? "✅ Correct!" : "❌ Incorrect. Try again.";
+  feedback.textContent = correct ? "✅ Correct!" : "❌ Incorrect. Review conditionals.";
 }
 
 /* ESSAY */
@@ -54,14 +53,19 @@ essayText.addEventListener("input", ()=>{
 
 function checkEssay(){
   let text = essayText.value;
-  let errors = [];
+  let issues = [];
 
   if(text.includes("I am agree")){
-    errors.push("❌ Use 'I agree'");
+    issues.push("❌ Use 'I agree'");
+  }
+  if(text.length < 80){
+    issues.push("❌ Essay is too short");
   }
 
   essayFeedback.innerHTML =
-    errors.length ? errors.join("<br>") : "✅ Good writing!";
+    issues.length
+    ? "<b>AI feedback:</b><br>" + issues.join("<br>")
+    : "✅ Good structure and grammar!";
 }
 
 /* DARK MODE */
