@@ -2,279 +2,300 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>eTeacher – Learn English with Us</title>
+<title>eTeacher – Learn English with us</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 :root{
---bg:linear-gradient(135deg,#2563eb,#1e40af);
---card:#fff;
---text:#0f172a;
---btn:#4f46e5;
+  --bg:#1f4fd8;
+  --card:#ffffff;
+  --text:#111;
+  --btn:#5a55ea;
 }
 .dark{
---bg:linear-gradient(135deg,#020617,#020617);
---card:#0f172a;
---text:#f8fafc;
---btn:#6366f1;
+  --bg:#0b1020;
+  --card:#121a2f;
+  --text:#fff;
+  --btn:#6c7cff;
 }
-*{box-sizing:border-box;font-family:system-ui}
+*{box-sizing:border-box;font-family:Segoe UI,Arial}
 body{
-margin:0;
-min-height:100vh;
-background:var(--bg);
-color:var(--text);
+  margin:0;
+  background:linear-gradient(180deg,var(--bg),#123);
+  min-height:100vh;
+  color:var(--text);
 }
 header{
-display:flex;
-justify-content:space-between;
-padding:18px;
-color:white;
+  padding:20px 30px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  color:#fff;
+}
+header h1{margin:0}
+header button{
+  margin-left:10px;
+  padding:10px 18px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
+.main{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:80vh;
+}
+.card{
+  background:var(--card);
+  padding:30px;
+  border-radius:18px;
+  width:95%;
+  max-width:420px;
+  box-shadow:0 30px 60px rgba(0,0,0,.35);
+  text-align:center;
 }
 button{
-padding:14px;
-margin-top:10px;
-width:100%;
-border:none;
-border-radius:12px;
-background:var(--btn);
-color:white;
-font-size:16px;
-cursor:pointer;
+  width:100%;
+  padding:14px;
+  margin:8px 0;
+  border-radius:12px;
+  border:none;
+  background:var(--btn);
+  color:#fff;
+  font-size:16px;
+  cursor:pointer;
 }
-.secondary{
-background:transparent;
-border:2px solid var(--btn);
-color:var(--btn);
+button.outline{
+  background:none;
+  border:2px solid var(--btn);
+  color:var(--btn);
 }
-.back{
-background:#64748b;
-}
-.page{display:none}
-.page.active{display:block}
-.card{
-background:var(--card);
-width:92%;
-max-width:420px;
-margin:40px auto;
-padding:25px;
-border-radius:18px;
-}
+button.red{background:#d72626}
 input,textarea{
-width:100%;
-padding:14px;
-margin-top:10px;
-border-radius:10px;
-border:1px solid #ccc;
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border-radius:10px;
+  border:1px solid #ccc;
 }
-.center{text-align:center}
-.small{opacity:.7;font-size:14px}
-.code{
-background:#020617;
-color:#e5e7eb;
-padding:10px;
-border-radius:8px;
-margin:10px 0;
-font-family:monospace;
+.hidden{display:none}
+.small{font-size:14px;opacity:.7}
+.rule{
+  background:#f1f3ff;
+  padding:12px;
+  border-radius:10px;
+  margin:10px 0;
 }
+.dark .rule{background:#1c2440}
+.progress{height:6px;background:#ccc;border-radius:4px;overflow:hidden}
+.progress div{height:100%;width:0;background:var(--btn)}
 </style>
 </head>
 
 <body>
 <header>
-<strong>eTeacher</strong>
-<button onclick="toggleDark()">🌙</button>
+  <h1>eTeacher</h1>
+  <div>
+    <button onclick="toggleDark()">🌙</button>
+    <button onclick="show('login')">Login</button>
+    <button onclick="show('signup')">Sign Up</button>
+  </div>
 </header>
 
+<div class="main">
+
 <!-- LOGIN -->
-<section id="login" class="page active">
-<div class="card">
-<h2 class="center">Login</h2>
-<input id="lUser" placeholder="Username">
-<input id="lPass" type="password" placeholder="Password">
-<button onclick="login()">Login</button>
-<button class="secondary" onclick="show('signup')">Sign Up</button>
+<div class="card hidden" id="login">
+<h2>Login</h2>
+<input id="loginUser" placeholder="Username">
+<input id="loginPass" type="password" placeholder="Password">
+<button onclick="login()">Continue</button>
+<button class="outline" onclick="show('home')">Back</button>
 </div>
-</section>
 
 <!-- SIGNUP -->
-<section id="signup" class="page">
-<div class="card">
-<h2 class="center">Sign Up</h2>
-<input id="sUser" placeholder="Username">
-<input id="sPass" type="password" placeholder="Password">
-<button onclick="signup()">Create Account</button>
-<button class="back" onclick="show('login')">Back</button>
+<div class="card hidden" id="signup">
+<h2>Sign Up</h2>
+<input id="signUser" placeholder="Username">
+<input id="signPass" type="password" placeholder="Password">
+<button onclick="signup()">Create account</button>
+<button class="outline" onclick="show('home')">Back</button>
 </div>
-</section>
+
+<!-- HOME -->
+<div class="card" id="home">
+<h2>Learn English with us</h2>
+<p class="small">Grammar • Practice • Writing</p>
+<button onclick="show('ready')">What is my level?</button>
+<button onclick="show('chooseLevel')">Choose my level</button>
+</div>
 
 <!-- READY -->
-<section id="ready" class="page">
-<div class="card center">
+<div class="card hidden" id="ready">
 <h2>Ready for a test?</h2>
-<p class="small">This test will check your English level</p>
-<button onclick="startTest()">Start Test</button>
-<button class="back" onclick="show('login')">Back</button>
+<p class="small">This short test checks your level</p>
+<button onclick="startTest()">Start test</button>
+<button class="outline" onclick="show('home')">Back</button>
 </div>
-</section>
 
 <!-- TEST -->
-<section id="test" class="page">
-<div class="card">
-<h3 id="qText"></h3>
-<div id="qAns"></div>
+<div class="card hidden" id="test">
+<div class="progress"><div id="bar"></div></div>
+<p id="q"></p>
+<button onclick="answer(true)">Correct</button>
+<button onclick="answer(false)">Incorrect</button>
 </div>
-</section>
+
+<!-- CHOOSE LEVEL -->
+<div class="card hidden" id="chooseLevel">
+<h2>Choose your level</h2>
+<button onclick="setLevel('A2')">A2</button>
+<button onclick="setLevel('B1')">B1</button>
+<button onclick="setLevel('B2')">B2</button>
+<button class="outline" onclick="show('home')">Back</button>
+</div>
 
 <!-- DASHBOARD -->
-<section id="dash" class="page">
-<div class="card center">
+<div class="card hidden" id="dash">
 <h2 id="welcome"></h2>
 <button onclick="openGrammar()">Grammar</button>
 <button onclick="openPractice()">Practice</button>
 <button onclick="openEssay()">Essay</button>
+<button class="outline" onclick="window.open('https://www.youtube.com/@4000EssentialEnglishWords','_blank')">📺 Need vocabulary?</button>
+<button class="red" onclick="logout()">Logout</button>
 </div>
-</section>
 
 <!-- GRAMMAR -->
-<section id="grammar" class="page">
-<div class="card">
-<h3>Grammar Structure</h3>
-<div id="grammarBox"></div>
-
-<button onclick="window.open('https://www.youtube.com/@4000EssentialEnglishWords','_blank')">
-📺 Need vocabulary?
-</button>
-
-<button class="back" onclick="show('dash')">Back</button>
-</div>
-</section>
+<div class="card hidden" id="grammar"></div>
 
 <!-- PRACTICE -->
-<section id="practice" class="page">
-<div class="card">
-<h3 id="pQ"></h3>
-<div id="pA"></div>
-<p id="pResult"></p>
-<button onclick="nextPractice()">Next</button>
-<button class="back" onclick="show('dash')">Back</button>
+<div class="card hidden" id="practice">
+<p id="practiceQ"></p>
+<input id="practiceInput">
+<button onclick="checkPractice()">Check</button>
+<button class="outline" onclick="openPractice()">Next</button>
+<button class="outline" onclick="show('dash')">Back</button>
 </div>
-</section>
 
 <!-- ESSAY -->
-<section id="essay" class="page">
-<div class="card">
-<h3 id="eTitle"></h3>
-<textarea id="eText" rows="6" placeholder="Write your essay..."></textarea>
-<button onclick="checkEssay()">Check Essay</button>
-<p id="eResult"></p>
-<button class="back" onclick="show('dash')">Back</button>
+<div class="card hidden" id="essay">
+<h3 id="essayTitle"></h3>
+<textarea id="essayText" rows="6" placeholder="Write your essay..."></textarea>
+<p class="small" id="count">0 / 180</p>
+<button onclick="checkEssay()">Send</button>
+<button class="outline" onclick="show('dash')">Back</button>
+<p id="essayFeedback"></p>
 </div>
-</section>
+
+</div>
 
 <script>
-const users=JSON.parse(localStorage.getItem("users")||"{}");
-let user="",score=0,qi=0,level="";
+let user=null,level="B1",score=0,step=0;
+const questions=[
+"Do you use conditionals?",
+"Can you use present perfect?",
+"Do you understand passive voice?"
+];
 
 function show(id){
-document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-document.getElementById(id).classList.add("active");
+document.querySelectorAll('.card').forEach(c=>c.classList.add('hidden'));
+document.getElementById(id).classList.remove('hidden');
 }
 
 function signup(){
-users[sUser.value]=sPass.value;
-localStorage.setItem("users",JSON.stringify(users));
-show("login");
+localStorage.setItem(signUser.value,signPass.value);
+alert("Account created");
+show('login');
 }
 
 function login(){
-if(users[lUser.value]===lPass.value){
-user=lUser.value;
-show("ready");
+if(localStorage.getItem(loginUser.value)===loginPass.value){
+user=loginUser.value;
+show('home');
+}else alert("Wrong login");
 }
-}
+
+function logout(){user=null;show('home');}
 
 function startTest(){
-score=0;qi=0;
-loadTest();
-show("test");
+score=0;step=0;show('test');nextQ();
 }
 
-const test=[
-{q:"She ___ already eaten.",a:[["has",2],["have",0]]},
-{q:"If I ___ rich, I would travel.",a:[["was",1],["were",2]]},
-{q:"He has lived here ___ 2018.",a:[["since",2],["for",1]]}
-];
-
-function loadTest(){
-if(qi>=test.length){
-level=score<=3?"A2":score<=5?"B1":"B2";
-welcome.innerText=`Welcome ${user} (${level})`;
-show("dash");return;
+function nextQ(){
+if(step>=questions.length){
+level=score>=2?"B2":score===1?"B1":"A2";
+setLevel(level);return;
 }
-qText.innerText=test[qi].q;
-qAns.innerHTML="";
-test[qi].a.forEach(x=>{
-let b=document.createElement("button");
-b.innerText=x[0];
-b.onclick=()=>{score+=x[1];qi++;loadTest()};
-qAns.appendChild(b);
-});
+q.innerText=questions[step];
+bar.style.width=((step/questions.length)*100)+"%";
+}
+
+function answer(ok){if(ok)score++;step++;nextQ();}
+
+function setLevel(l){
+level=l;
+welcome.innerText=`Welcome ${user||"Guest"} (${level})`;
+show('dash');
 }
 
 function openGrammar(){
-grammarBox.innerHTML={
-A2:`<div class="code">SUBJECT + VERB<br>I eat</div>`,
-B1:`<div class="code">SUBJECT + AUX + VERB<br>She has finished</div>`,
-B2:`<div class="code">SUBJECT + MODAL + VERB<br>You should study</div>`
-}[level];
-show("grammar");
-}
-
-const practice=[
-{q:"She ___ a movie.",a:["watch","watches"],c:1,exp:"Third person needs -s"},
-{q:"They ___ finished.",a:["has","have"],c:1,exp:"Plural → have"}
-];
-let pi=0;
-
-function openPractice(){pi=0;loadPractice();show("practice")}
-function loadPractice(){
-pResult.innerText="";
-pQ.innerText=practice[pi].q;
-pA.innerHTML="";
-practice[pi].a.forEach((x,i)=>{
-let b=document.createElement("button");
-b.innerText=x;
-b.onclick=()=>{
-if(i===practice[pi].c){
-pResult.innerText="✅ Correct!";
-}else{
-pResult.innerText=`❌ Wrong. Correct: ${practice[pi].a[practice[pi].c]} (${practice[pi].exp})`;
-}
+const g={
+A2:`<h3>Present Simple</h3>
+<div class="rule">Subject + Verb + Object</div>
+I eat apples.<br>She likes music.`,
+B1:`<h3>Present Perfect</h3>
+<div class="rule">Subject + have/has + Past Participle + Object</div>
+I have finished my homework.`,
+B2:`<h3>Second Conditional</h3>
+<div class="rule">If + Past Simple, would + Verb</div>
+If I were rich, I would travel.`
 };
-pA.appendChild(b);
-});
+grammar.innerHTML=g[level]+'<button onclick="show(\'dash\')">Back</button>';
+show('grammar');
 }
-function nextPractice(){pi=(pi+1)%practice.length;loadPractice()}
+
+const practices={
+A2:["I ___ apples.","eat"],
+B1:["I have ___ my work.","finished"],
+B2:["If I ___ rich...","were"]
+};
+
+function openPractice(){
+practiceQ.innerText=practices[level][0];
+practiceInput.value="";
+show('practice');
+}
+
+function checkPractice(){
+alert(practiceInput.value.toLowerCase()===practices[level][1]?"Correct":"Wrong. Answer: "+practices[level][1]);
+}
 
 const titles=[
-"Is technology helpful?",
-"My future plans",
-"Why learning English matters"
+"Is technology good for students?",
+"Should school be online?",
+"Benefits of learning English"
 ];
 
 function openEssay(){
-eTitle.innerText=titles[Math.floor(Math.random()*titles.length)];
-eText.value="";
-eResult.innerText="";
-show("essay");
-}
-function checkEssay(){
-let w=eText.value.split(" ").length;
-eResult.innerText=w<30?"❌ Too short (min 30 words)":"✅ Good job!";
+essayTitle.innerText=titles[Math.floor(Math.random()*titles.length)];
+essayText.value="";
+essayFeedback.innerText="";
+count.innerText="0 / 180";
+show('essay');
 }
 
-function toggleDark(){document.body.classList.toggle("dark")}
+essayText.oninput=()=>count.innerText=essayText.value.split(" ").length+" / 180";
+
+function checkEssay(){
+let text=essayText.value;
+let errors=[];
+if(!text.includes("."))errors.push("Add punctuation.");
+if(text.split(" ").length<30)errors.push("Too short.");
+essayFeedback.innerHTML=errors.length?("Mistakes:<br>"+errors.join("<br>")):"Good essay!";
+}
+
+function toggleDark(){document.body.classList.toggle('dark')}
 </script>
 </body>
 </html>
