@@ -15,7 +15,7 @@
 
 <main>
 
-<!-- AUTH -->
+<!-- LOGIN -->
 <section id="auth" class="page active">
   <div class="card">
     <h1>Login / Sign up</h1>
@@ -34,7 +34,6 @@
     <button id="chooseLevelBtn">Choose my level</button>
     <button id="testLevelBtn" class="outline">What is my level?</button>
 
-    <!-- LEVEL OPTIONS -->
     <div id="levelOptions" class="hidden">
       <button class="lvl" data-lvl="A1">A1</button>
       <button class="lvl" data-lvl="A2">A2</button>
@@ -42,10 +41,10 @@
       <button class="lvl" data-lvl="B2">B2</button>
     </div>
 
-    <!-- LEVEL TEST -->
     <div id="levelTest" class="hidden">
       <p id="testQ"></p>
       <div id="testAnswers"></div>
+      <div id="testFeedback" class="feedback hidden"></div>
     </div>
 
     <button class="back">← Back</button>
@@ -56,9 +55,9 @@
 <section id="hub" class="page">
   <div class="card">
     <h2 id="welcome"></h2>
-    <button id="grammarBtn">Grammar</button>
-    <button id="practiceBtn" class="outline">Practice</button>
-    <button id="essayBtn" class="outline">Essay</button>
+    <button>Grammar</button>
+    <button class="outline">Practice</button>
+    <button class="outline">Essay</button>
     <button id="logoutBtn" class="danger">Logout</button>
   </div>
 </section>
