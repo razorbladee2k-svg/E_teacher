@@ -6,255 +6,275 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-:root {
-  --bg: linear-gradient(135deg,#2563eb,#1e40af);
-  --card: #ffffff;
-  --text: #111;
-  --btn: #4f46e5;
+:root{
+--bg:linear-gradient(135deg,#2563eb,#1e40af);
+--card:#fff;
+--text:#0f172a;
+--btn:#4f46e5;
 }
-.dark {
-  --bg: linear-gradient(135deg,#020617,#020617);
-  --card: #0f172a;
-  --text: #f8fafc;
-  --btn: #6366f1;
+.dark{
+--bg:linear-gradient(135deg,#020617,#020617);
+--card:#0f172a;
+--text:#f8fafc;
+--btn:#6366f1;
 }
-
-* { box-sizing: border-box; font-family: system-ui; }
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
+*{box-sizing:border-box;font-family:system-ui}
+body{
+margin:0;
+min-height:100vh;
+background:var(--bg);
+color:var(--text);
 }
-header {
-  display:flex;
-  justify-content:space-between;
-  padding:20px;
-  color:white;
+header{
+display:flex;
+justify-content:space-between;
+padding:18px;
+color:white;
 }
-button {
-  padding:14px;
-  border:none;
-  border-radius:12px;
-  background:var(--btn);
-  color:white;
-  font-size:16px;
-  cursor:pointer;
-  transition:.2s;
+button{
+padding:14px;
+margin-top:10px;
+width:100%;
+border:none;
+border-radius:12px;
+background:var(--btn);
+color:white;
+font-size:16px;
+cursor:pointer;
 }
-button:hover { transform:scale(1.03); }
-.secondary {
-  background:transparent;
-  border:2px solid var(--btn);
-  color:var(--btn);
+.secondary{
+background:transparent;
+border:2px solid var(--btn);
+color:var(--btn);
 }
-.page {
-  display:none;
-  animation: fade .3s ease;
+.back{
+background:#64748b;
 }
-.page.active { display:block; }
-@keyframes fade {
-  from { opacity:0; transform:translateY(15px); }
-  to { opacity:1; transform:none; }
+.page{display:none}
+.page.active{display:block}
+.card{
+background:var(--card);
+width:92%;
+max-width:420px;
+margin:40px auto;
+padding:25px;
+border-radius:18px;
 }
-.card {
-  background:var(--card);
-  width:92%;
-  max-width:420px;
-  margin:40px auto;
-  padding:25px;
-  border-radius:18px;
+input,textarea{
+width:100%;
+padding:14px;
+margin-top:10px;
+border-radius:10px;
+border:1px solid #ccc;
 }
-input, textarea {
-  width:100%;
-  padding:14px;
-  margin:10px 0;
-  border-radius:10px;
-  border:1px solid #ccc;
+.center{text-align:center}
+.small{opacity:.7;font-size:14px}
+.code{
+background:#020617;
+color:#e5e7eb;
+padding:10px;
+border-radius:8px;
+margin:10px 0;
+font-family:monospace;
 }
-.center { text-align:center; }
-.back { margin-top:10px; background:#64748b; }
-.small { font-size:14px; opacity:.7; }
 </style>
 </head>
 
 <body>
 <header>
-  <strong>eTeacher</strong>
-  <button onclick="toggleDark()">🌙</button>
+<strong>eTeacher</strong>
+<button onclick="toggleDark()">🌙</button>
 </header>
 
 <!-- LOGIN -->
 <section id="login" class="page active">
-  <div class="card">
-    <h2 class="center">Login</h2>
-    <input id="loginName" placeholder="Username">
-    <input id="loginPass" type="password" placeholder="Password">
-    <button onclick="login()">Login</button>
-    <p class="center small">No account?</p>
-    <button class="secondary" onclick="show('signup')">Sign Up</button>
-  </div>
+<div class="card">
+<h2 class="center">Login</h2>
+<input id="lUser" placeholder="Username">
+<input id="lPass" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+<button class="secondary" onclick="show('signup')">Sign Up</button>
+</div>
 </section>
 
 <!-- SIGNUP -->
 <section id="signup" class="page">
-  <div class="card">
-    <h2 class="center">Sign Up</h2>
-    <input id="signName" placeholder="Username">
-    <input id="signPass" type="password" placeholder="Password">
-    <button onclick="signup()">Create Account</button>
-    <button class="back" onclick="show('login')">Back</button>
-  </div>
+<div class="card">
+<h2 class="center">Sign Up</h2>
+<input id="sUser" placeholder="Username">
+<input id="sPass" type="password" placeholder="Password">
+<button onclick="signup()">Create Account</button>
+<button class="back" onclick="show('login')">Back</button>
+</div>
 </section>
 
-<!-- LEVEL TEST -->
+<!-- READY -->
+<section id="ready" class="page">
+<div class="card center">
+<h2>Ready for a test?</h2>
+<p class="small">This test will check your English level</p>
+<button onclick="startTest()">Start Test</button>
+<button class="back" onclick="show('login')">Back</button>
+</div>
+</section>
+
+<!-- TEST -->
 <section id="test" class="page">
-  <div class="card">
-    <h3 id="question"></h3>
-    <div id="answers"></div>
-    <button class="back" onclick="show('login')">Back</button>
-  </div>
+<div class="card">
+<h3 id="qText"></h3>
+<div id="qAns"></div>
+</div>
 </section>
 
 <!-- DASHBOARD -->
-<section id="dashboard" class="page">
-  <div class="card center">
-    <h2 id="welcome"></h2>
-    <button onclick="openGrammar()">Grammar</button>
-    <button onclick="openPractice()">Practice</button>
-    <button onclick="openEssay()">Essay</button>
-  </div>
+<section id="dash" class="page">
+<div class="card center">
+<h2 id="welcome"></h2>
+<button onclick="openGrammar()">Grammar</button>
+<button onclick="openPractice()">Practice</button>
+<button onclick="openEssay()">Essay</button>
+</div>
 </section>
 
 <!-- GRAMMAR -->
 <section id="grammar" class="page">
-  <div class="card">
-    <h3>Grammar</h3>
-    <ul id="grammarList"></ul>
-    <button class="back" onclick="show('dashboard')">Back</button>
-  </div>
+<div class="card">
+<h3>Grammar Structure</h3>
+<div id="grammarBox"></div>
+
+<button onclick="window.open('https://www.youtube.com/@4000EssentialEnglishWords','_blank')">
+📺 Need vocabulary?
+</button>
+
+<button class="back" onclick="show('dash')">Back</button>
+</div>
 </section>
 
 <!-- PRACTICE -->
 <section id="practice" class="page">
-  <div class="card">
-    <h3 id="pQuestion"></h3>
-    <div id="pAnswers"></div>
-    <button onclick="nextPractice()">Next</button>
-    <button class="back" onclick="show('dashboard')">Back</button>
-  </div>
+<div class="card">
+<h3 id="pQ"></h3>
+<div id="pA"></div>
+<p id="pResult"></p>
+<button onclick="nextPractice()">Next</button>
+<button class="back" onclick="show('dash')">Back</button>
+</div>
 </section>
 
 <!-- ESSAY -->
 <section id="essay" class="page">
-  <div class="card">
-    <h3 id="essayTitle"></h3>
-    <textarea id="essayText" rows="6" placeholder="Write your essay..."></textarea>
-    <button onclick="checkEssay()">Check Essay</button>
-    <p id="essayResult"></p>
-    <button class="back" onclick="show('dashboard')">Back</button>
-  </div>
+<div class="card">
+<h3 id="eTitle"></h3>
+<textarea id="eText" rows="6" placeholder="Write your essay..."></textarea>
+<button onclick="checkEssay()">Check Essay</button>
+<p id="eResult"></p>
+<button class="back" onclick="show('dash')">Back</button>
+</div>
 </section>
 
 <script>
-let users = JSON.parse(localStorage.getItem("users")||"{}");
-let currentUser="", level="", score=0, qi=0;
+const users=JSON.parse(localStorage.getItem("users")||"{}");
+let user="",score=0,qi=0,level="";
 
 function show(id){
-  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+document.getElementById(id).classList.add("active");
 }
 
 function signup(){
-  users[signName.value]=signPass.value;
-  localStorage.setItem("users",JSON.stringify(users));
-  show("login");
+users[sUser.value]=sPass.value;
+localStorage.setItem("users",JSON.stringify(users));
+show("login");
 }
 
 function login(){
-  if(users[loginName.value]===loginPass.value){
-    currentUser=loginName.value;
-    score=0; qi=0;
-    loadQuestion();
-    show("test");
-  }
+if(users[lUser.value]===lPass.value){
+user=lUser.value;
+show("ready");
+}
 }
 
-const testQ=[
-{q:"I ___ yesterday.",a:[["go",0],["went",2],["gone",1]]},
-{q:"If I ___ rich, I would travel.",a:[["am",0],["was",1],["were",2]]},
-{q:"She has lived here ___ 5 years.",a:[["since",1],["for",2],["during",0]]}
+function startTest(){
+score=0;qi=0;
+loadTest();
+show("test");
+}
+
+const test=[
+{q:"She ___ already eaten.",a:[["has",2],["have",0]]},
+{q:"If I ___ rich, I would travel.",a:[["was",1],["were",2]]},
+{q:"He has lived here ___ 2018.",a:[["since",2],["for",1]]}
 ];
 
-function loadQuestion(){
-  if(qi>=testQ.length){
-    level = score<=2?"A1":score<=4?"A2":score<=6?"B1":"B2";
-    welcome.innerText=`Welcome ${currentUser} (${level})`;
-    show("dashboard"); return;
-  }
-  question.innerText=testQ[qi].q;
-  answers.innerHTML="";
-  testQ[qi].a.forEach(x=>{
-    let b=document.createElement("button");
-    b.innerText=x[0];
-    b.onclick=()=>{ score+=x[1]; qi++; loadQuestion(); };
-    answers.appendChild(b);
-  });
+function loadTest(){
+if(qi>=test.length){
+level=score<=3?"A2":score<=5?"B1":"B2";
+welcome.innerText=`Welcome ${user} (${level})`;
+show("dash");return;
+}
+qText.innerText=test[qi].q;
+qAns.innerHTML="";
+test[qi].a.forEach(x=>{
+let b=document.createElement("button");
+b.innerText=x[0];
+b.onclick=()=>{score+=x[1];qi++;loadTest()};
+qAns.appendChild(b);
+});
 }
 
 function openGrammar(){
-  grammarList.innerHTML="";
-  ({
-    A1:["Present Simple","Basic questions"],
-    A2:["Past Simple","Comparatives"],
-    B1:["Conditionals","Passive voice"],
-    B2:["Reported speech","Modal verbs"]
-  })[level].forEach(g=>{
-    let li=document.createElement("li");
-    li.innerText=g; grammarList.appendChild(li);
-  });
-  show("grammar");
+grammarBox.innerHTML={
+A2:`<div class="code">SUBJECT + VERB<br>I eat</div>`,
+B1:`<div class="code">SUBJECT + AUX + VERB<br>She has finished</div>`,
+B2:`<div class="code">SUBJECT + MODAL + VERB<br>You should study</div>`
+}[level];
+show("grammar");
 }
 
-const practiceQ=[
-{q:"She ___ already eaten.",a:["has","have","had"],c:0},
-{q:"If it rains, we ___ stay home.",a:["will","would","did"],c:0}
+const practice=[
+{q:"She ___ a movie.",a:["watch","watches"],c:1,exp:"Third person needs -s"},
+{q:"They ___ finished.",a:["has","have"],c:1,exp:"Plural → have"}
 ];
 let pi=0;
-function openPractice(){ pi=0; loadPractice(); show("practice"); }
+
+function openPractice(){pi=0;loadPractice();show("practice")}
 function loadPractice(){
-  pQuestion.innerText=practiceQ[pi].q;
-  pAnswers.innerHTML="";
-  practiceQ[pi].a.forEach((t,i)=>{
-    let b=document.createElement("button");
-    b.innerText=t;
-    b.onclick=()=>alert(i===practiceQ[pi].c?"Correct":"Wrong");
-    pAnswers.appendChild(b);
-  });
+pResult.innerText="";
+pQ.innerText=practice[pi].q;
+pA.innerHTML="";
+practice[pi].a.forEach((x,i)=>{
+let b=document.createElement("button");
+b.innerText=x;
+b.onclick=()=>{
+if(i===practice[pi].c){
+pResult.innerText="✅ Correct!";
+}else{
+pResult.innerText=`❌ Wrong. Correct: ${practice[pi].a[practice[pi].c]} (${practice[pi].exp})`;
 }
-function nextPractice(){ pi=(pi+1)%practiceQ.length; loadPractice(); }
+};
+pA.appendChild(b);
+});
+}
+function nextPractice(){pi=(pi+1)%practice.length;loadPractice()}
 
 const titles=[
-"Technology in Modern Life",
-"Is Social Media Good?",
-"My Dream Job",
-"Education in the Future"
+"Is technology helpful?",
+"My future plans",
+"Why learning English matters"
 ];
+
 function openEssay(){
-  essayTitle.innerText=titles[Math.floor(Math.random()*titles.length)];
-  essayText.value="";
-  essayResult.innerText="";
-  show("essay");
+eTitle.innerText=titles[Math.floor(Math.random()*titles.length)];
+eText.value="";
+eResult.innerText="";
+show("essay");
 }
 function checkEssay(){
-  let t=essayText.value;
-  let errors=[];
-  if(t.split(" ").length<30) errors.push("Essay too short");
-  if(!/[A-Z]/.test(t)) errors.push("No capital letters");
-  essayResult.innerText=errors.length?("Issues: "+errors.join(", ")):"Good job!";
+let w=eText.value.split(" ").length;
+eResult.innerText=w<30?"❌ Too short (min 30 words)":"✅ Good job!";
 }
 
-function toggleDark(){ document.body.classList.toggle("dark"); }
+function toggleDark(){document.body.classList.toggle("dark")}
 </script>
 </body>
 </html>
