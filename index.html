@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>eTeacher</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
 <header>
   <div class="logo">eTeacher</div>
   <div class="header-actions">
-    <a class="vocab-link"
-       href="https://www.youtube.com/@4000EssentialEnglishWords"
-       target="_blank">Need vocabulary?</a>
+    <a class="btn-outline small" target="_blank"
+      href="https://www.youtube.com/@4000EssentialEnglishWords">
+      Need vocabulary?
+    </a>
     <button class="dark-toggle" onclick="toggleDark()">🌙</button>
   </div>
 </header>
@@ -26,8 +27,8 @@
 <section id="auth" class="page active">
   <div class="card">
     <h2>Login / Sign Up</h2>
-    <input id="username" placeholder="Username">
-    <input id="password" type="password" placeholder="Password">
+    <input id="user" placeholder="Username" />
+    <input id="pass" type="password" placeholder="Password" />
     <button class="btn" onclick="login()">Login</button>
     <button class="btn btn-outline" onclick="signup()">Sign Up</button>
   </div>
@@ -36,37 +37,28 @@
 <!-- TEST INTRO -->
 <section id="testIntro" class="page">
   <div class="card">
-    <h2>English Level Test</h2>
-    <p>50 real questions</p>
+    <h2>Ready for the English Test?</h2>
+    <p>15 quick questions • 3–5 minutes</p>
     <button class="btn" onclick="startTest()">Start Test</button>
-    <button class="back-btn" onclick="showPage('auth')">← Back</button>
+    <button class="back-btn" onclick="goHome()">← Back</button>
   </div>
 </section>
 
 <!-- TEST -->
 <section id="test" class="page">
   <div class="card">
-    <h3 id="questionText"></h3>
-    <div id="options"></div>
-  </div>
-</section>
-
-<!-- RESULT -->
-<section id="result" class="page">
-  <div class="card">
-    <h2 id="resultText"></h2>
-    <button class="btn" onclick="loadDashboard()">Continue</button>
+    <div id="testQ"></div>
+    <div id="testOpts"></div>
   </div>
 </section>
 
 <!-- DASHBOARD -->
-<section id="dashboard" class="page">
+<section id="dash" class="page">
   <div class="card">
-    <h2>Dashboard</h2>
-    <p>Your level: <b id="userLevel"></b></p>
-    <button class="btn" onclick="loadGrammar()">Grammar</button>
-    <button class="btn" onclick="loadPractice()">Practice</button>
-    <button class="btn" onclick="loadEssay()">Essay</button>
+    <h2 id="welcome"></h2>
+    <button class="btn" onclick="showGrammar()">Grammar</button>
+    <button class="btn" onclick="startPractice()">Practice</button>
+    <button class="btn" onclick="startEssay()">Essay</button>
     <button class="btn btn-danger" onclick="logout()">Logout</button>
   </div>
 </section>
@@ -74,18 +66,34 @@
 <!-- GRAMMAR -->
 <section id="grammar" class="page">
   <div class="card">
-    <h2>Grammar</h2>
-    <div id="grammarContent"></div>
-    <button class="back-btn" onclick="showPage('dashboard')">← Back</button>
+    <h2>Grammar (B1–C1)</h2>
+
+    <div class="grammar-rule">
+      Present Perfect:<br />
+      <b>Subject + have/has + Past Participle</b>
+    </div>
+
+    <div class="grammar-rule">
+      Conditionals (2nd):<br />
+      <b>If + past simple, would + verb</b>
+    </div>
+
+    <div class="grammar-rule">
+      Passive Voice:<br />
+      <b>Object + be + past participle</b>
+    </div>
+
+    <button class="back-btn" onclick="goDash()">← Back</button>
   </div>
 </section>
 
 <!-- PRACTICE -->
 <section id="practice" class="page">
   <div class="card">
-    <h2 id="practiceQuestion"></h2>
-    <div id="practiceOptions"></div>
-    <button class="back-btn" onclick="showPage('dashboard')">← Back</button>
+    <div id="pQ"></div>
+    <div id="pOpts"></div>
+    <button class="btn" onclick="nextPractice()">Next</button>
+    <button class="back-btn" onclick="goDash()">← Back</button>
   </div>
 </section>
 
@@ -93,10 +101,12 @@
 <section id="essay" class="page">
   <div class="card">
     <div class="essay-title" id="essayTitle"></div>
-    <textarea id="essayText" rows="6" placeholder="Write at least 80 words..."></textarea>
+    <textarea id="essayText" rows="6"
+      placeholder="Write at least 80 words..."></textarea>
+    <div class="word-count" id="wc"></div>
     <button class="btn" onclick="checkEssay()">Check Essay</button>
-    <pre id="essayFeedback" class="ai-feedback"></pre>
-    <button class="back-btn" onclick="showPage('dashboard')">← Back</button>
+    <div class="ai-feedback" id="essayFB"></div>
+    <button class="back-btn" onclick="goDash()">← Back</button>
   </div>
 </section>
 
