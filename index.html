@@ -37,7 +37,7 @@
 <section id="testIntro" class="page">
   <div class="card">
     <h2>English Level Test</h2>
-    <p>10 real grammar questions</p>
+    <p>50 real questions</p>
     <button class="btn" onclick="startTest()">Start Test</button>
     <button class="back-btn" onclick="showPage('auth')">← Back</button>
   </div>
@@ -46,8 +46,8 @@
 <!-- TEST -->
 <section id="test" class="page">
   <div class="card">
-    <div id="questionText" class="question"></div>
-    <div id="options" class="options"></div>
+    <h3 id="questionText"></h3>
+    <div id="options"></div>
   </div>
 </section>
 
@@ -83,9 +83,8 @@
 <!-- PRACTICE -->
 <section id="practice" class="page">
   <div class="card">
-    <h2>Practice</h2>
-    <p id="practiceQuestion"></p>
-    <button class="btn" onclick="nextPractice()">Next</button>
+    <h2 id="practiceQuestion"></h2>
+    <div id="practiceOptions"></div>
     <button class="back-btn" onclick="showPage('dashboard')">← Back</button>
   </div>
 </section>
@@ -94,9 +93,9 @@
 <section id="essay" class="page">
   <div class="card">
     <div class="essay-title" id="essayTitle"></div>
-    <textarea id="essayText" rows="6" placeholder="Write your essay..."></textarea>
+    <textarea id="essayText" rows="6" placeholder="Write at least 80 words..."></textarea>
     <button class="btn" onclick="checkEssay()">Check Essay</button>
-    <div id="essayFeedback" class="ai-feedback"></div>
+    <pre id="essayFeedback" class="ai-feedback"></pre>
     <button class="back-btn" onclick="showPage('dashboard')">← Back</button>
   </div>
 </section>
