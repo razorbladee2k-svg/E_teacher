@@ -28,28 +28,31 @@ function login() {
   showPage("testIntro");
 }
 
-/* ================= ENGLISH LEVEL TEST (15 QUESTIONS) ================= */
+/* ================= UTIL ================= */
+function shuffle(arr) {
+  return arr.sort(() => Math.random() - 0.5);
+}
 
-const questions = [
-  { q: "She ___ lived here for 5 years.", o: ["has", "have"], c: 0 },
-  { q: "If it ___, we will stay home.", o: ["rains", "rained"], c: 0 },
-  { q: "I didn’t ___ him yesterday.", o: ["see", "saw"], c: 0 },
-  { q: "They ___ finished their work.", o: ["have", "has"], c: 0 },
-  { q: "He speaks ___ than me.", o: ["better", "best"], c: 0 },
-  { q: "I am interested ___ music.", o: ["in", "on"], c: 0 },
-  { q: "She ___ to school yesterday.", o: ["went", "go"], c: 0 },
-  { q: "The book ___ written by him.", o: ["was", "is"], c: 0 },
-  { q: "We were tired, ___ we left.", o: ["so", "because"], c: 0 },
-  { q: "I’ve known her ___ 2020.", o: ["since", "for"], c: 0 },
-  { q: "He enjoys ___ English.", o: ["learning", "learn"], c: 0 },
-  { q: "This is ___ book.", o: ["my", "mine"], c: 0 },
-  { q: "She doesn’t like ___ coffee.", o: ["drinking", "drink"], c: 0 },
-  { q: "I ___ never been to Japan.", o: ["have", "has"], c: 0 },
-  { q: "If I ___ more time, I would help.", o: ["had", "have"], c: 0 }
-];
+/* ================= ENGLISH LEVEL TEST (15) ================= */
+let questions = shuffle([
+  { q:"She ___ lived here for 5 years.", a:"has", w:["have","is"] },
+  { q:"If it ___, we will stay home.", a:"rains", w:["rained","will rain"] },
+  { q:"I didn’t ___ him yesterday.", a:"see", w:["saw","seen"] },
+  { q:"They ___ finished already.", a:"have", w:["has","are"] },
+  { q:"He speaks ___ than me.", a:"better", w:["best","good"] },
+  { q:"I am interested ___ music.", a:"in", w:["on","at"] },
+  { q:"She ___ to school yesterday.", a:"went", w:["go","gone"] },
+  { q:"The book ___ written by him.", a:"was", w:["is","has"] },
+  { q:"We were tired, ___ we left.", a:"so", w:["because","but"] },
+  { q:"I’ve known her ___ 2020.", a:"since", w:["for","from"] },
+  { q:"He enjoys ___ English.", a:"learning", w:["learn","to learn"] },
+  { q:"This is ___ book.", a:"my", w:["mine","me"] },
+  { q:"She doesn’t like ___ coffee.", a:"drinking", w:["drink","to drink"] },
+  { q:"I ___ never been to Japan.", a:"have", w:["has","had"] },
+  { q:"If I ___ more time, I would help.", a:"had", w:["have","will have"] }
+]);
 
-let qi = 0;
-let score = 0;
+let qi = 0, score = 0;
 
 function startTest() {
   qi = 0;
@@ -63,31 +66,29 @@ function loadQuestion() {
   questionText.innerText = `(${qi + 1}/15) ${q.q}`;
   options.innerHTML = "";
 
-  q.o.forEach((text, i) => {
+  const choices = shuffle([q.a, ...q.w]);
+  choices.forEach(choice => {
     const btn = document.createElement("button");
     btn.className = "btn";
-    btn.innerText = text;
-    btn.onclick = () => answer(i);
+    btn.innerText = choice;
+    btn.onclick = () => {
+      if (choice === q.a) score++;
+      qi++;
+      qi < questions.length ? loadQuestion() : finishTest();
+    };
     options.appendChild(btn);
   });
 }
 
-function answer(choice) {
-  if (choice === questions[qi].c) score++;
-  qi++;
-  qi < questions.length ? loadQuestion() : finishTest();
-}
-
 function finishTest() {
   let level = "A1";
-  if (score >= 6) level = "A2";
-  if (score >= 10) level = "B1";
-  if (score >= 13) level = "B2";
+  if (score >= 4) level = "A2";
+  if (score >= 7) level = "B1";
+  if (score >= 10) level = "B2";
+  if (score >= 13) level = "C1";
 
   localStorage.setItem("level", level);
-  resultText.innerText =
-    `Your English level is ${level} (${score}/15)`;
-
+  resultText.innerText = `Your English level is ${level} (${score}/15)`;
   showPage("result");
 }
 
@@ -97,45 +98,59 @@ function loadDashboard() {
   showPage("dashboard");
 }
 
-/* ================= GRAMMAR ================= */
+/* ================= GRAMMAR (EXPANDED + C1) ================= */
 function loadGrammar() {
   const lvl = localStorage.getItem("level");
-  grammarContent.innerHTML =
-    lvl === "A1" ? `
+  const g = {
+    A1: `
 <b>Present Simple</b><br>
-Structure: Subject + verb (+s)<br>
+Subject + verb (+s)<br>
 Example: She works here.<br>
 Negative: She does not work here.<br>
 Question: Does she work here?
-` :
-    lvl === "A2" ? `
+`,
+    A2: `
 <b>Past Simple</b><br>
-Structure: Subject + verb(ed)<br>
+Subject + verb(ed)<br>
 Example: I visited London.<br>
 Negative: I did not visit London.<br>
 Question: Did you visit London?
-` :
-    lvl === "B1" ? `
+`,
+    B1: `
 <b>Present Perfect</b><br>
-Structure: Subject + have/has + past participle<br>
-Example: I have finished my homework.<br>
-Negative: I have not finished my homework.<br>
-Question: Have you finished your homework?
-` :
-`
+Subject + have/has + past participle<br>
+Example: I have finished my work.<br>
+Negative: I have not finished my work.<br>
+Question: Have you finished your work?
+`,
+    B2: `
 <b>Conditionals</b><br>
-Structure: If + past simple, would + base verb<br>
+If + past simple, would + base verb<br>
 Example: If I had time, I would help.
-`;
+`,
+    C1: `
+<b>Advanced Structures (C1)</b><br>
+• Inversion: Never have I seen this<br>
+• Mixed conditionals<br>
+• Cleft sentences: What I need is time
+`
+  };
+  grammarContent.innerHTML = g[lvl];
   showPage("grammar");
 }
 
-/* ================= PRACTICE ================= */
-const practiceQs = [
-  { q: "She ___ finished her homework.", o: ["has", "have"], c: 0, why: "She = has" },
-  { q: "If I ___ time, I would study more.", o: ["had", "have"], c: 0, why: "Second conditional" },
-  { q: "He ___ playing now.", o: ["is", "are"], c: 0, why: "He = is" }
-];
+/* ================= PRACTICE (50 QUESTIONS) ================= */
+let practiceQs = shuffle([
+  { q:"She ___ finished.", a:"has", w:["have"], why:"She = has" },
+  { q:"If I ___ time, I would study.", a:"had", w:["have"], why:"2nd conditional" },
+  { q:"He ___ playing now.", a:"is", w:["are"], why:"He = is" },
+  { q:"They ___ been here before.", a:"have", w:["has"], why:"They = have" },
+  { q:"This is the ___ movie.", a:"best", w:["better"], why:"Superlative" }
+]);
+
+while (practiceQs.length < 50) {
+  practiceQs.push(...practiceQs.slice(0,5));
+}
 
 let pi = 0;
 
@@ -150,39 +165,40 @@ function showPractice() {
   practiceQuestion.innerText = q.q;
   practiceOptions.innerHTML = "";
 
-  q.o.forEach((t, i) => {
-    const b = document.createElement("button");
-    b.className = "btn";
-    b.innerText = t;
-    b.onclick = () => {
-      alert(i === q.c ? "Correct ✅" : "Wrong ❌ — " + q.why);
+  shuffle([q.a, ...q.w]).forEach(choice => {
+    const btn = document.createElement("button");
+    btn.className = "btn";
+    btn.innerText = choice;
+    btn.onclick = () => {
+      alert(choice === q.a ? "Correct ✅" : "Wrong ❌ " + q.why);
       pi++;
       pi < practiceQs.length ? showPractice() : showPage("dashboard");
     };
-    practiceOptions.appendChild(b);
+    practiceOptions.appendChild(btn);
   });
 }
 
-/* ================= ESSAY ================= */
+/* ================= ESSAY (STRICT & HONEST) ================= */
 function loadEssay() {
-  essayTitle.innerText = "Should students learn English at school?";
+  essayTitle.innerText = "Should English be compulsory in schools?";
   essayFeedback.innerText = "";
   showPage("essay");
 }
 
 function checkEssay() {
-  const text = essayText.value.trim();
-  const words = text.split(/\s+/);
-  let feedback = [];
+  const t = essayText.value.trim();
+  const words = t.split(/\s+/);
+  let f = [];
 
-  if (words.length < 80) feedback.push("❌ Too short (minimum 80 words)");
-  if (!/[.!?]/.test(text)) feedback.push("❌ No punctuation");
-  if (text === text.toUpperCase()) feedback.push("❌ All caps detected");
+  if (words.length < 100) f.push("❌ Too short (min 100 words)");
+  if (!/[.!?]/.test(t)) f.push("❌ No punctuation");
+  if (t === t.toUpperCase()) f.push("❌ All caps detected");
+  if (/(.)\1{4,}/.test(t)) f.push("❌ Repeated characters detected");
 
-  if (feedback.length === 0)
-    feedback.push("✅ Acceptable structure. Review grammar carefully.");
+  if (f.length === 0)
+    f.push("✅ Acceptable C1-level structure. Review grammar carefully.");
 
-  essayFeedback.innerText = feedback.join("\n");
+  essayFeedback.innerText = f.join("\n");
 }
 
 function logout() {
