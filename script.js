@@ -1,77 +1,66 @@
-let level = "B1";
-let qIndex = 0;
+let level = "";
+let questionIndex = 0;
 
 const questions = [
-  "Choose the correct sentence:",
-  "Which tense fits: I ___ lived here for years",
-  "Present Perfect structure is?",
-  "She ___ finished her homework.",
-  "They ___ been to London."
+  "Choose the correct sentence.",
+  "She has ___ finished her work.",
+  "Present perfect structure is?",
+  "If I ___ more time, I would study.",
+  "They have ___ to London."
 ];
 
 const essayTitles = [
-  "Is technology good for students?",
-  "Should school be online?",
+  "Is technology good for education?",
+  "Should students wear uniforms?",
   "Advantages of learning English",
-  "Social media and education",
-  "Learning English in 2025"
+  "Social media in modern life"
 ];
 
-/* ---------- PAGE SYSTEM ---------- */
 function showPage(id) {
   document.querySelectorAll(".page").forEach(p => {
     p.classList.remove("active");
   });
+  document.getElementById(id).classList.add("active");
 
-  const page = document.getElementById(id);
-  if (page) page.classList.add("active");
-
-  // Run page-specific logic
   if (id === "practice") loadPractice();
   if (id === "essay") loadEssay();
 }
 
-/* ---------- DARK MODE ---------- */
 function toggleDark() {
   document.body.classList.toggle("dark");
 }
 
-/* ---------- AUTH ---------- */
 function login() {
   showPage("level");
 }
 
-function setLevel(l) {
-  level = l;
-  const welcome = document.getElementById("welcome");
-  if (welcome) welcome.innerText = `Welcome (${level})`;
+function setLevel(lvl) {
+  level = lvl;
+  document.getElementById("welcome").innerText =
+    `Welcome (${level})`;
   showPage("dashboard");
 }
 
-/* ---------- PRACTICE ---------- */
 function loadPractice() {
-  qIndex = 0;
-  const qText = document.getElementById("qText");
-  if (qText) qText.innerText = questions[qIndex];
+  questionIndex = 0;
+  document.getElementById("qText").innerText = questions[0];
 }
 
-function answer() {
-  qIndex++;
-  if (qIndex >= questions.length) {
+function nextQuestion() {
+  questionIndex++;
+  if (questionIndex >= questions.length) {
     alert("Practice finished!");
     showPage("dashboard");
     return;
   }
-  document.getElementById("qText").innerText = questions[qIndex];
+  document.getElementById("qText").innerText =
+    questions[questionIndex];
 }
 
-/* ---------- ESSAY ---------- */
 function loadEssay() {
   const title = document.getElementById("essayTitle");
   const text = document.getElementById("essayText");
   const count = document.getElementById("count");
-
-  if (!title || !text || !count) return;
 
   title.innerText =
     essayTitles[Math.floor(Math.random() * essayTitles.length)];
@@ -86,5 +75,5 @@ function loadEssay() {
 }
 
 function checkEssay() {
-  alert("AI Essay Checker will be connected here (OpenAI API ready)");
+  alert("AI Essay Checker coming next (OpenAI API)");
 }
