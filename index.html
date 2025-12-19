@@ -1,84 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>eTeacher</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>eTeacher</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
-  <h1 class="logo">eTeacher</h1>
-  <button class="icon-btn" onclick="toggleDark()">🌙</button>
+  <div class="logo">eTeacher</div>
+  <div class="header-actions">
+    <a class="vocab-link"
+       href="https://www.youtube.com/@4000EssentialEnglishWords"
+       target="_blank">Need vocabulary?</a>
+    <button class="dark-toggle" onclick="toggleDark()">🌙</button>
+  </div>
 </header>
 
-<!-- HOME -->
-<section id="home" class="page active">
-  <h2 class="title">Learn English with us</h2>
-  <p class="subtitle">Grammar • Practice • Writing</p>
+<div class="hero">
+  <h1>Learn English with us</h1>
+  <p>Grammar • Practice • Writing</p>
+</div>
+
+<!-- AUTH -->
+<section id="auth" class="page active">
   <div class="card">
-    <button onclick="showPage('levelIntro')">Get Started</button>
+    <h2>Login / Sign Up</h2>
+    <input id="username" placeholder="Username">
+    <input id="password" type="password" placeholder="Password">
+    <button class="btn" onclick="login()">Login</button>
+    <button class="btn btn-outline" onclick="signup()">Sign Up</button>
   </div>
 </section>
 
-<!-- LEVEL INTRO -->
-<section id="levelIntro" class="page">
+<!-- TEST INTRO -->
+<section id="testIntro" class="page">
   <div class="card">
-    <h3>Ready for an English test?</h3>
-    <p>10 questions • Takes 3 minutes</p>
-    <button onclick="startTest()">Start Test</button>
-    <button class="back" onclick="showPage('home')">← Back</button>
+    <h2>English Level Test</h2>
+    <p>10 real grammar questions</p>
+    <button class="btn" onclick="startTest()">Start Test</button>
+    <button class="back-btn" onclick="showPage('auth')">← Back</button>
   </div>
 </section>
 
-<!-- LEVEL TEST -->
-<section id="levelTest" class="page">
+<!-- TEST -->
+<section id="test" class="page">
   <div class="card">
-    <h3 id="testQuestion"></h3>
-    <div id="answers"></div>
+    <div id="questionText" class="question"></div>
+    <div id="options" class="options"></div>
+  </div>
+</section>
+
+<!-- RESULT -->
+<section id="result" class="page">
+  <div class="card">
+    <h2 id="resultText"></h2>
+    <button class="btn" onclick="loadDashboard()">Continue</button>
   </div>
 </section>
 
 <!-- DASHBOARD -->
 <section id="dashboard" class="page">
   <div class="card">
-    <h3 id="welcome"></h3>
-    <button onclick="showPage('grammar')">Grammar</button>
-    <button onclick="showPage('practiceIntro')">Practice</button>
-    <button onclick="showPage('essay')">Essay</button>
-    <a class="link" href="https://www.youtube.com/@4000EssentialEnglishWords" target="_blank">
-      Need vocabulary?
-    </a>
+    <h2>Dashboard</h2>
+    <p>Your level: <b id="userLevel"></b></p>
+    <button class="btn" onclick="loadGrammar()">Grammar</button>
+    <button class="btn" onclick="loadPractice()">Practice</button>
+    <button class="btn" onclick="loadEssay()">Essay</button>
+    <button class="btn btn-danger" onclick="logout()">Logout</button>
   </div>
 </section>
 
-<!-- PRACTICE INTRO -->
-<section id="practiceIntro" class="page">
+<!-- GRAMMAR -->
+<section id="grammar" class="page">
   <div class="card">
-    <h3>Practice Session</h3>
-    <p>Answer real grammar questions</p>
-    <button onclick="startPractice()">Start Practice</button>
-    <button class="back" onclick="showPage('dashboard')">← Back</button>
+    <h2>Grammar</h2>
+    <div id="grammarContent"></div>
+    <button class="back-btn" onclick="showPage('dashboard')">← Back</button>
   </div>
 </section>
 
 <!-- PRACTICE -->
 <section id="practice" class="page">
   <div class="card">
-    <h3 id="practiceQ"></h3>
-    <div id="practiceAnswers"></div>
+    <h2>Practice</h2>
+    <p id="practiceQuestion"></p>
+    <button class="btn" onclick="nextPractice()">Next</button>
+    <button class="back-btn" onclick="showPage('dashboard')">← Back</button>
   </div>
 </section>
 
 <!-- ESSAY -->
 <section id="essay" class="page">
   <div class="card">
-    <h3 id="essayTitle"></h3>
-    <textarea id="essayText" placeholder="Write at least 80 words..."></textarea>
-    <p id="wordCount">0 words</p>
-    <button onclick="checkEssay()">Check Essay</button>
-    <button class="back" onclick="showPage('dashboard')">← Back</button>
-    <div id="essayFeedback"></div>
+    <div class="essay-title" id="essayTitle"></div>
+    <textarea id="essayText" rows="6" placeholder="Write your essay..."></textarea>
+    <button class="btn" onclick="checkEssay()">Check Essay</button>
+    <div id="essayFeedback" class="ai-feedback"></div>
+    <button class="back-btn" onclick="showPage('dashboard')">← Back</button>
   </div>
 </section>
 
