@@ -1,122 +1,153 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
+/* ===== PAGE ===== */
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
 }
 
-body {
-  min-height: 100vh;
-  background: linear-gradient(180deg, #2f6bff, #2456d8);
-  color: white;
+function toggleDark() {
+  document.body.classList.toggle("dark");
 }
 
-body.dark {
-  background: linear-gradient(180deg, #0f172a, #020617);
+/* ===== AUTH ===== */
+function signup() {
+  const u = username.value.trim();
+  const p = password.value.trim();
+  if (!u || !p) return alert("Fill all fields");
+  if (localStorage.getItem("acc_" + u)) return alert("User exists");
+  localStorage.setItem("acc_" + u, JSON.stringify({ p }));
+  alert("Account created. Now login.");
 }
 
-header {
-  padding: 20px 40px;
-  display: flex;
-  justify-content: space-between;
+function login() {
+  const u = username.value.trim();
+  const p = password.value.trim();
+  const acc = localStorage.getItem("acc_" + u);
+  if (!acc) return alert("Account does not exist");
+  if (JSON.parse(acc).p !== p) return alert("Wrong password");
+  localStorage.setItem("currentUser", u);
+  showPage("testIntro");
 }
 
-.logo {
-  font-size: 24px;
-  font-weight: bold;
+/* ===== TEST (50 QUESTIONS) ===== */
+const questions = [];
+while (questions.length < 50) {
+  questions.push(
+    { q: "She ___ lived here for 5 years.", o: ["has", "have"], c: 0 },
+    { q: "If it ___, we will stay home.", o: ["rains", "rained"], c: 0 },
+    { q: "He speaks ___ than me.", o: ["better", "best"], c: 0 },
+    { q: "They ___ finished.", o: ["have", "has"], c: 0 },
+    { q: "I am interested ___ music.", o: ["in", "on"], c: 0 }
+  );
 }
 
-.header-actions {
-  display: flex;
-  gap: 15px;
-  align-items: center;
+let qi = 0, score = 0;
+
+function startTest() {
+  qi = 0; score = 0;
+  showPage("test");
+  loadQ();
 }
 
-.vocab-link {
-  color: white;
-  text-decoration: none;
-  font-weight: 600;
+function loadQ() {
+  const q = questions[qi];
+  questionText.innerText = `(${qi + 1}/50) ${q.q}`;
+  options.innerHTML = "";
+  q.o.forEach((t, i) => {
+    const b = document.createElement("button");
+    b.className = "btn";
+    b.innerText = t;
+    b.onclick = () => {
+      if (i === q.c) score++;
+      qi++;
+      qi < 50 ? loadQ() : finishTest();
+    };
+    options.appendChild(b);
+  });
 }
 
-.dark-toggle {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
+function finishTest() {
+  let lvl = "A1";
+  if (score >= 15) lvl = "A2";
+  if (score >= 25) lvl = "B1";
+  if (score >= 35) lvl = "B2";
+  localStorage.setItem("level", lvl);
+  resultText.innerText = `Your English level is ${lvl} (${score}/50)`;
+  showPage("result");
 }
 
-.hero {
-  text-align: center;
-  margin-top: 40px;
+/* ===== DASHBOARD ===== */
+function loadDashboard() {
+  userLevel.innerText = localStorage.getItem("level");
+  showPage("dashboard");
 }
 
-.page {
-  display: none;
+/* ===== GRAMMAR ===== */
+function loadGrammar() {
+  const lvl = localStorage.getItem("level");
+  grammarContent.innerText =
+    lvl === "A1" ? "Present Simple: Subject + Verb" :
+    lvl === "A2" ? "Past Simple: Subject + Verb(ed)" :
+    lvl === "B1" ? "Present Perfect: Subject + have/has + V3" :
+                   "Conditionals: If + past, would + verb";
+  showPage("grammar");
 }
 
-.page.active {
-  display: block;
+/* ===== PRACTICE ===== */
+const practiceQs = [
+  { q: "She ___ finished.", o: ["has", "have"], c: 0 },
+  { q: "If I ___ time, I would help.", o: ["had", "have"], c: 0 }
+];
+
+let pi = 0;
+
+function loadPractice() {
+  pi = 0;
+  showPractice();
+  showPage("practice");
 }
 
-.card {
-  background: white;
-  color: #111;
-  width: 380px;
-  margin: 40px auto;
-  padding: 30px;
-  border-radius: 16px;
-  text-align: center;
+function showPractice() {
+  const q = practiceQs[pi];
+  practiceQuestion.innerText = q.q;
+  practiceOptions.innerHTML = "";
+  q.o.forEach((t, i) => {
+    const b = document.createElement("button");
+    b.className = "btn";
+    b.innerText = t;
+    b.onclick = () => {
+      alert(i === q.c ? "Correct" : "Wrong");
+      pi++;
+      pi < practiceQs.length ? showPractice() : showPage("dashboard");
+    };
+    practiceOptions.appendChild(b);
+  });
 }
 
-body.dark .card {
-  background: #111827;
-  color: white;
+/* ===== ESSAY ===== */
+const titles = [
+  "Why English is important",
+  "Technology and education",
+  "My future goals"
+];
+
+function loadEssay() {
+  essayTitle.innerText = titles[Math.floor(Math.random() * titles.length)];
+  essayFeedback.innerText = "";
+  showPage("essay");
 }
 
-input, textarea {
-  width: 100%;
-  padding: 12px;
-  margin-top: 12px;
+function checkEssay() {
+  const text = essayText.value.trim();
+  const words = text.split(/\s+/).length;
+  if (words < 80) {
+    essayFeedback.innerText = "Essay too short (min 80 words).";
+  } else {
+    essayFeedback.innerText =
+      "Good structure. Check verb tenses and articles.";
+  }
 }
 
-.btn {
-  width: 100%;
-  padding: 14px;
-  margin-top: 14px;
-  background: #5b5cf6;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-.btn-outline {
-  background: transparent;
-  border: 2px solid #5b5cf6;
-  color: #5b5cf6;
-}
-
-.btn-danger {
-  background: #dc2626;
-}
-
-.back-btn {
-  margin-top: 20px;
-  background: none;
-  border: none;
-  color: #5b5cf6;
-  cursor: pointer;
-}
-
-.ai-feedback {
-  margin-top: 10px;
-  background: #f1f5f9;
-  color: #111;
-  padding: 10px;
-  border-radius: 8px;
-}
-
-body.dark .ai-feedback {
-  background: #020617;
-  color: #e5e7eb;
+function logout() {
+  localStorage.clear();
+  showPage("auth");
 }
