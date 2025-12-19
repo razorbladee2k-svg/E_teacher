@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>eTeacher</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
   <div class="logo">eTeacher</div>
   <div class="header-actions">
-    <a class="vocab" href="https://www.youtube.com/@4000EssentialEnglishWords" target="_blank">
+    <a class="vocab" target="_blank"
+       href="https://www.youtube.com/@4000EssentialEnglishWords">
       Need vocabulary?
     </a>
     <button class="dark-toggle" onclick="toggleDark()">🌙</button>
@@ -37,7 +38,7 @@
 <section id="testIntro" class="page">
   <div class="card">
     <h2>English Level Test</h2>
-    <p>15 quick questions • No stress</p>
+    <p>15 questions • 3–5 minutes</p>
     <button class="btn" onclick="startTest()">Start Test</button>
   </div>
 </section>
@@ -47,7 +48,6 @@
   <div class="card">
     <div id="testQuestion"></div>
     <div id="testOptions"></div>
-    <button class="btn" onclick="nextTest()">Next</button>
   </div>
 </section>
 
@@ -66,16 +66,16 @@
 <!-- GRAMMAR -->
 <section id="grammar" class="page">
   <div class="card">
-    <h2>Grammar</h2>
+    <h2>Grammar (Core)</h2>
 
     <div class="grammar-rule">
-      Present Simple: Subject + verb (+s)
+      Present Simple: Subject + verb (+s/es)
     </div>
     <div class="grammar-rule">
       Present Perfect: Subject + have/has + past participle
     </div>
     <div class="grammar-rule">
-      Passive Voice: Object + be + past participle
+      Passive Voice: Subject + be + past participle
     </div>
     <div class="grammar-rule">
       Conditionals: If + present, will + verb
@@ -90,7 +90,7 @@
   <div class="card">
     <div id="practiceQ"></div>
     <div id="practiceOpts"></div>
-    <p id="practiceFeedback"></p>
+    <div id="practiceFeedback" class="feedback"></div>
     <button class="btn" onclick="nextPractice()">Next</button>
     <button class="back-btn" onclick="show('dashboard')">← Back</button>
   </div>
@@ -100,7 +100,8 @@
 <section id="essay" class="page">
   <div class="card">
     <div class="essay-title" id="essayTitle"></div>
-    <textarea id="essayText" rows="6" placeholder="Write your essay..."></textarea>
+    <textarea id="essayText" rows="6"
+      placeholder="Write your essay..."></textarea>
     <button class="btn" onclick="checkEssay()">Check Essay</button>
     <div id="essayFeedback" class="ai-feedback"></div>
     <button class="back-btn" onclick="show('dashboard')">← Back</button>
