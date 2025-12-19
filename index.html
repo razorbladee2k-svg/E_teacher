@@ -9,9 +9,8 @@
 
 <header>
   <div class="logo">eTeacher</div>
-
   <div class="header-actions">
-    <a href="https://www.youtube.com/@4000EssentialEnglishWords" target="_blank" class="vocab">
+    <a class="vocab" href="https://www.youtube.com/@4000EssentialEnglishWords" target="_blank">
       Need vocabulary?
     </a>
     <button class="dark-toggle" onclick="toggleDark()">🌙</button>
@@ -38,35 +37,28 @@
 <section id="testIntro" class="page">
   <div class="card">
     <h2>English Level Test</h2>
-    <p>15 real questions</p>
+    <p>15 questions • Real grammar & usage</p>
     <button class="btn" onclick="startTest()">Start Test</button>
-    <button class="back-btn" onclick="show('login')">← Back</button>
+    <button class="back-btn" onclick="goHome()">← Back</button>
   </div>
 </section>
 
 <!-- TEST -->
 <section id="test" class="page">
   <div class="card">
-    <div id="testQ" class="question"></div>
-    <div id="testOpts" class="options"></div>
+    <div id="testQuestion"></div>
+    <div id="testOptions"></div>
+    <button class="btn" onclick="nextTest()">Next</button>
   </div>
 </section>
 
-<!-- RESULT -->
-<section id="result" class="page">
-  <div class="card">
-    <h2 id="levelResult"></h2>
-    <button class="btn" onclick="show('menu')">Continue</button>
-  </div>
-</section>
-
-<!-- MENU -->
-<section id="menu" class="page">
+<!-- DASHBOARD -->
+<section id="dashboard" class="page">
   <div class="card">
     <h2 id="welcome"></h2>
     <button class="btn" onclick="show('grammar')">Grammar</button>
-    <button class="btn" onclick="show('practice')">Practice</button>
-    <button class="btn" onclick="show('essay')">Essay</button>
+    <button class="btn" onclick="startPractice()">Practice</button>
+    <button class="btn" onclick="startEssay()">Essay</button>
     <button class="btn btn-danger" onclick="logout()">Logout</button>
   </div>
 </section>
@@ -74,35 +66,31 @@
 <!-- GRAMMAR -->
 <section id="grammar" class="page">
   <div class="card">
-    <h2>Grammar Rules</h2>
+    <h2>Grammar (B1)</h2>
 
     <div class="grammar-rule">
-      Present Simple: Subject + base verb (+s/es)
-    </div>
-    <div class="grammar-rule">
-      Present Continuous: Subject + am/is/are + verb-ing
-    </div>
-    <div class="grammar-rule">
-      Present Perfect: Subject + have/has + past participle
-    </div>
-    <div class="grammar-rule">
-      First Conditional: If + present, will + verb
-    </div>
-    <div class="grammar-rule">
-      Passive Voice: Object + be + past participle
+      Present Perfect: Subject + have/has + Past Participle
     </div>
 
-    <button class="back-btn" onclick="show('menu')">← Back</button>
+    <div class="grammar-rule">
+      Passive Voice: Subject + be + Past Participle
+    </div>
+
+    <div class="grammar-rule">
+      Conditionals: If + present, will + verb
+    </div>
+
+    <button class="back-btn" onclick="show('dashboard')">← Back</button>
   </div>
 </section>
 
 <!-- PRACTICE -->
 <section id="practice" class="page">
   <div class="card">
-    <div id="practiceQ" class="question"></div>
-    <div id="practiceOpts" class="options"></div>
+    <div id="practiceQ"></div>
+    <div id="practiceOpts"></div>
     <button class="btn" onclick="nextPractice()">Next</button>
-    <button class="back-btn" onclick="show('menu')">← Back</button>
+    <button class="back-btn" onclick="show('dashboard')">← Back</button>
   </div>
 </section>
 
@@ -111,9 +99,10 @@
   <div class="card">
     <div class="essay-title" id="essayTitle"></div>
     <textarea id="essayText" rows="6" placeholder="Write your essay..."></textarea>
+    <div class="word-count" id="wordCount">0 words</div>
     <button class="btn" onclick="checkEssay()">Check Essay</button>
-    <div id="essayFeedback" class="ai-feedback"></div>
-    <button class="back-btn" onclick="show('menu')">← Back</button>
+    <div class="ai-feedback" id="essayFeedback"></div>
+    <button class="back-btn" onclick="show('dashboard')">← Back</button>
   </div>
 </section>
 
