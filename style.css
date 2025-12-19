@@ -6,40 +6,40 @@
 }
 
 body {
-  background: linear-gradient(180deg, #2f6bff, #2456d8);
-  color: white;
   min-height: 100vh;
+  background: linear-gradient(180deg,#2f6bff,#2456d8);
+  color: white;
 }
 
 body.dark {
-  background: linear-gradient(180deg, #020617, #020617);
-  color: #e5e7eb;
+  background: linear-gradient(180deg,#020617,#0f172a);
 }
 
 header {
+  padding: 20px 40px;
   display: flex;
   justify-content: space-between;
-  padding: 20px 40px;
 }
 
 .logo {
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 26px;
+  font-weight: 800;
 }
 
 .header-actions {
   display: flex;
-  gap: 12px;
+  gap: 15px;
 }
 
-.small {
-  padding: 8px 12px;
-  border-radius: 8px;
+.header-actions a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
 }
 
 .dark-toggle {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   border: none;
   cursor: pointer;
@@ -47,11 +47,11 @@ header {
 
 .hero {
   text-align: center;
-  margin-top: 30px;
+  margin-top: 40px;
 }
 
 .hero h1 {
-  font-size: 42px;
+  font-size: 40px;
 }
 
 .page {
@@ -74,21 +74,13 @@ header {
 
 body.dark .card {
   background: #111827;
-  color: #e5e7eb;
-}
-
-input, textarea {
-  width: 100%;
-  margin-top: 12px;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
+  color: white;
 }
 
 .btn {
   width: 100%;
-  margin-top: 14px;
   padding: 14px;
+  margin-top: 12px;
   border-radius: 12px;
   border: none;
   background: #5b5cf6;
@@ -106,8 +98,14 @@ input, textarea {
   background: #dc2626;
 }
 
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+}
+
 .back-btn {
-  margin-top: 20px;
+  margin-top: 15px;
   background: none;
   border: none;
   color: #5b5cf6;
@@ -116,11 +114,7 @@ input, textarea {
 
 .grammar-rule {
   background: #eef2ff;
-  padding: 12px;
-  border-radius: 10px;
-  margin-top: 12px;
-}
-
-body.dark .grammar-rule {
-  background: #1e293b;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 8px;
 }
