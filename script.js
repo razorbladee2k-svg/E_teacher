@@ -1,165 +1,148 @@
-// =====================
-// GLOBAL STATE
-// =====================
-let currentPage = "auth";
-let user = null;
-let level = null;
-let darkMode = false;
-
-// =====================
-// PAGE NAVIGATION
-// =====================
 function showPage(id) {
-  document.querySelectorAll(".page").forEach(p => {
-    p.classList.remove("active");
-  });
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
 
-// =====================
-// DARK MODE
-// =====================
 function toggleDark() {
-  darkMode = !darkMode;
-  document.body.classList.toggle("dark", darkMode);
+  document.body.classList.toggle("dark");
 }
 
-// =====================
-// AUTH
-// =====================
 function signup() {
-  const u = document.getElementById("username").value.trim();
-  const p = document.getElementById("password").value.trim();
-
-  if (!u || !p) {
-    alert("Enter username and password");
-    return;
-  }
-
-  localStorage.setItem("user", JSON.stringify({ u, p }));
-  alert("Sign up successful. Now login.");
+  alert("Sign up successful (demo)");
 }
 
 function login() {
-  const u = document.getElementById("username").value.trim();
-  const p = document.getElementById("password").value.trim();
-  const saved = JSON.parse(localStorage.getItem("user"));
-
-  if (!saved || saved.u !== u || saved.p !== p) {
-    alert("Wrong login");
-    return;
-  }
-
-  user = u;
+  const name = document.getElementById("username").value;
+  if (!name) return alert("Enter username");
+  localStorage.setItem("user", name);
   showPage("testIntro");
 }
 
-// =====================
-// TEST
-// =====================
-let testIndex = 0;
-let score = 0;
+/* ===== TEST ===== */
 
-const testQuestions = [
-  { q: "I ___ finished my homework.", a: "have" },
-  { q: "She ___ to school yesterday.", a: "went" },
-  { q: "If it rains, I ___ home.", a: "will stay" },
-  { q: "This movie is ___ than that one.", a: "better" },
-  { q: "He has lived here ___ 5 years.", a: "for" },
-  { q: "I was tired, ___ I went to bed.", a: "so" },
-  { q: "They ___ playing football now.", a: "are" },
-  { q: "The book ___ written by him.", a: "was" },
-  { q: "She speaks ___ than me.", a: "more confidently" },
-  { q: "I didn’t see ___ there.", a: "anyone" }
+const questions = [
+  { q: "If I ___ him, I will tell him.", o: ["see", "saw"], c: 0 },
+  { q: "She ___ lived here for 5 years.", o: ["has", "have"], c: 0 },
+  { q: "He is ___ than me.", o: ["taller", "tall"], c: 0 },
+  { q: "They ___ finished.", o: ["have", "has"], c: 0 },
+  { q: "I enjoy ___ music.", o: ["listening to", "listen"], c: 0 },
+  { q: "We ___ go now.", o: ["must", "must to"], c: 0 },
+  { q: "This is ___ book.", o: ["my", "mine"], c: 0 },
+  { q: "She speaks ___.", o: ["fluently", "fluent"], c: 0 },
+  { q: "He didn’t ___ come.", o: ["want to", "wanted"], c: 0 },
+  { q: "I’ve known him ___ years.", o: ["for", "since"], c: 0 }
 ];
 
+let qIndex = 0;
+let score = 0;
+
 function startTest() {
-  testIndex = 0;
+  qIndex = 0;
   score = 0;
   showPage("test");
-  renderQuestion();
+  loadQuestion();
 }
 
-function renderQuestion() {
-  const q = testQuestions[testIndex];
+function loadQuestion() {
+  const q = questions[qIndex];
   document.getElementById("questionText").innerText = q.q;
-  document.getElementById("answer").value = "";
+  const opts = document.getElementById("options");
+  opts.innerHTML = "";
+  q.o.forEach((t, i) => {
+    const b = document.createElement("button");
+    b.className = "btn";
+    b.innerText = t;
+    b.onclick = () => answer(i);
+    opts.appendChild(b);
+  });
 }
 
-function submitAnswer() {
-  const input = document.getElementById("answer").value.trim().toLowerCase();
-  if (input === testQuestions[testIndex].a) score++;
-
-  testIndex++;
-  if (testIndex < testQuestions.length) {
-    renderQuestion();
-  } else {
-    finishTest();
-  }
+function answer(i) {
+  if (i === questions[qIndex].c) score++;
+  qIndex++;
+  if (qIndex < questions.length) loadQuestion();
+  else finishTest();
 }
 
 function finishTest() {
-  if (score <= 3) level = "A1";
-  else if (score <= 6) level = "A2";
-  else if (score <= 8) level = "B1";
-  else level = "B2";
+  let level = "A1";
+  if (score >= 4) level = "A2";
+  if (score >= 6) level = "B1";
+  if (score >= 8) level = "B2";
+  localStorage.setItem("level", level);
+  document.getElementById("resultText").innerText =
+    `Your English level is ${level}`;
+  showPage("result");
+}
 
-  document.getElementById("dashboardTitle").innerText =
-    `Welcome ${user} (${level})`;
+/* ===== DASHBOARD ===== */
 
+function loadDashboard() {
+  document.getElementById("userLevel").innerText =
+    localStorage.getItem("level");
   showPage("dashboard");
 }
 
-// =====================
-// DASHBOARD
-// =====================
-function openGrammar() {
-  document.getElementById("grammarContent").innerHTML = `
-    <div class="grammar-rule">
-      <b>Present Perfect</b><br>
-      Subject + have/has + Past Participle + Object
-    </div>
-    <div class="grammar-rule">
-      <b>Conditionals</b><br>
-      If + present simple, will + verb
-    </div>
-  `;
+/* ===== GRAMMAR ===== */
+
+function loadGrammar() {
+  const level = localStorage.getItem("level");
+  let text = "";
+  if (level === "A1")
+    text = "Present Simple: Subject + Verb (+s)";
+  if (level === "A2")
+    text = "Past Simple: Subject + Verb(ed)";
+  if (level === "B1")
+    text = "Present Perfect: Subject + have/has + Past Participle";
+  if (level === "B2")
+    text = "Conditionals: If + past, would + verb";
+  document.getElementById("grammarContent").innerText = text;
   showPage("grammar");
 }
 
-function openPractice() {
+/* ===== PRACTICE ===== */
+
+const practice = [
+  "Choose the correct verb form.",
+  "Fill the blank correctly.",
+  "Pick the correct tense."
+];
+
+let p = 0;
+
+function loadPractice() {
+  p = 0;
+  nextPractice();
   showPage("practice");
 }
 
-function openEssay() {
-  randomEssay();
+function nextPractice() {
+  document.getElementById("practiceQuestion").innerText =
+    practice[p % practice.length];
+  p++;
+}
+
+/* ===== ESSAY ===== */
+
+const titles = [
+  "My Future Goals",
+  "Why English Is Important",
+  "My Favorite Technology"
+];
+
+function loadEssay() {
+  document.getElementById("essayTitle").innerText =
+    titles[Math.floor(Math.random() * titles.length)];
+  document.getElementById("essayFeedback").innerText = "";
   showPage("essay");
 }
 
-function logout() {
-  user = null;
-  showPage("auth");
-}
-
-// =====================
-// ESSAY
-// =====================
-const essayTitles = [
-  "Is technology making life better?",
-  "Should students wear uniforms?",
-  "Advantages of learning English",
-  "Social media: good or bad?"
-];
-
-function randomEssay() {
-  const t = essayTitles[Math.floor(Math.random() * essayTitles.length)];
-  document.getElementById("essayTitle").innerText = t;
-}
-
 function checkEssay() {
-  const text = document.getElementById("essayText").value;
-  const words = text.trim().split(/\s+/).length;
-
   document.getElementById("essayFeedback").innerText =
-    `Words: ${words}. AI feedback simulation: Work on clarity and grammar.`;
+    "AI Feedback: Good structure. Check verb tenses and articles.";
+}
+
+function logout() {
+  localStorage.clear();
+  showPage("auth");
 }
