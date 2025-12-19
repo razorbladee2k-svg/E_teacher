@@ -9,9 +9,9 @@
 
 <header>
   <div class="logo">eTeacher</div>
+
   <div class="header-actions">
-    <a class="vocab-btn" target="_blank"
-      href="https://www.youtube.com/@4000EssentialEnglishWords">
+    <a href="https://www.youtube.com/@4000EssentialEnglishWords" target="_blank" class="vocab">
       Need vocabulary?
     </a>
     <button class="dark-toggle" onclick="toggleDark()">🌙</button>
@@ -23,68 +23,98 @@
   <p>Grammar • Practice • Writing</p>
 </div>
 
-<!-- AUTH -->
-<section id="auth" class="card">
-  <h2>Login / Sign Up</h2>
-  <input id="username" placeholder="Username">
-  <input id="password" type="password" placeholder="Password">
-  <button class="btn" onclick="signup()">Sign Up</button>
-  <button class="btn btn-outline" onclick="login()">Login</button>
+<!-- LOGIN -->
+<section id="login" class="page active">
+  <div class="card">
+    <h2>Login / Sign Up</h2>
+    <input id="username" placeholder="Username">
+    <input id="password" type="password" placeholder="Password">
+    <button class="btn" onclick="login()">Login</button>
+    <button class="btn btn-outline" onclick="signup()">Sign Up</button>
+  </div>
 </section>
 
 <!-- TEST INTRO -->
-<section id="testIntro" class="card hidden">
-  <h2>English Level Test</h2>
-  <p>15 real grammar & usage questions</p>
-  <button class="btn" onclick="startTest()">Start Test</button>
+<section id="testIntro" class="page">
+  <div class="card">
+    <h2>English Level Test</h2>
+    <p>15 real questions</p>
+    <button class="btn" onclick="startTest()">Start Test</button>
+    <button class="back-btn" onclick="show('login')">← Back</button>
+  </div>
 </section>
 
 <!-- TEST -->
-<section id="test" class="card hidden">
-  <div id="testQuestion"></div>
-  <div id="testOptions"></div>
-  <button class="btn" onclick="nextTest()">Next</button>
+<section id="test" class="page">
+  <div class="card">
+    <div id="testQ" class="question"></div>
+    <div id="testOpts" class="options"></div>
+  </div>
 </section>
 
 <!-- RESULT -->
-<section id="result" class="card hidden">
-  <h2>Your Level</h2>
-  <p id="levelResult"></p>
-  <button class="btn" onclick="goPractice()">Go to Practice</button>
+<section id="result" class="page">
+  <div class="card">
+    <h2 id="levelResult"></h2>
+    <button class="btn" onclick="show('menu')">Continue</button>
+  </div>
 </section>
 
-<!-- PRACTICE -->
-<section id="practice" class="card hidden">
-  <h2>Practice</h2>
-  <div id="practiceQuestion"></div>
-  <div id="practiceOptions"></div>
-  <button class="btn" onclick="nextPractice()">Next</button>
+<!-- MENU -->
+<section id="menu" class="page">
+  <div class="card">
+    <h2 id="welcome"></h2>
+    <button class="btn" onclick="show('grammar')">Grammar</button>
+    <button class="btn" onclick="show('practice')">Practice</button>
+    <button class="btn" onclick="show('essay')">Essay</button>
+    <button class="btn btn-danger" onclick="logout()">Logout</button>
+  </div>
 </section>
 
 <!-- GRAMMAR -->
-<section id="grammar" class="card hidden">
-  <h2>Grammar</h2>
-  <div class="grammar-rule">
-    <strong>Present Perfect</strong><br>
-    Subject + have/has + past participle
+<section id="grammar" class="page">
+  <div class="card">
+    <h2>Grammar Rules</h2>
+
+    <div class="grammar-rule">
+      Present Simple: Subject + base verb (+s/es)
+    </div>
+    <div class="grammar-rule">
+      Present Continuous: Subject + am/is/are + verb-ing
+    </div>
+    <div class="grammar-rule">
+      Present Perfect: Subject + have/has + past participle
+    </div>
+    <div class="grammar-rule">
+      First Conditional: If + present, will + verb
+    </div>
+    <div class="grammar-rule">
+      Passive Voice: Object + be + past participle
+    </div>
+
+    <button class="back-btn" onclick="show('menu')">← Back</button>
   </div>
-  <div class="grammar-rule">
-    <strong>Conditionals</strong><br>
-    If + present, will + verb
-  </div>
-  <div class="grammar-rule">
-    <strong>Passive Voice</strong><br>
-    Object + be + past participle
+</section>
+
+<!-- PRACTICE -->
+<section id="practice" class="page">
+  <div class="card">
+    <div id="practiceQ" class="question"></div>
+    <div id="practiceOpts" class="options"></div>
+    <button class="btn" onclick="nextPractice()">Next</button>
+    <button class="back-btn" onclick="show('menu')">← Back</button>
   </div>
 </section>
 
 <!-- ESSAY -->
-<section id="essay" class="card hidden">
-  <h2>Essay Checker</h2>
-  <div class="essay-title" id="essayTitle"></div>
-  <textarea id="essayText" rows="6" placeholder="Write your essay..."></textarea>
-  <button class="btn" onclick="checkEssay()">Check Essay</button>
-  <div id="essayFeedback" class="ai-feedback"></div>
+<section id="essay" class="page">
+  <div class="card">
+    <div class="essay-title" id="essayTitle"></div>
+    <textarea id="essayText" rows="6" placeholder="Write your essay..."></textarea>
+    <button class="btn" onclick="checkEssay()">Check Essay</button>
+    <div id="essayFeedback" class="ai-feedback"></div>
+    <button class="back-btn" onclick="show('menu')">← Back</button>
+  </div>
 </section>
 
 <script src="script.js"></script>
