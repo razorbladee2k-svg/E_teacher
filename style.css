@@ -28,10 +28,10 @@ header {
 
 .header-actions {
   display: flex;
-  gap: 15px;
+  gap: 14px;
 }
 
-.header-actions a {
+.vocab {
   color: white;
   text-decoration: none;
   font-weight: 600;
@@ -47,7 +47,7 @@ header {
 
 .hero {
   text-align: center;
-  margin-top: 40px;
+  margin-top: 30px;
 }
 
 .hero h1 {
@@ -64,7 +64,7 @@ header {
 
 .card {
   background: white;
-  color: black;
+  color: #111;
   width: 380px;
   margin: 40px auto;
   padding: 30px;
@@ -74,7 +74,7 @@ header {
 
 body.dark .card {
   background: #111827;
-  color: white;
+  color: #e5e7eb;
 }
 
 .btn {
@@ -85,6 +85,7 @@ body.dark .card {
   border: none;
   background: #5b5cf6;
   color: white;
+  font-weight: 600;
   cursor: pointer;
 }
 
@@ -104,17 +105,31 @@ input, textarea {
   margin-top: 10px;
 }
 
+.grammar-rule {
+  background: #eef2ff;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+.feedback {
+  margin-top: 12px;
+  font-weight: 600;
+}
+
+.ai-feedback {
+  margin-top: 12px;
+  background: #ecfeff;
+  padding: 10px;
+  border-radius: 8px;
+}
+
 .back-btn {
   margin-top: 15px;
   background: none;
   border: none;
   color: #5b5cf6;
+  font-weight: 600;
   cursor: pointer;
-}
-
-.grammar-rule {
-  background: #eef2ff;
-  margin-top: 10px;
-  padding: 10px;
-  border-radius: 8px;
 }
