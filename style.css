@@ -2,23 +2,24 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  font-family: Segoe UI, Arial;
 }
 
 body {
-  min-height: 100vh;
   background: linear-gradient(180deg, #2f6bff, #2456d8);
   color: white;
+  min-height: 100vh;
 }
 
 body.dark {
-  background: linear-gradient(180deg, #0f172a, #020617);
+  background: linear-gradient(180deg, #020617, #020617);
+  color: #e5e7eb;
 }
 
 header {
-  padding: 20px 40px;
   display: flex;
   justify-content: space-between;
+  padding: 20px 40px;
 }
 
 .logo {
@@ -28,14 +29,12 @@ header {
 
 .header-actions {
   display: flex;
-  gap: 15px;
-  align-items: center;
+  gap: 12px;
 }
 
-.vocab-link {
-  color: white;
-  text-decoration: none;
-  font-weight: 600;
+.small {
+  padding: 8px 12px;
+  border-radius: 8px;
 }
 
 .dark-toggle {
@@ -48,7 +47,11 @@ header {
 
 .hero {
   text-align: center;
-  margin-top: 40px;
+  margin-top: 30px;
+}
+
+.hero h1 {
+  font-size: 42px;
 }
 
 .page {
@@ -61,32 +64,35 @@ header {
 
 .card {
   background: white;
-  color: #111;
+  color: black;
   width: 380px;
   margin: 40px auto;
   padding: 30px;
-  border-radius: 16px;
+  border-radius: 18px;
   text-align: center;
 }
 
 body.dark .card {
   background: #111827;
-  color: white;
+  color: #e5e7eb;
 }
 
 input, textarea {
   width: 100%;
-  padding: 12px;
   margin-top: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
 }
 
 .btn {
   width: 100%;
-  padding: 14px;
   margin-top: 14px;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
   background: #5b5cf6;
   color: white;
-  border: none;
   cursor: pointer;
 }
 
@@ -108,15 +114,13 @@ input, textarea {
   cursor: pointer;
 }
 
-.ai-feedback {
-  margin-top: 10px;
-  background: #f1f5f9;
-  color: #111;
-  padding: 10px;
-  border-radius: 8px;
+.grammar-rule {
+  background: #eef2ff;
+  padding: 12px;
+  border-radius: 10px;
+  margin-top: 12px;
 }
 
-body.dark .ai-feedback {
-  background: #020617;
-  color: #e5e7eb;
+body.dark .grammar-rule {
+  background: #1e293b;
 }
