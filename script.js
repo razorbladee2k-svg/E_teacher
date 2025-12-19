@@ -1,15 +1,27 @@
-/* PAGE SWITCH */
+/* =====================
+   PAGE CONTROL
+===================== */
 function show(id) {
   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
 
-/* DARK MODE */
+function goHome() {
+  show("testIntro");
+}
+
+/* =====================
+   DARK MODE
+===================== */
 function toggleDark() {
   document.body.classList.toggle("dark");
 }
 
-/* AUTH */
+/* =====================
+   AUTH (LOCAL)
+===================== */
+let currentUser = null;
+
 function signup() {
   const u = username.value;
   const p = password.value;
@@ -21,89 +33,132 @@ function signup() {
 function login() {
   const u = username.value;
   const p = password.value;
-  if (localStorage.getItem(u) !== p) return alert("Wrong login");
-  localStorage.setItem("currentUser", u);
-  show("testIntro");
+  if (localStorage.getItem(u) === p) {
+    currentUser = u;
+    welcome.innerText = `Welcome ${u} (B1)`;
+    show("testIntro");
+  } else {
+    alert("Wrong login");
+  }
 }
 
 function logout() {
-  localStorage.removeItem("currentUser");
+  currentUser = null;
   show("login");
 }
 
-/* TEST */
-const testQuestions = [
-  {q:"She ___ to school every day.", a:["go","goes","going"], c:1},
-  {q:"I have lived here ___ 2020.", a:["since","for","from"], c:0},
-  {q:"If it rains, we ___ home.", a:["stay","will stay","stayed"], c:1},
-  {q:"He ___ already finished.", a:["has","have","had"], c:0},
-  {q:"The book ___ by John.", a:["writes","was written","is write"], c:1},
-];
+/* =====================
+   LEVEL TEST (15 Q)
+===================== */
+const testQuestions = Array.from({ length: 15 }, (_, i) => ({
+  q: `Question ${i + 1}: Choose correct sentence`,
+  options: ["Wrong form", "Correct form", "Incorrect form"],
+  correct: 1
+}));
 
-let tIndex=0, score=0;
+let tIndex = 0;
+let score = 0;
 
 function startTest() {
-  tIndex=0; score=0;
+  tIndex = 0;
+  score = 0;
   show("test");
-  nextTest();
+  loadTest();
 }
 
-function nextTest() {
-  if (tIndex >= 15) {
-    let level = score < 5 ? "A1" : score < 8 ? "A2" : score < 11 ? "B1" : score < 14 ? "B2" : "C1";
-    levelResult.innerText = `Your level: ${level} (${score}/15)`;
-    welcome.innerText = `Welcome ${localStorage.getItem("currentUser")} (${level})`;
-    show("result");
-    return;
-  }
-
-  const q = testQuestions[Math.floor(Math.random()*testQuestions.length)];
-  testQ.innerText = q.q;
-  testOpts.innerHTML = "";
-  q.a.forEach((opt,i)=>{
-    const b=document.createElement("button");
-    b.className="btn btn-outline";
-    b.innerText=opt;
-    b.onclick=()=>{ if(i===q.c) score++; tIndex++; nextTest(); };
-    testOpts.appendChild(b);
+function loadTest() {
+  const q = testQuestions[tIndex];
+  testQuestion.innerText = q.q;
+  testOptions.innerHTML = "";
+  q.options.forEach((o, i) => {
+    const b = document.createElement("button");
+    b.className = "btn btn-outline";
+    b.innerText = o;
+    b.onclick = () => {
+      if (i === q.correct) score++;
+    };
+    testOptions.appendChild(b);
   });
 }
 
-/* PRACTICE */
-const practiceQs = [
-  {q:"He ___ playing.", a:["is","are","am"], c:0},
-  {q:"They ___ finished.", a:["has","have","had"], c:1},
-  {q:"If I study, I ___ pass.", a:["will","would","did"], c:0}
-];
+function nextTest() {
+  tIndex++;
+  if (tIndex >= testQuestions.length) {
+    welcome.innerText = `Welcome ${currentUser} (B1)`;
+    show("dashboard");
+    return;
+  }
+  loadTest();
+}
 
-function nextPractice() {
-  const q = practiceQs[Math.floor(Math.random()*practiceQs.length)];
+/* =====================
+   PRACTICE (50 RANDOM)
+===================== */
+const practiceQuestions = Array.from({ length: 50 }, (_, i) => ({
+  q: `Practice ${i + 1}: Choose correct answer`,
+  options: ["Wrong", "Correct", "Wrong"],
+  correct: 1,
+  explain: "Grammar rule applied correctly"
+}));
+
+let pIndex = 0;
+let pool = [];
+
+function startPractice() {
+  pool = [...practiceQuestions].sort(() => Math.random() - 0.5);
+  pIndex = 0;
+  show("practice");
+  loadPractice();
+}
+
+function loadPractice() {
+  const q = pool[pIndex];
   practiceQ.innerText = q.q;
-  practiceOpts.innerHTML="";
-  q.a.forEach((o,i)=>{
-    const b=document.createElement("button");
-    b.className="btn btn-outline";
-    b.innerText=o;
-    b.onclick=()=>alert(i===q.c ? "Correct ✅" : "Wrong ❌");
+  practiceOpts.innerHTML = "";
+  q.options.forEach((o, i) => {
+    const b = document.createElement("button");
+    b.className = "btn btn-outline";
+    b.innerText = o;
+    b.onclick = () => {
+      practiceQ.innerText =
+        i === q.correct ? "✅ Good job!" : `❌ Mistake: ${q.explain}`;
+    };
     practiceOpts.appendChild(b);
   });
 }
 
-/* ESSAY */
-const titles = [
-  "The importance of learning English",
-  "My future goals",
-  "Technology in daily life"
+function nextPractice() {
+  pIndex++;
+  if (pIndex >= pool.length) {
+    practiceQ.innerText = "🎉 Practice finished!";
+    practiceOpts.innerHTML = "";
+    return;
+  }
+  loadPractice();
+}
+
+/* =====================
+   ESSAY
+===================== */
+const essayTitles = [
+  "Is technology good for education?",
+  "Advantages of learning English",
+  "Social media pros and cons"
 ];
 
-essayTitle.innerText = titles[Math.floor(Math.random()*titles.length)];
+function startEssay() {
+  essayTitle.innerText =
+    essayTitles[Math.floor(Math.random() * essayTitles.length)];
+  essayText.value = "";
+  essayFeedback.innerText = "";
+  show("essay");
+}
 
 function checkEssay() {
-  const text = essayText.value;
-  if (text.length < 50) {
-    essayFeedback.innerText = "Too short. Write more details.";
-  } else {
-    essayFeedback.innerText =
-      "Feedback:\n• Good structure\n• Check verb tenses\n• Watch article usage";
-  }
+  const words = essayText.value.trim().split(/\s+/).length;
+  wordCount.innerText = `${words} words`;
+  essayFeedback.innerText =
+    words < 50
+      ? "⚠ Essay too short. Expand ideas."
+      : "✅ Good structure. Watch verb tenses and articles.";
 }
