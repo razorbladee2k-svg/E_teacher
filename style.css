@@ -51,6 +51,14 @@ header {
   margin-top: 40px;
 }
 
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
 .card {
   background: white;
   color: #111;
@@ -100,10 +108,15 @@ input, textarea {
   cursor: pointer;
 }
 
-.page {
-  display: none;
+.ai-feedback {
+  margin-top: 10px;
+  background: #f1f5f9;
+  color: #111;
+  padding: 10px;
+  border-radius: 8px;
 }
 
-.page.active {
-  display: block;
+body.dark .ai-feedback {
+  background: #020617;
+  color: #e5e7eb;
 }
