@@ -17,14 +17,12 @@ header {
   color: white;
 }
 
-.logo {
-  margin: 0;
-}
+.logo { margin: 0; }
 
 .icon-btn {
-  border-radius: 50%;
   width: 40px;
   height: 40px;
+  border-radius: 50%;
   border: none;
   cursor: pointer;
 }
@@ -32,33 +30,27 @@ header {
 .page {
   display: none;
   text-align: center;
-  padding-top: 80px;
+  padding-top: 60px;
 }
 
-.page.active {
-  display: block;
-}
+.page.active { display: block; }
 
 .title {
-  font-size: 42px;
   color: white;
+  font-size: 42px;
 }
 
-.subtitle {
-  color: #e0e0ff;
-}
+.subtitle { color: #dbe3ff; }
 
 .card {
   background: white;
-  width: 340px;
-  margin: 40px auto;
-  padding: 30px;
+  width: 360px;
+  margin: 30px auto;
+  padding: 25px;
   border-radius: 16px;
 }
 
-body.dark .card {
-  background: #1e293b;
-}
+body.dark .card { background: #1e293b; }
 
 button {
   width: 100%;
