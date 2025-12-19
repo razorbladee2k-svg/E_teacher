@@ -1,6 +1,8 @@
-/* ========= PAGE ========= */
+/* ========= PAGE CONTROL ========= */
 function show(id) {
-  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".page").forEach(p =>
+    p.classList.remove("active")
+  );
   document.getElementById(id).classList.add("active");
 }
 
@@ -13,7 +15,8 @@ function toggleDark() {
 let currentUser = null;
 
 function signup() {
-  if (!username.value || !password.value) return alert("Fill all fields");
+  if (!username.value || !password.value)
+    return alert("Fill all fields");
   localStorage.setItem("user_" + username.value, password.value);
   alert("Account created");
 }
@@ -33,90 +36,106 @@ function logout() {
   show("login");
 }
 
-/* ========= TEST ========= */
-const testQs = Array.from({ length: 15 }, (_, i) => ({
-  q: `Choose the correct sentence (${i + 1})`,
-  options: ["Wrong", "Correct", "Incorrect"],
-  correct: 1
-}));
+/* ========= TEST (15 QUESTIONS) ========= */
+const testBase = [
+  { q:"She ___ already finished.", o:["has","have"], c:0 },
+  { q:"If it rains, we ___ home.", o:["stay","will stay"], c:1 },
+  { q:"The book ___ by him.", o:["was written","wrote"], c:0 },
+  { q:"I have lived here ___ 2020.", o:["since","for"], c:0 },
+  { q:"He is ___ than me.", o:["taller","tallest"], c:0 }
+];
 
-let tIndex = 0, score = 0;
+let testQs = [];
+let tIndex = 0;
+let score = 0;
 
 function startTest() {
-  tIndex = 0; score = 0;
+  testQs = [];
+  while (testQs.length < 15) {
+    testQs.push(
+      testBase[Math.floor(Math.random()*testBase.length)]
+    );
+  }
+  tIndex = 0;
+  score = 0;
   show("test");
   loadTest();
 }
 
 function loadTest() {
   const q = testQs[tIndex];
-  testQuestion.innerText = q.q;
+  testQuestion.innerText = `Q${tIndex+1}: ${q.q}`;
   testOptions.innerHTML = "";
-  q.options.forEach((o, i) => {
+  q.o.forEach((opt,i)=>{
     const b = document.createElement("button");
-    b.className = "btn btn-outline";
-    b.innerText = o;
-    b.onclick = () => { if (i === q.correct) score++; };
+    b.className="btn btn-outline";
+    b.innerText=opt;
+    b.onclick=()=>{
+      if(i===q.c) score++;
+      tIndex++;
+      if(tIndex>=testQs.length){
+        welcome.innerText =
+          `Welcome ${currentUser} (${score}/15)`;
+        localStorage.setItem(
+          "progress_"+currentUser,
+          JSON.stringify({ practice:0 })
+        );
+        updateProgress();
+        show("dashboard");
+      } else {
+        loadTest();
+      }
+    };
     testOptions.appendChild(b);
   });
 }
 
-function nextTest() {
-  tIndex++;
-  if (tIndex >= testQs.length) {
-    localStorage.setItem("progress_" + currentUser, JSON.stringify({
-      score,
-      practiceDone: 0
-    }));
-    welcome.innerText = `Welcome ${currentUser} (B1)`;
-    updateProgress();
-    show("dashboard");
-  } else {
-    loadTest();
-  }
-}
-
-/* ========= PRACTICE (60 QUESTIONS) ========= */
-const basePractice = [
-  ["She ___ finished.", ["has","have"], 0, "She = has"],
-  ["If it rains, we ___ home.", ["stay","will stay"], 1, "First conditional"],
-  ["The book ___ by him.", ["was written","wrote"], 0, "Passive voice"],
-  ["I am interested ___ music.", ["in","on"], 0, "Interested + in"],
-  ["He speaks ___ than me.", ["better","best"], 0, "Comparative adjective"]
+/* ========= PRACTICE (LOCKED ANSWERS) ========= */
+const practiceBase = [
+  ["She ___ to school every day.",["go","goes"],1,"Third person + s"],
+  ["They ___ finished.",["has","have"],1,"Plural → have"],
+  ["The cake ___ by her.",["was made","made"],0,"Passive voice"],
+  ["If I study, I ___ pass.",["will","would"],0,"First conditional"],
+  ["He is ___ than me.",["better","best"],0,"Comparative"]
 ];
 
-while (basePractice.length < 60) {
-  basePractice.push(...basePractice.slice(0,5));
+while(practiceBase.length < 60){
+  practiceBase.push(...practiceBase.slice(0,5));
 }
 
-let practicePool = [];
+let practiceQs = [];
 let pIndex = 0;
-let correctCount = 0;
+let answered = false;
+
+function shuffle(a){ return a.sort(()=>Math.random()-0.5); }
 
 function startPractice() {
-  practicePool = basePractice.sort(() => Math.random() - 0.5);
+  practiceQs = shuffle([...practiceBase]);
   pIndex = 0;
-  correctCount = 0;
   show("practice");
   loadPractice();
 }
 
 function loadPractice() {
-  const q = practicePool[pIndex];
-  practiceQ.innerText = q[0];
+  answered = false;
+  const q = practiceQs[pIndex];
+  practiceQ.innerText = `Question ${pIndex+1}: ${q[0]}`;
   practiceFeedback.innerText = "";
   practiceOpts.innerHTML = "";
 
-  q[1].forEach((opt, i) => {
-    const b = document.createElement("button");
-    b.className = "btn btn-outline";
-    b.innerText = opt;
-    b.onclick = () => {
-      if (i === q[2]) {
-        practiceFeedback.innerText = "✅ Good job 👏";
-        correctCount++;
+  q[1].forEach((opt,i)=>{
+    const b=document.createElement("button");
+    b.className="btn btn-outline";
+    b.innerText=opt;
+    b.onclick=()=>{
+      if(answered) return;
+      answered=true;
+      [...practiceOpts.children].forEach(x=>x.disabled=true);
+      if(i===q[2]){
+        practiceFeedback.innerText="✅ Good job!";
       } else {
-        practiceFeedback.innerText = "❌ Mistake: " + q[3];
+        practiceFeedback.innerText=
+          `❌ Mistake. Correct: ${q[1][q[2]]} (${q[3]})`;
       }
     };
     practiceOpts.appendChild(b);
@@ -124,27 +143,19 @@ function loadPractice() {
 }
 
 function nextPractice() {
+  if(!answered) return alert("Answer first 🙂");
   pIndex++;
-  if (pIndex >= practicePool.length) {
-    const data = JSON.parse(localStorage.getItem("progress_" + currentUser));
-    data.practiceDone += correctCount;
-    localStorage.setItem("progress_" + currentUser, JSON.stringify(data));
-    updateProgress();
-    show("dashboard");
-  } else {
-    loadPractice();
+  if(pIndex>=practiceQs.length){
+    practiceQ.innerText="🎉 Practice finished!";
+    practiceOpts.innerHTML="";
+    practiceFeedback.innerText="Great work!";
+    return;
   }
-}
-
-/* ========= PROGRESS ========= */
-function updateProgress() {
-  const data = JSON.parse(localStorage.getItem("progress_" + currentUser));
-  progressInfo.innerText =
-    `Practice correct answers: ${data.practiceDone}`;
+  loadPractice();
 }
 
 /* ========= ESSAY ========= */
-const essayTitles = [
+const essayTitles=[
   "Why learning English matters",
   "Technology in education",
   "My future goals"
@@ -152,16 +163,21 @@ const essayTitles = [
 
 function startEssay() {
   essayTitle.innerText =
-    essayTitles[Math.floor(Math.random() * essayTitles.length)];
-  essayFeedback.innerText = "";
-  essayText.value = "";
+    essayTitles[Math.floor(Math.random()*essayTitles.length)];
+  essayText.value="";
+  essayFeedback.innerText="";
   show("essay");
 }
 
 function checkEssay() {
   const words = essayText.value.trim().split(/\s+/).length;
   essayFeedback.innerText =
-    words < 60
-      ? "Essay too short. Add more details."
-      : "Good job! Check verb tenses and articles.";
+    words<60
+    ? "Essay too short. Add more ideas."
+    : "Good job! Check verb tenses and articles.";
+}
+
+/* ========= PROGRESS ========= */
+function updateProgress() {
+  progressInfo.innerText="Practice progress saved";
 }
