@@ -37,9 +37,8 @@
 <section id="testIntro" class="page">
   <div class="card">
     <h2>English Level Test</h2>
-    <p>15 questions • Real grammar & usage</p>
+    <p>15 quick questions • No stress</p>
     <button class="btn" onclick="startTest()">Start Test</button>
-    <button class="back-btn" onclick="goHome()">← Back</button>
   </div>
 </section>
 
@@ -56,6 +55,7 @@
 <section id="dashboard" class="page">
   <div class="card">
     <h2 id="welcome"></h2>
+    <p id="progressInfo"></p>
     <button class="btn" onclick="show('grammar')">Grammar</button>
     <button class="btn" onclick="startPractice()">Practice</button>
     <button class="btn" onclick="startEssay()">Essay</button>
@@ -66,16 +66,17 @@
 <!-- GRAMMAR -->
 <section id="grammar" class="page">
   <div class="card">
-    <h2>Grammar (B1)</h2>
+    <h2>Grammar</h2>
 
     <div class="grammar-rule">
-      Present Perfect: Subject + have/has + Past Participle
+      Present Simple: Subject + verb (+s)
     </div>
-
     <div class="grammar-rule">
-      Passive Voice: Subject + be + Past Participle
+      Present Perfect: Subject + have/has + past participle
     </div>
-
+    <div class="grammar-rule">
+      Passive Voice: Object + be + past participle
+    </div>
     <div class="grammar-rule">
       Conditionals: If + present, will + verb
     </div>
@@ -89,6 +90,7 @@
   <div class="card">
     <div id="practiceQ"></div>
     <div id="practiceOpts"></div>
+    <p id="practiceFeedback"></p>
     <button class="btn" onclick="nextPractice()">Next</button>
     <button class="back-btn" onclick="show('dashboard')">← Back</button>
   </div>
@@ -99,9 +101,8 @@
   <div class="card">
     <div class="essay-title" id="essayTitle"></div>
     <textarea id="essayText" rows="6" placeholder="Write your essay..."></textarea>
-    <div class="word-count" id="wordCount">0 words</div>
     <button class="btn" onclick="checkEssay()">Check Essay</button>
-    <div class="ai-feedback" id="essayFeedback"></div>
+    <div id="essayFeedback" class="ai-feedback"></div>
     <button class="back-btn" onclick="show('dashboard')">← Back</button>
   </div>
 </section>
