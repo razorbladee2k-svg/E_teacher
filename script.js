@@ -1,40 +1,46 @@
-const pages = document.querySelectorAll(".page");
-const user = document.getElementById("user");
-const pass = document.getElementById("pass");
-
-let testIndex = 0;
-let score = 0;
-
-const testQuestions = [
-  { q: "She ___ already eaten.", a: ["has","have","is"], c: 0 },
-  { q: "If I ___ rich, I would travel.", a: ["am","were","was"], c: 1 },
-  { q: "The book was ___ by him.", a: ["write","written","wrote"], c: 1 }
-];
-
-const practiceQuestions = [
-  { q: "I wish I ___ more time.", a: ["have","had","has"], c: 1 },
-  { q: "This car ___ in Germany.", a: ["made","is made","make"], c: 1 }
-];
-
-function show(id) {
-  pages.forEach(p => p.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-}
-
+// ---------- DARK MODE ----------
 function toggleDark() {
   document.body.classList.toggle("dark");
 }
 
+// ---------- AUTH ----------
 function signup() {
-  if (!user.value || !pass.value) return alert("Fill all fields");
-  localStorage.setItem("eteacher_" + user.value, pass.value);
-  alert("Account created");
+  const u = username.value;
+  const p = password.value;
+  if (!u || !p) return alert("Fill all fields");
+  localStorage.setItem("user", JSON.stringify({ u, p }));
+  alert("Account created!");
 }
 
 function login() {
-  const saved = localStorage.getItem("eteacher_" + user.value);
-  if (saved === pass.value) show("testIntro");
-  else alert("Wrong login");
+  const data = JSON.parse(localStorage.getItem("user"));
+  if (!data) return alert("No account found");
+  if (username.value === data.u && password.value === data.p) {
+    show("testIntro");
+  } else {
+    alert("Wrong credentials");
+  }
+}
+
+// ---------- NAV ----------
+function show(id) {
+  document.querySelectorAll("section").forEach(s => s.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+}
+
+// ---------- TEST ----------
+let testIndex = 0;
+let score = 0;
+
+const testQuestions = [
+  { q: "If I ___ time, I will help you.", a: ["have","had","will have"], c:0 },
+  { q: "She has lived here ___ 2018.", a:["since","for","from"], c:0 },
+  { q: "The book ___ by him.", a:["is written","was write","wrote"], c:0 },
+  // 12 more auto-generated
+];
+
+while (testQuestions.length < 15) {
+  testQuestions.push(testQuestions[Math.floor(Math.random()*3)]);
 }
 
 function startTest() {
@@ -45,63 +51,77 @@ function startTest() {
 }
 
 function loadTest() {
-  if (testIndex >= 15) {
-    let level = score >= 12 ? "C1" : score >= 9 ? "B2" : score >= 6 ? "B1" : "A2";
-    document.getElementById("welcome").innerText = `Welcome ${user.value} (${level})`;
-    show("dashboard");
-    return;
-  }
-
-  const q = testQuestions[Math.floor(Math.random()*testQuestions.length)];
-  document.getElementById("questionText").innerText = q.q;
-  document.getElementById("options").innerHTML = q.a.map((o,i)=>
-    `<button class="btn" onclick="answerTest(${i},${q.c})">${o}</button>`
-  ).join("");
+  const q = testQuestions[testIndex];
+  testQuestion.innerText = q.q;
+  testOptions.innerHTML = "";
+  q.a.forEach((opt,i)=>{
+    const b=document.createElement("button");
+    b.className="btn btn-outline";
+    b.innerText=opt;
+    b.onclick=()=>{ if(i===q.c) score++; };
+    testOptions.appendChild(b);
+  });
 }
 
-function answerTest(i,c) {
-  if (i === c) score++;
+function nextTest() {
   testIndex++;
+  if (testIndex >= 15) return finishTest();
   loadTest();
 }
 
-let pIndex = 0;
-function openPractice() {
-  pIndex = 0;
-  show("practice");
+function finishTest() {
+  show("result");
+  let level = score < 6 ? "A2" : score < 10 ? "B1" : score < 13 ? "B2" : "C1";
+  levelResult.innerText = `Score: ${score}/15 → ${level}`;
+}
+
+// ---------- PRACTICE ----------
+const practiceQs = [];
+for(let i=1;i<=50;i++){
+  practiceQs.push({
+    q:`Practice question ${i}`,
+    a:["A","B","C","D"],
+    c:Math.floor(Math.random()*4)
+  });
+}
+
+let pIndex=0;
+
+function goPractice(){ show("practice"); loadPractice(); }
+
+function loadPractice(){
+  const q=practiceQs[pIndex];
+  practiceQuestion.innerText=q.q;
+  practiceOptions.innerHTML="";
+  q.a.forEach(opt=>{
+    const b=document.createElement("button");
+    b.className="btn btn-outline";
+    b.innerText=opt;
+    practiceOptions.appendChild(b);
+  });
+}
+
+function nextPractice(){
+  pIndex=(pIndex+1)%practiceQs.length;
   loadPractice();
 }
 
-function loadPractice() {
-  const q = practiceQuestions[pIndex % practiceQuestions.length];
-  document.getElementById("practiceQ").innerText = q.q;
-  document.getElementById("practiceOpts").innerHTML =
-    q.a.map((o,i)=>`<button class="btn">${o}</button>`).join("");
+// ---------- ESSAY ----------
+const titles=[
+  "Technology and Education",
+  "Is English Important?",
+  "Social Media Pros and Cons"
+];
+
+essayTitle.innerText=titles[Math.floor(Math.random()*titles.length)];
+
+function checkEssay(){
+  const text=essayText.value;
+  let feedback=[];
+  if(text.length<100) feedback.push("Essay is too short.");
+  if(!/\.|\?/.test(text)) feedback.push("Add punctuation.");
+  if(!/(have|has|was|were)/i.test(text)) feedback.push("Check verb tenses.");
+  essayFeedback.innerText=feedback.length
+    ? feedback.join(" ")
+    : "Good structure. Minor grammar improvements needed.";
 }
-
-function nextPractice() {
-  pIndex++;
-  loadPractice();
-}
-
-function openGrammar(){ show("grammar"); }
-function openDashboard(){ show("dashboard"); }
-function openEssay(){
-  const titles = ["My future goals","Technology in education","Why learning English matters"];
-  document.getElementById("essayTitle").innerText =
-    titles[Math.floor(Math.random()*titles.length)];
-  show("essay");
-}
-
-document.getElementById("essayText")?.addEventListener("input", e=>{
-  document.getElementById("count").innerText =
-    e.target.value.trim().split(/\s+/).filter(Boolean).length + " words";
-});
-
-function checkEssay() {
-  document.getElementById("feedback").innerText =
-    "AI Feedback: Check verb tenses, articles, and sentence clarity.";
-}
-
-function logout(){ show("auth"); }
-function goHome(){ show("auth"); }
