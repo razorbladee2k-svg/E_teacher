@@ -1,116 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>eTeacher – Learn English with us</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <title>eTeacher</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
-  <div class="logo">eTeacher</div>
-  <div class="actions">
-    <button class="icon-btn" onclick="toggleDark()">🌙</button>
-  </div>
+  <h1 class="logo">eTeacher</h1>
+  <button class="icon-btn" onclick="toggleDark()">🌙</button>
 </header>
 
-<main>
+<!-- HOME -->
+<section id="home" class="page active">
+  <h2 class="title">Learn English with us</h2>
+  <p class="subtitle">Grammar • Practice • Writing</p>
 
-  <!-- HOME -->
-  <section id="home" class="page active">
-    <h1 class="title">Learn English with us</h1>
-    <p class="subtitle">Grammar • Practice • Writing</p>
+  <div class="card">
+    <button onclick="showPage('login')">Get Started</button>
+  </div>
+</section>
 
-    <div class="card">
-      <button onclick="showPage('login')">Get Started</button>
-    </div>
-  </section>
+<!-- LOGIN -->
+<section id="login" class="page">
+  <div class="card">
+    <h3>Login</h3>
+    <input id="username" placeholder="Username">
+    <button onclick="login()">Continue</button>
+    <button class="back" onclick="showPage('home')">← Back</button>
+  </div>
+</section>
 
-  <!-- LOGIN -->
-  <section id="login" class="page">
-    <div class="card">
-      <h2>Login</h2>
-      <input id="username" placeholder="Username">
-      <input id="password" type="password" placeholder="Password">
-      <button onclick="login()">Login</button>
-      <button class="link" onclick="showPage('signup')">Sign Up</button>
-      <button class="link" onclick="showPage('home')">← Back</button>
-    </div>
-  </section>
+<!-- LEVEL -->
+<section id="level" class="page">
+  <div class="card">
+    <h3>Choose your level</h3>
+    <button onclick="setLevel('A2')">A2</button>
+    <button onclick="setLevel('B1')">B1</button>
+    <button onclick="setLevel('B2')">B2</button>
+    <button class="back" onclick="showPage('login')">← Back</button>
+  </div>
+</section>
 
-  <!-- SIGN UP -->
-  <section id="signup" class="page">
-    <div class="card">
-      <h2>Create account</h2>
-      <input placeholder="Username">
-      <input type="password" placeholder="Password">
-      <button onclick="showPage('level')">Continue</button>
-      <button class="link" onclick="showPage('login')">← Back</button>
-    </div>
-  </section>
+<!-- DASHBOARD -->
+<section id="dashboard" class="page">
+  <div class="card">
+    <h3 id="welcome"></h3>
+    <button onclick="showPage('grammar')">Grammar</button>
+    <button onclick="showPage('practice')">Practice</button>
+    <button onclick="showPage('essay')">Essay</button>
+    <button class="back" onclick="showPage('home')">← Back</button>
+  </div>
+</section>
 
-  <!-- LEVEL -->
-  <section id="level" class="page">
-    <div class="card">
-      <h2>Choose your level</h2>
-      <button onclick="setLevel('A2')">A2</button>
-      <button onclick="setLevel('B1')">B1</button>
-      <button onclick="setLevel('B2')">B2</button>
-    </div>
-  </section>
+<!-- PRACTICE -->
+<section id="practice" class="page">
+  <div class="card">
+    <h3>Practice</h3>
+    <p id="qText"></p>
+    <button onclick="nextQuestion()">Next</button>
+    <button class="back" onclick="showPage('dashboard')">← Back</button>
+  </div>
+</section>
 
-  <!-- DASHBOARD -->
-  <section id="dashboard" class="page">
-    <div class="card">
-      <h2 id="welcome"></h2>
-      <button onclick="showPage('grammar')">Grammar</button>
-      <button onclick="showPage('practice')">Practice</button>
-      <button onclick="showPage('essay')">Essay</button>
-      <button class="danger" onclick="showPage('home')">Logout</button>
-    </div>
-  </section>
+<!-- ESSAY -->
+<section id="essay" class="page">
+  <div class="card">
+    <h3 id="essayTitle"></h3>
+    <textarea id="essayText" placeholder="Write your essay..."></textarea>
+    <p id="count">0 / 180 words</p>
+    <button onclick="checkEssay()">Check Essay</button>
+    <button class="back" onclick="showPage('dashboard')">← Back</button>
+  </div>
+</section>
 
-  <!-- GRAMMAR -->
-  <section id="grammar" class="page">
-    <div class="card">
-      <h2>Present Perfect</h2>
-      <p><b>Structure:</b></p>
-      <code>Subject + have/has + Past Participle + Object</code>
-      <p>Example: I have finished my homework.</p>
-
-      <a class="youtube" target="_blank"
-        href="https://www.youtube.com/@4000EssentialEnglishWords">
-        Need vocabulary?
-      </a>
-
-      <button onclick="showPage('dashboard')">← Back</button>
-    </div>
-  </section>
-
-  <!-- PRACTICE -->
-  <section id="practice" class="page">
-    <div class="card">
-      <h2 id="qText"></h2>
-      <button onclick="answer(true)">Correct</button>
-      <button onclick="answer(false)">Incorrect</button>
-      <button onclick="showPage('dashboard')">← Back</button>
-    </div>
-  </section>
-
-  <!-- ESSAY -->
-  <section id="essay" class="page">
-    <div class="card">
-      <h2 id="essayTitle"></h2>
-      <textarea id="essayText" placeholder="Write your essay..."></textarea>
-      <p id="count">0 / 180 words</p>
-      <button onclick="checkEssay()">Send</button>
-      <button onclick="showPage('dashboard')">← Back</button>
-    </div>
-  </section>
-
-</main>
-
+<!-- JS MUST BE LAST -->
 <script src="script.js"></script>
 </body>
 </html>
