@@ -1,148 +1,122 @@
-function showPage(id) {
-  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
-function toggleDark() {
-  document.body.classList.toggle("dark");
+body {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #2f6bff, #2456d8);
+  color: white;
 }
 
-function signup() {
-  alert("Sign up successful (demo)");
+body.dark {
+  background: linear-gradient(180deg, #0f172a, #020617);
 }
 
-function login() {
-  const name = document.getElementById("username").value;
-  if (!name) return alert("Enter username");
-  localStorage.setItem("user", name);
-  showPage("testIntro");
+header {
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
 }
 
-/* ===== TEST ===== */
-
-const questions = [
-  { q: "If I ___ him, I will tell him.", o: ["see", "saw"], c: 0 },
-  { q: "She ___ lived here for 5 years.", o: ["has", "have"], c: 0 },
-  { q: "He is ___ than me.", o: ["taller", "tall"], c: 0 },
-  { q: "They ___ finished.", o: ["have", "has"], c: 0 },
-  { q: "I enjoy ___ music.", o: ["listening to", "listen"], c: 0 },
-  { q: "We ___ go now.", o: ["must", "must to"], c: 0 },
-  { q: "This is ___ book.", o: ["my", "mine"], c: 0 },
-  { q: "She speaks ___.", o: ["fluently", "fluent"], c: 0 },
-  { q: "He didn’t ___ come.", o: ["want to", "wanted"], c: 0 },
-  { q: "I’ve known him ___ years.", o: ["for", "since"], c: 0 }
-];
-
-let qIndex = 0;
-let score = 0;
-
-function startTest() {
-  qIndex = 0;
-  score = 0;
-  showPage("test");
-  loadQuestion();
+.logo {
+  font-size: 24px;
+  font-weight: bold;
 }
 
-function loadQuestion() {
-  const q = questions[qIndex];
-  document.getElementById("questionText").innerText = q.q;
-  const opts = document.getElementById("options");
-  opts.innerHTML = "";
-  q.o.forEach((t, i) => {
-    const b = document.createElement("button");
-    b.className = "btn";
-    b.innerText = t;
-    b.onclick = () => answer(i);
-    opts.appendChild(b);
-  });
+.header-actions {
+  display: flex;
+  gap: 15px;
+  align-items: center;
 }
 
-function answer(i) {
-  if (i === questions[qIndex].c) score++;
-  qIndex++;
-  if (qIndex < questions.length) loadQuestion();
-  else finishTest();
+.vocab-link {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
 }
 
-function finishTest() {
-  let level = "A1";
-  if (score >= 4) level = "A2";
-  if (score >= 6) level = "B1";
-  if (score >= 8) level = "B2";
-  localStorage.setItem("level", level);
-  document.getElementById("resultText").innerText =
-    `Your English level is ${level}`;
-  showPage("result");
+.dark-toggle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
 }
 
-/* ===== DASHBOARD ===== */
-
-function loadDashboard() {
-  document.getElementById("userLevel").innerText =
-    localStorage.getItem("level");
-  showPage("dashboard");
+.hero {
+  text-align: center;
+  margin-top: 40px;
 }
 
-/* ===== GRAMMAR ===== */
-
-function loadGrammar() {
-  const level = localStorage.getItem("level");
-  let text = "";
-  if (level === "A1")
-    text = "Present Simple: Subject + Verb (+s)";
-  if (level === "A2")
-    text = "Past Simple: Subject + Verb(ed)";
-  if (level === "B1")
-    text = "Present Perfect: Subject + have/has + Past Participle";
-  if (level === "B2")
-    text = "Conditionals: If + past, would + verb";
-  document.getElementById("grammarContent").innerText = text;
-  showPage("grammar");
+.page {
+  display: none;
 }
 
-/* ===== PRACTICE ===== */
-
-const practice = [
-  "Choose the correct verb form.",
-  "Fill the blank correctly.",
-  "Pick the correct tense."
-];
-
-let p = 0;
-
-function loadPractice() {
-  p = 0;
-  nextPractice();
-  showPage("practice");
+.page.active {
+  display: block;
 }
 
-function nextPractice() {
-  document.getElementById("practiceQuestion").innerText =
-    practice[p % practice.length];
-  p++;
+.card {
+  background: white;
+  color: #111;
+  width: 380px;
+  margin: 40px auto;
+  padding: 30px;
+  border-radius: 16px;
+  text-align: center;
 }
 
-/* ===== ESSAY ===== */
-
-const titles = [
-  "My Future Goals",
-  "Why English Is Important",
-  "My Favorite Technology"
-];
-
-function loadEssay() {
-  document.getElementById("essayTitle").innerText =
-    titles[Math.floor(Math.random() * titles.length)];
-  document.getElementById("essayFeedback").innerText = "";
-  showPage("essay");
+body.dark .card {
+  background: #111827;
+  color: white;
 }
 
-function checkEssay() {
-  document.getElementById("essayFeedback").innerText =
-    "AI Feedback: Good structure. Check verb tenses and articles.";
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
 }
 
-function logout() {
-  localStorage.clear();
-  showPage("auth");
+.btn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 14px;
+  background: #5b5cf6;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2px solid #5b5cf6;
+  color: #5b5cf6;
+}
+
+.btn-danger {
+  background: #dc2626;
+}
+
+.back-btn {
+  margin-top: 20px;
+  background: none;
+  border: none;
+  color: #5b5cf6;
+  cursor: pointer;
+}
+
+.ai-feedback {
+  margin-top: 10px;
+  background: #f1f5f9;
+  color: #111;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+body.dark .ai-feedback {
+  background: #020617;
+  color: #e5e7eb;
 }
