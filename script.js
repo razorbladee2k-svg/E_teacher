@@ -1,41 +1,27 @@
-/* =====================
-   PAGE CONTROL
-===================== */
+/* ========= PAGE ========= */
 function show(id) {
   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
 
-function goHome() {
-  show("testIntro");
-}
-
-/* =====================
-   DARK MODE
-===================== */
+/* ========= DARK MODE ========= */
 function toggleDark() {
   document.body.classList.toggle("dark");
 }
 
-/* =====================
-   AUTH (LOCAL)
-===================== */
+/* ========= AUTH ========= */
 let currentUser = null;
 
 function signup() {
-  const u = username.value;
-  const p = password.value;
-  if (!u || !p) return alert("Fill all fields");
-  localStorage.setItem(u, p);
+  if (!username.value || !password.value) return alert("Fill all fields");
+  localStorage.setItem("user_" + username.value, password.value);
   alert("Account created");
 }
 
 function login() {
-  const u = username.value;
-  const p = password.value;
-  if (localStorage.getItem(u) === p) {
-    currentUser = u;
-    welcome.innerText = `Welcome ${u} (B1)`;
+  const saved = localStorage.getItem("user_" + username.value);
+  if (saved === password.value) {
+    currentUser = username.value;
     show("testIntro");
   } else {
     alert("Wrong login");
@@ -47,81 +33,91 @@ function logout() {
   show("login");
 }
 
-/* =====================
-   LEVEL TEST (15 Q)
-===================== */
-const testQuestions = Array.from({ length: 15 }, (_, i) => ({
-  q: `Question ${i + 1}: Choose correct sentence`,
-  options: ["Wrong form", "Correct form", "Incorrect form"],
+/* ========= TEST ========= */
+const testQs = Array.from({ length: 15 }, (_, i) => ({
+  q: `Choose the correct sentence (${i + 1})`,
+  options: ["Wrong", "Correct", "Incorrect"],
   correct: 1
 }));
 
-let tIndex = 0;
-let score = 0;
+let tIndex = 0, score = 0;
 
 function startTest() {
-  tIndex = 0;
-  score = 0;
+  tIndex = 0; score = 0;
   show("test");
   loadTest();
 }
 
 function loadTest() {
-  const q = testQuestions[tIndex];
+  const q = testQs[tIndex];
   testQuestion.innerText = q.q;
   testOptions.innerHTML = "";
   q.options.forEach((o, i) => {
     const b = document.createElement("button");
     b.className = "btn btn-outline";
     b.innerText = o;
-    b.onclick = () => {
-      if (i === q.correct) score++;
-    };
+    b.onclick = () => { if (i === q.correct) score++; };
     testOptions.appendChild(b);
   });
 }
 
 function nextTest() {
   tIndex++;
-  if (tIndex >= testQuestions.length) {
+  if (tIndex >= testQs.length) {
+    localStorage.setItem("progress_" + currentUser, JSON.stringify({
+      score,
+      practiceDone: 0
+    }));
     welcome.innerText = `Welcome ${currentUser} (B1)`;
+    updateProgress();
     show("dashboard");
-    return;
+  } else {
+    loadTest();
   }
-  loadTest();
 }
 
-/* =====================
-   PRACTICE (50 RANDOM)
-===================== */
-const practiceQuestions = Array.from({ length: 50 }, (_, i) => ({
-  q: `Practice ${i + 1}: Choose correct answer`,
-  options: ["Wrong", "Correct", "Wrong"],
-  correct: 1,
-  explain: "Grammar rule applied correctly"
-}));
+/* ========= PRACTICE (60 QUESTIONS) ========= */
+const basePractice = [
+  ["She ___ finished.", ["has","have"], 0, "She = has"],
+  ["If it rains, we ___ home.", ["stay","will stay"], 1, "First conditional"],
+  ["The book ___ by him.", ["was written","wrote"], 0, "Passive voice"],
+  ["I am interested ___ music.", ["in","on"], 0, "Interested + in"],
+  ["He speaks ___ than me.", ["better","best"], 0, "Comparative adjective"]
+];
 
+while (basePractice.length < 60) {
+  basePractice.push(...basePractice.slice(0,5));
+}
+
+let practicePool = [];
 let pIndex = 0;
-let pool = [];
+let correctCount = 0;
 
 function startPractice() {
-  pool = [...practiceQuestions].sort(() => Math.random() - 0.5);
+  practicePool = basePractice.sort(() => Math.random() - 0.5);
   pIndex = 0;
+  correctCount = 0;
   show("practice");
   loadPractice();
 }
 
 function loadPractice() {
-  const q = pool[pIndex];
-  practiceQ.innerText = q.q;
+  const q = practicePool[pIndex];
+  practiceQ.innerText = q[0];
+  practiceFeedback.innerText = "";
   practiceOpts.innerHTML = "";
-  q.options.forEach((o, i) => {
+
+  q[1].forEach((opt, i) => {
     const b = document.createElement("button");
     b.className = "btn btn-outline";
-    b.innerText = o;
+    b.innerText = opt;
     b.onclick = () => {
-      practiceQ.innerText =
-        i === q.correct ? "✅ Good job!" : `❌ Mistake: ${q.explain}`;
+      if (i === q[2]) {
+        practiceFeedback.innerText = "✅ Good job 👏";
+        correctCount++;
+      } else {
+        practiceFeedback.innerText = "❌ Mistake: " + q[3];
+      }
     };
     practiceOpts.appendChild(b);
   });
@@ -129,36 +125,43 @@ function loadPractice() {
 
 function nextPractice() {
   pIndex++;
-  if (pIndex >= pool.length) {
-    practiceQ.innerText = "🎉 Practice finished!";
-    practiceOpts.innerHTML = "";
-    return;
+  if (pIndex >= practicePool.length) {
+    const data = JSON.parse(localStorage.getItem("progress_" + currentUser));
+    data.practiceDone += correctCount;
+    localStorage.setItem("progress_" + currentUser, JSON.stringify(data));
+    updateProgress();
+    show("dashboard");
+  } else {
+    loadPractice();
   }
-  loadPractice();
 }
 
-/* =====================
-   ESSAY
-===================== */
+/* ========= PROGRESS ========= */
+function updateProgress() {
+  const data = JSON.parse(localStorage.getItem("progress_" + currentUser));
+  progressInfo.innerText =
+    `Practice correct answers: ${data.practiceDone}`;
+}
+
+/* ========= ESSAY ========= */
 const essayTitles = [
-  "Is technology good for education?",
-  "Advantages of learning English",
-  "Social media pros and cons"
+  "Why learning English matters",
+  "Technology in education",
+  "My future goals"
 ];
 
 function startEssay() {
   essayTitle.innerText =
     essayTitles[Math.floor(Math.random() * essayTitles.length)];
-  essayText.value = "";
   essayFeedback.innerText = "";
+  essayText.value = "";
   show("essay");
 }
 
 function checkEssay() {
   const words = essayText.value.trim().split(/\s+/).length;
-  wordCount.innerText = `${words} words`;
   essayFeedback.innerText =
-    words < 50
-      ? "⚠ Essay too short. Expand ideas."
-      : "✅ Good structure. Watch verb tenses and articles.";
+    words < 60
+      ? "Essay too short. Add more details."
+      : "Good job! Check verb tenses and articles.";
 }
