@@ -1,55 +1,74 @@
-let currentQuestion = 0;
+let page = "home";
+let testIndex = 0;
 let score = 0;
+let practiceIndex = 0;
 
-const questions = [
-  { q: "She ___ lived here for five years.", o: ["has", "have", "is"], a: 0 },
-  { q: "If I ___ more time, I would help you.", o: ["have", "had", "will have"], a: 1 },
-  { q: "They ___ to London last year.", o: ["go", "went", "gone"], a: 1 },
-  { q: "He doesn’t like ___ early.", o: ["wake", "waking", "wakes"], a: 1 },
-  { q: "This is the ___ movie I’ve seen.", o: ["most interesting", "more interesting", "interesting"], a: 0 },
-  { q: "I didn’t have ___ money.", o: ["enough", "too", "very"], a: 0 },
-  { q: "She speaks ___ than him.", o: ["more confidently", "confident", "confidence"], a: 0 },
-  { q: "The letter ___ yesterday.", o: ["sent", "was sent", "has send"], a: 1 },
-  { q: "You ___ smoke here.", o: ["mustn’t", "don’t", "won’t"], a: 0 },
-  { q: "I wish I ___ taller.", o: ["am", "was", "were"], a: 2 },
-  { q: "We were late ___ traffic.", o: ["because", "because of", "so"], a: 1 },
-  { q: "She’s ___ person I know.", o: ["the kindest", "kinder", "kind"], a: 0 },
-  { q: "He asked where I ___ from.", o: ["am", "was", "were"], a: 1 },
-  { q: "English is spoken ___.", o: ["worldwide", "world", "word"], a: 0 },
-  { q: "I’ve never ___ sushi.", o: ["eat", "ate", "eaten"], a: 2 }
+const card = document.getElementById("card");
+
+const testQuestions = Array.from({ length: 15 }, (_, i) => ({
+  q: `Choose the correct sentence (${i + 1})`,
+  options: [
+    "He go to school every day",
+    "He goes to school every day",
+    "He going to school every day"
+  ],
+  answer: 1
+}));
+
+const practiceQuestions = Array.from({ length: 50 }, (_, i) => ({
+  q: `Practice question ${i + 1}`,
+  options: [
+    "She have finished",
+    "She has finished",
+    "She finishing"
+  ],
+  answer: 1
+}));
+
+const grammars = [
+  "Present Simple → Subject + verb(s)",
+  "Present Perfect → Subject + have/has + past participle",
+  "Passive Voice → Subject + be + past participle",
+  "Conditionals → If + present, will + verb",
+  "Reported Speech → He said (that)..."
 ];
 
-// shuffle questions
-questions.sort(() => Math.random() - 0.5);
-
-function startTest() {
-  currentQuestion = 0;
-  score = 0;
-  showQuestion();
+function toggleDark() {
+  document.body.classList.toggle("dark");
 }
 
-function showQuestion() {
-  const q = questions[currentQuestion];
-  document.getElementById("card").innerHTML = `
-    <h2>Question ${currentQuestion + 1} / ${questions.length}</h2>
-    <p class="question">${q.q}</p>
-    <div class="options">
-      ${q.o.map((opt, i) =>
-        `<button class="btn btn-outline" onclick="answer(${i})">${opt}</button>`
-      ).join("")}
-    </div>
+function showHome() {
+  card.innerHTML = `
+    <h2>Welcome</h2>
+    <button onclick="startTest()">English Level Test</button>
+    <button class="outline" onclick="startPractice()">Practice</button>
+    <button class="outline" onclick="showGrammar()">Grammar</button>
+    <button class="outline" onclick="showEssay()">Essay</button>
   `;
 }
 
-function answer(choice) {
-  if (choice === questions[currentQuestion].a) score++;
-  currentQuestion++;
+function startTest() {
+  testIndex = 0;
+  score = 0;
+  showTest();
+}
 
-  if (currentQuestion < questions.length) {
-    showQuestion();
-  } else {
-    showResult();
-  }
+function showTest() {
+  const q = testQuestions[testIndex];
+  card.innerHTML = `
+    <h3>${q.q}</h3>
+    ${q.options.map((o, i) =>
+      `<button class="option" onclick="answerTest(${i})">${o}</button>`
+    ).join("")}
+    <p>${testIndex + 1} / 15</p>
+  `;
+}
+
+function answerTest(i) {
+  if (i === testQuestions[testIndex].answer) score++;
+  testIndex++;
+  if (testIndex < 15) showTest();
+  else showResult();
 }
 
 function showResult() {
@@ -57,15 +76,81 @@ function showResult() {
   if (score >= 9) level = "B1";
   if (score >= 12) level = "B2";
   if (score >= 14) level = "C1";
+  localStorage.setItem("level", level);
 
-  document.getElementById("card").innerHTML = `
-    <h2>Your Result</h2>
-    <p><b>${score} / ${questions.length}</b> correct</p>
+  card.innerHTML = `
+    <h2>Result</h2>
+    <p>${score} / 15</p>
     <h3>Your level: ${level}</h3>
-    <button class="btn" onclick="location.reload()">Restart</button>
+    <button onclick="showHome()">Continue</button>
   `;
 }
 
-function toggleDark() {
-  document.body.classList.toggle("dark");
+function startPractice() {
+  practiceIndex = 0;
+  practiceQuestions.sort(() => Math.random() - 0.5);
+  showPractice();
 }
+
+function showPractice() {
+  const q = practiceQuestions[practiceIndex];
+  card.innerHTML = `
+    <h3>${q.q}</h3>
+    ${q.options.map((o, i) =>
+      `<button class="option" onclick="answerPractice(${i})">${o}</button>`
+    ).join("")}
+    <p>${practiceIndex + 1} / 50</p>
+  `;
+}
+
+function answerPractice(i) {
+  const correct = practiceQuestions[practiceIndex].answer;
+  document.querySelectorAll(".option").forEach((b, idx) => {
+    b.classList.add(idx === correct ? "correct" : "wrong");
+  });
+  practiceIndex++;
+  if (practiceIndex < 50) {
+    setTimeout(showPractice, 700);
+  } else {
+    card.innerHTML = `
+      <h2>Good job 🎉</h2>
+      <p>You finished practice</p>
+      <button onclick="showHome()">Back</button>
+    `;
+  }
+}
+
+function showGrammar() {
+  card.innerHTML = `
+    <h2>Grammar</h2>
+    ${grammars.map(g => `<div>${g}</div>`).join("")}
+    <button onclick="showHome()">Back</button>
+  `;
+}
+
+function showEssay() {
+  const titles = [
+    "My future goals",
+    "The importance of English",
+    "A challenge I faced"
+  ];
+  const title = titles[Math.floor(Math.random() * titles.length)];
+
+  card.innerHTML = `
+    <h3>${title}</h3>
+    <textarea id="essay"></textarea>
+    <button onclick="checkEssay()">Submit</button>
+    <button onclick="showHome()">Back</button>
+  `;
+}
+
+function checkEssay() {
+  const text = document.getElementById("essay").value;
+  const words = text.trim().split(/\s+/).length;
+  card.innerHTML += `
+    <p>Word count: ${words}</p>
+    <p><b>Feedback:</b> Good effort. Check verb tenses and articles.</p>
+  `;
+}
+
+showHome();
