@@ -2,36 +2,41 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Segoe UI, Arial;
+  font-family: "Segoe UI", Arial, sans-serif;
 }
 
 body {
   min-height: 100vh;
-  background: linear-gradient(180deg,#2f6bff,#2456d8);
-  color: white;
+  background: linear-gradient(180deg, #2f6bff, #2456d8);
+  color: #fff;
+  transition: 0.3s;
 }
 
+/* DARK MODE */
 body.dark {
-  background: linear-gradient(180deg,#020617,#0f172a);
+  background: linear-gradient(180deg, #0f172a, #020617);
+  color: #e5e7eb;
 }
 
 header {
   padding: 20px 40px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .logo {
-  font-size: 26px;
-  font-weight: 800;
+  font-size: 24px;
+  font-weight: 700;
 }
 
 .header-actions {
   display: flex;
-  gap: 14px;
+  gap: 12px;
+  align-items: center;
 }
 
-.vocab {
+.header-actions a {
   color: white;
   text-decoration: none;
   font-weight: 600;
@@ -47,19 +52,16 @@ header {
 
 .hero {
   text-align: center;
-  margin-top: 30px;
+  margin-top: 40px;
 }
 
 .hero h1 {
-  font-size: 40px;
+  font-size: 42px;
 }
 
-.page {
-  display: none;
-}
-
-.page.active {
-  display: block;
+.hero p {
+  opacity: 0.9;
+  margin-top: 6px;
 }
 
 .card {
@@ -69,6 +71,7 @@ header {
   margin: 40px auto;
   padding: 30px;
   border-radius: 18px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
   text-align: center;
 }
 
@@ -80,11 +83,12 @@ body.dark .card {
 .btn {
   width: 100%;
   padding: 14px;
-  margin-top: 12px;
+  margin-top: 15px;
   border-radius: 12px;
   border: none;
   background: #5b5cf6;
   color: white;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
 }
@@ -95,41 +99,36 @@ body.dark .card {
   color: #5b5cf6;
 }
 
-.btn-danger {
-  background: #dc2626;
+.btn:hover {
+  opacity: 0.9;
 }
 
-input, textarea {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-}
-
-.grammar-rule {
-  background: #eef2ff;
-  padding: 10px;
-  border-radius: 8px;
-  margin-top: 10px;
-  font-weight: 600;
-}
-
-.feedback {
-  margin-top: 12px;
-  font-weight: 600;
-}
-
-.ai-feedback {
-  margin-top: 12px;
-  background: #ecfeff;
-  padding: 10px;
-  border-radius: 8px;
-}
-
-.back-btn {
+.question {
   margin-top: 15px;
-  background: none;
-  border: none;
-  color: #5b5cf6;
   font-weight: 600;
-  cursor: pointer;
+}
+
+.options button {
+  margin-top: 10px;
+}
+
+.fade-in {
+  animation: fade 0.4s ease;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    width: 92%;
+  }
 }
