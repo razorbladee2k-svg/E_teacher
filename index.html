@@ -1,32 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>eTeacher</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
 <header>
   <div class="logo">eTeacher</div>
-  <div class="header-actions">
+  <div class="right">
     <a href="https://www.youtube.com/@4000EssentialEnglishWords" target="_blank">
       Need vocabulary?
     </a>
-    <button class="dark-toggle" onclick="toggleDark()">🌙</button>
+    <button class="dark-btn" onclick="toggleDark()">🌙</button>
   </div>
 </header>
 
-<div class="hero">
-  <h1>Learn English with us</h1>
-  <p>Grammar • Practice • Writing</p>
-</div>
+<h1 class="hero-title">Learn English with us</h1>
+<p class="hero-sub">Grammar • Practice • Writing</p>
 
-<section class="card fade-in" id="card">
-  <h2>English Level Test</h2>
-  <p>15 questions • 3–5 minutes</p>
-  <button class="btn" onclick="startTest()">Start Test</button>
-</section>
+<div id="card" class="card"></div>
 
 <script src="script.js"></script>
 </body>
