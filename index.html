@@ -10,8 +10,7 @@
 <header>
   <div class="logo">eTeacher</div>
   <div class="header-actions">
-    <a class="vocab" target="_blank"
-       href="https://www.youtube.com/@4000EssentialEnglishWords">
+    <a href="https://www.youtube.com/@4000EssentialEnglishWords" target="_blank">
       Need vocabulary?
     </a>
     <button class="dark-toggle" onclick="toggleDark()">🌙</button>
@@ -23,89 +22,10 @@
   <p>Grammar • Practice • Writing</p>
 </div>
 
-<!-- LOGIN -->
-<section id="login" class="page active">
-  <div class="card">
-    <h2>Login / Sign Up</h2>
-    <input id="username" placeholder="Username">
-    <input id="password" type="password" placeholder="Password">
-    <button class="btn" onclick="login()">Login</button>
-    <button class="btn btn-outline" onclick="signup()">Sign Up</button>
-  </div>
-</section>
-
-<!-- TEST INTRO -->
-<section id="testIntro" class="page">
-  <div class="card">
-    <h2>English Level Test</h2>
-    <p>15 questions • 3–5 minutes</p>
-    <button class="btn" onclick="startTest()">Start Test</button>
-  </div>
-</section>
-
-<!-- TEST -->
-<section id="test" class="page">
-  <div class="card">
-    <div id="testQuestion"></div>
-    <div id="testOptions"></div>
-  </div>
-</section>
-
-<!-- DASHBOARD -->
-<section id="dashboard" class="page">
-  <div class="card">
-    <h2 id="welcome"></h2>
-    <p id="progressInfo"></p>
-    <button class="btn" onclick="show('grammar')">Grammar</button>
-    <button class="btn" onclick="startPractice()">Practice</button>
-    <button class="btn" onclick="startEssay()">Essay</button>
-    <button class="btn btn-danger" onclick="logout()">Logout</button>
-  </div>
-</section>
-
-<!-- GRAMMAR -->
-<section id="grammar" class="page">
-  <div class="card">
-    <h2>Grammar (Core)</h2>
-
-    <div class="grammar-rule">
-      Present Simple: Subject + verb (+s/es)
-    </div>
-    <div class="grammar-rule">
-      Present Perfect: Subject + have/has + past participle
-    </div>
-    <div class="grammar-rule">
-      Passive Voice: Subject + be + past participle
-    </div>
-    <div class="grammar-rule">
-      Conditionals: If + present, will + verb
-    </div>
-
-    <button class="back-btn" onclick="show('dashboard')">← Back</button>
-  </div>
-</section>
-
-<!-- PRACTICE -->
-<section id="practice" class="page">
-  <div class="card">
-    <div id="practiceQ"></div>
-    <div id="practiceOpts"></div>
-    <div id="practiceFeedback" class="feedback"></div>
-    <button class="btn" onclick="nextPractice()">Next</button>
-    <button class="back-btn" onclick="show('dashboard')">← Back</button>
-  </div>
-</section>
-
-<!-- ESSAY -->
-<section id="essay" class="page">
-  <div class="card">
-    <div class="essay-title" id="essayTitle"></div>
-    <textarea id="essayText" rows="6"
-      placeholder="Write your essay..."></textarea>
-    <button class="btn" onclick="checkEssay()">Check Essay</button>
-    <div id="essayFeedback" class="ai-feedback"></div>
-    <button class="back-btn" onclick="show('dashboard')">← Back</button>
-  </div>
+<section class="card fade-in" id="card">
+  <h2>English Level Test</h2>
+  <p>15 questions • 3–5 minutes</p>
+  <button class="btn" onclick="startTest()">Start Test</button>
 </section>
 
 <script src="script.js"></script>
