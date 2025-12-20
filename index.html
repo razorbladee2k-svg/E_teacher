@@ -1,26 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>eTeacher</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
   <div class="logo">eTeacher</div>
-  <div class="right">
+  <div class="top-right">
     <a href="https://www.youtube.com/@4000EssentialEnglishWords" target="_blank">
       Need vocabulary?
     </a>
-    <button class="dark-btn" onclick="toggleDark()">🌙</button>
+    <button onclick="toggleDark()">🌙</button>
   </div>
 </header>
 
-<h1 class="hero-title">Learn English with us</h1>
-<p class="hero-sub">Grammar • Practice • Writing</p>
+<h1 class="title">Learn English with us</h1>
+<p class="subtitle">Grammar • Practice • Writing</p>
 
-<div id="card" class="card"></div>
+<div class="card">
+
+  <!-- LOGIN PAGE -->
+  <section id="login" class="page active">
+    <h2>Login</h2>
+    <input id="username" placeholder="Username">
+    <button onclick="login()">Login</button>
+  </section>
+
+  <!-- TEST PAGE -->
+  <section id="test" class="page">
+    <h2>English Level Test</h2>
+    <p id="testQuestion"></p>
+    <div id="testOptions"></div>
+    <button onclick="nextTest()">Next</button>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section id="dashboard" class="page">
+    <h2 id="welcome"></h2>
+    <button onclick="showPage('grammar')">Grammar</button>
+    <button onclick="startPractice()">Practice</button>
+    <button onclick="showPage('essay')">Essay</button>
+    <button class="danger" onclick="logout()">Logout</button>
+  </section>
+
+  <!-- GRAMMAR -->
+  <section id="grammar" class="page">
+    <h2>Grammar</h2>
+    <p><b>Present Perfect:</b></p>
+    <p>Subject + have/has + past participle</p>
+
+    <p><b>Passive Voice:</b></p>
+    <p>Subject + be + past participle</p>
+
+    <p><b>First Conditional:</b></p>
+    <p>If + present, will + verb</p>
+
+    <button onclick="showPage('dashboard')">Back</button>
+  </section>
+
+  <!-- PRACTICE -->
+  <section id="practice" class="page">
+    <h2>Practice</h2>
+    <p id="practiceQuestion"></p>
+    <div id="practiceOptions"></div>
+    <p id="practiceFeedback"></p>
+    <button onclick="nextPractice()">Next</button>
+    <button onclick="showPage('dashboard')">Back</button>
+  </section>
+
+  <!-- ESSAY -->
+  <section id="essay" class="page">
+    <h2 id="essayTitle"></h2>
+    <textarea id="essayText" placeholder="Write your essay..."></textarea>
+    <button onclick="checkEssay()">Check</button>
+    <p id="essayFeedback"></p>
+    <button onclick="showPage('dashboard')">Back</button>
+  </section>
+
+</div>
 
 <script src="script.js"></script>
 </body>
