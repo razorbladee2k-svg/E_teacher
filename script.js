@@ -11,33 +11,54 @@ function toggleDark() {
   document.body.classList.toggle("dark");
 }
 
-/* LOGIN */
-function login() {
-  const user = document.getElementById("username").value;
-  if (!user) return alert("Enter username");
-  localStorage.setItem("user", user);
-  document.getElementById("welcome").innerText =
-    "Welcome " + user;
-  startTest();
-}
+/* AUTH SYSTEM */
+let currentUser = null;
 
-/* LOGOUT */
-function logout() {
+function signup() {
+  const user = signupUser.value.trim();
+  const pass = signupPass.value.trim();
+
+  if (!user || !pass) return alert("Fill all fields");
+
+  if (localStorage.getItem("user_" + user)) {
+    return alert("User already exists");
+  }
+
+  localStorage.setItem("user_" + user, pass);
+  alert("Account created. Please login.");
   showPage("login");
 }
 
-/* TEST */
+function login() {
+  const user = loginUser.value.trim();
+  const pass = loginPass.value.trim();
+
+  const saved = localStorage.getItem("user_" + user);
+  if (!saved) return alert("User does not exist");
+  if (saved !== pass) return alert("Wrong password");
+
+  currentUser = user;
+  welcome.innerText = "Welcome " + user;
+  startTest();
+}
+
+function logout() {
+  currentUser = null;
+  showPage("login");
+}
+
+/* TEST (10 QUESTIONS) */
 const testQuestions = [
-  { q: "She ___ to school every day.", a: ["go", "goes", "going"], c: 1 },
-  { q: "I have ___ dinner.", a: ["eat", "eaten", "eating"], c: 1 },
-  { q: "If it rains, we ___ home.", a: ["stay", "will stay", "stayed"], c: 1 },
-  { q: "The book ___ by him.", a: ["wrote", "was written", "write"], c: 1 },
-  { q: "He is ___ than me.", a: ["tall", "taller", "tallest"], c: 1 },
-  { q: "I didn’t ___ her.", a: ["saw", "see", "seen"], c: 1 },
-  { q: "She speaks ___ .", a: ["fluent", "fluently", "fluency"], c: 1 },
-  { q: "We were late ___ traffic.", a: ["because", "because of", "so"], c: 1 },
-  { q: "You ___ smoke here.", a: ["mustn't", "don't", "won't"], c: 0 },
-  { q: "I wish I ___ taller.", a: ["am", "was", "were"], c: 2 }
+  { q:"She ___ to school every day.", a:["go","goes","going"], c:1 },
+  { q:"I have ___ dinner.", a:["eat","eaten","eating"], c:1 },
+  { q:"If it rains, we ___ home.", a:["stay","will stay","stayed"], c:1 },
+  { q:"The book ___ by him.", a:["wrote","was written","write"], c:1 },
+  { q:"He is ___ than me.", a:["tall","taller","tallest"], c:1 },
+  { q:"I didn’t ___ her.", a:["saw","see","seen"], c:1 },
+  { q:"She speaks ___ .", a:["fluent","fluently","fluency"], c:1 },
+  { q:"We were late ___ traffic.", a:["because","because of","so"], c:1 },
+  { q:"You ___ smoke here.", a:["mustn't","don't","won't"], c:0 },
+  { q:"I wish I ___ taller.", a:["am","was","were"], c:2 }
 ];
 
 let testIndex = 0;
@@ -52,9 +73,9 @@ function startTest() {
 
 function loadTest() {
   const q = testQuestions[testIndex];
-  document.getElementById("testQuestion").innerText = q.q;
-  document.getElementById("testOptions").innerHTML =
-    q.a.map((o, i) =>
+  testQuestion.innerText = q.q;
+  testOptions.innerHTML =
+    q.a.map((o,i)=>
       `<button onclick="answerTest(${i})">${o}</button>`
     ).join("");
 }
@@ -73,34 +94,34 @@ function nextTest() {
 }
 
 /* PRACTICE – 30 QUESTIONS */
-const practiceQuestions = Array.from({ length: 30 }, (_, i) => ({
-  q: `Practice question ${i + 1}`,
-  a: ["Wrong", "Correct", "Wrong"],
-  c: 1
+const practiceQuestions = Array.from({length:30},(_,i)=>({
+  q:`Practice question ${i+1}`,
+  a:["Wrong","Correct","Wrong"],
+  c:1
 }));
 
 let practiceIndex = 0;
 
 function startPractice() {
   practiceIndex = 0;
-  practiceQuestions.sort(() => Math.random() - 0.5);
+  practiceQuestions.sort(()=>Math.random()-0.5);
   showPage("practice");
   loadPractice();
 }
 
 function loadPractice() {
   const q = practiceQuestions[practiceIndex];
-  document.getElementById("practiceQuestion").innerText = q.q;
-  document.getElementById("practiceOptions").innerHTML =
-    q.a.map((o, i) =>
+  practiceQuestion.innerText = q.q;
+  practiceOptions.innerHTML =
+    q.a.map((o,i)=>
       `<button onclick="answerPractice(${i})">${o}</button>`
     ).join("");
-  document.getElementById("practiceFeedback").innerText = "";
+  practiceFeedback.innerText="";
 }
 
 function answerPractice(i) {
-  document.getElementById("practiceFeedback").innerText =
-    i === practiceQuestions[practiceIndex].c
+  practiceFeedback.innerText =
+    i===practiceQuestions[practiceIndex].c
       ? "✅ Good job!"
       : "❌ Wrong answer";
 }
@@ -110,9 +131,8 @@ function nextPractice() {
   if (practiceIndex < practiceQuestions.length) {
     loadPractice();
   } else {
-    document.getElementById("practiceQuestion").innerText =
-      "🎉 Practice completed!";
-    document.getElementById("practiceOptions").innerHTML = "";
+    practiceQuestion.innerText = "🎉 Practice completed!";
+    practiceOptions.innerHTML = "";
   }
 }
 
@@ -123,13 +143,13 @@ const essayTitles = [
   "Technology in education"
 ];
 
-document.getElementById("essayTitle").innerText =
-  essayTitles[Math.floor(Math.random() * essayTitles.length)];
+essayTitle.innerText =
+  essayTitles[Math.floor(Math.random()*essayTitles.length)];
 
 function checkEssay() {
-  const text = document.getElementById("essayText").value;
-  const words = text.trim().split(/\s+/).length;
-  document.getElementById("essayFeedback").innerText =
+  const text = essayText.value.trim();
+  const words = text.split(/\s+/).length;
+  essayFeedback.innerText =
     words < 50
       ? "Essay too short."
       : "Good job! Check grammar and tenses.";
