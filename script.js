@@ -1,160 +1,71 @@
-/* ================= PAGE CONTROL ================= */
-function show(id) {
-  document.querySelectorAll(".page").forEach(p =>
-    p.classList.remove("active")
-  );
-  document.getElementById(id).classList.add("active");
+let currentQuestion = 0;
+let score = 0;
+
+const questions = [
+  { q: "She ___ lived here for five years.", o: ["has", "have", "is"], a: 0 },
+  { q: "If I ___ more time, I would help you.", o: ["have", "had", "will have"], a: 1 },
+  { q: "They ___ to London last year.", o: ["go", "went", "gone"], a: 1 },
+  { q: "He doesn’t like ___ early.", o: ["wake", "waking", "wakes"], a: 1 },
+  { q: "This is the ___ movie I’ve seen.", o: ["most interesting", "more interesting", "interesting"], a: 0 },
+  { q: "I didn’t have ___ money.", o: ["enough", "too", "very"], a: 0 },
+  { q: "She speaks ___ than him.", o: ["more confidently", "confident", "confidence"], a: 0 },
+  { q: "The letter ___ yesterday.", o: ["sent", "was sent", "has send"], a: 1 },
+  { q: "You ___ smoke here.", o: ["mustn’t", "don’t", "won’t"], a: 0 },
+  { q: "I wish I ___ taller.", o: ["am", "was", "were"], a: 2 },
+  { q: "We were late ___ traffic.", o: ["because", "because of", "so"], a: 1 },
+  { q: "She’s ___ person I know.", o: ["the kindest", "kinder", "kind"], a: 0 },
+  { q: "He asked where I ___ from.", o: ["am", "was", "were"], a: 1 },
+  { q: "English is spoken ___.", o: ["worldwide", "world", "word"], a: 0 },
+  { q: "I’ve never ___ sushi.", o: ["eat", "ate", "eaten"], a: 2 }
+];
+
+// shuffle questions
+questions.sort(() => Math.random() - 0.5);
+
+function startTest() {
+  currentQuestion = 0;
+  score = 0;
+  showQuestion();
 }
 
-/* ================= DARK MODE ================= */
+function showQuestion() {
+  const q = questions[currentQuestion];
+  document.getElementById("card").innerHTML = `
+    <h2>Question ${currentQuestion + 1} / ${questions.length}</h2>
+    <p class="question">${q.q}</p>
+    <div class="options">
+      ${q.o.map((opt, i) =>
+        `<button class="btn btn-outline" onclick="answer(${i})">${opt}</button>`
+      ).join("")}
+    </div>
+  `;
+}
+
+function answer(choice) {
+  if (choice === questions[currentQuestion].a) score++;
+  currentQuestion++;
+
+  if (currentQuestion < questions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  let level = "A2";
+  if (score >= 9) level = "B1";
+  if (score >= 12) level = "B2";
+  if (score >= 14) level = "C1";
+
+  document.getElementById("card").innerHTML = `
+    <h2>Your Result</h2>
+    <p><b>${score} / ${questions.length}</b> correct</p>
+    <h3>Your level: ${level}</h3>
+    <button class="btn" onclick="location.reload()">Restart</button>
+  `;
+}
+
 function toggleDark() {
   document.body.classList.toggle("dark");
-}
-
-/* ================= AUTH ================= */
-let currentUser = null;
-
-function signup() {
-  const u = username.value.trim();
-  const p = password.value.trim();
-  if (!u || !p) return alert("Fill all fields");
-  localStorage.setItem("user_" + u, p);
-  alert("Account created. Now login.");
-}
-
-function login() {
-  const u = username.value.trim();
-  const p = password.value.trim();
-  const saved = localStorage.getItem("user_" + u);
-  if (saved === p) {
-    currentUser = u;
-    show("testIntro");
-  } else {
-    alert("Wrong username or password");
-  }
-}
-
-function logout() {
-  currentUser = null;
-  show("login");
-}
-
-/* ================= PRACTICE QUESTIONS (50 REAL) ================= */
-const practiceBase = [
-  ["She ___ to school every day.", ["go", "goes", "going"], 1, "Third person singular"],
-  ["They ___ finished their work.", ["has", "have", "having"], 1, "Plural uses have"],
-  ["The book ___ by him.", ["wrote", "was written", "has wrote"], 1, "Passive voice"],
-  ["If it rains, we ___ home.", ["stay", "will stay", "stayed"], 1, "First conditional"],
-  ["I have lived here ___ 2020.", ["for", "since", "from"], 1, "Since + point in time"],
-  ["He is ___ than his brother.", ["tall", "taller", "tallest"], 1, "Comparative"],
-  ["She ___ TV when I arrived.", ["watched", "was watching", "is watching"], 1, "Past continuous"],
-  ["We ___ already eaten.", ["have", "has", "had"], 0, "Present perfect"],
-  ["English ___ all over the world.", ["speak", "is spoken", "spoken"], 1, "Passive"],
-  ["He didn’t ___ the answer.", ["knew", "know", "known"], 1, "Did + base verb"],
-
-  // ---- DUPLICATE LOGICALLY DIFFERENT QUESTIONS ----
-];
-
-while (practiceBase.length < 50) {
-  const q = practiceBase[Math.floor(Math.random() * 10)];
-  practiceBase.push([
-    q[0].replace("___", "___"),
-    [...q[1]],
-    q[2],
-    q[3]
-  ]);
-}
-
-/* ================= PRACTICE ENGINE ================= */
-let practiceQs = [];
-let pIndex = 0;
-let answered = false;
-
-function shuffle(arr) {
-  return arr.sort(() => Math.random() - 0.5);
-}
-
-function startPractice() {
-  practiceQs = shuffle([...practiceBase]);
-  pIndex = 0;
-  show("practice");
-  loadPractice();
-}
-
-function loadPractice() {
-  answered = false;
-  const q = practiceQs[pIndex];
-  practiceQ.innerText = `Question ${pIndex + 1}/50\n\n${q[0]}`;
-  practiceFeedback.innerText = "";
-  practiceOpts.innerHTML = "";
-
-  q[1].forEach((opt, i) => {
-    const btn = document.createElement("button");
-    btn.className = "btn btn-outline";
-    btn.innerText = opt;
-
-    btn.onclick = () => {
-      if (answered) return;
-      answered = true;
-
-      [...practiceOpts.children].forEach(b => b.disabled = true);
-
-      if (i === q[2]) {
-        practiceFeedback.innerText = "✅ Good job!";
-      } else {
-        practiceFeedback.innerText =
-          `❌ Wrong.\nCorrect answer: "${q[1][q[2]]}"\nRule: ${q[3]}`;
-      }
-    };
-
-    practiceOpts.appendChild(btn);
-  });
-}
-
-function nextPractice() {
-  if (!answered) {
-    alert("Choose an answer first 🙂");
-    return;
-  }
-
-  pIndex++;
-
-  if (pIndex >= 50) {
-    practiceQ.innerText = "🎉 Practice complete!";
-    practiceOpts.innerHTML = "";
-    practiceFeedback.innerText = "Excellent work. Keep practicing!";
-    return;
-  }
-
-  loadPractice();
-}
-
-/* ================= ESSAY ================= */
-const essayTitles = [
-  "Why learning English is important",
-  "My future goals",
-  "Technology in education",
-  "The impact of social media",
-  "Advantages of learning languages"
-];
-
-function startEssay() {
-  essayTitle.innerText =
-    essayTitles[Math.floor(Math.random() * essayTitles.length)];
-  essayText.value = "";
-  essayFeedback.innerText = "";
-  show("essay");
-}
-
-function checkEssay() {
-  const text = essayText.value.trim();
-  const words = text.split(/\s+/).length;
-
-  if (words < 80) {
-    essayFeedback.innerText =
-      "❌ Too short. Try to write at least 80 words.";
-  } else {
-    essayFeedback.innerText =
-      "✅ Good structure.\n✔ Vocabulary is okay.\n✔ Check verb tenses and articles.";
-  }
 }
