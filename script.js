@@ -1,156 +1,136 @@
-let page = "home";
-let testIndex = 0;
-let score = 0;
-let practiceIndex = 0;
+/* PAGE CONTROL */
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(p =>
+    p.classList.remove("active")
+  );
+  document.getElementById(id).classList.add("active");
+}
 
-const card = document.getElementById("card");
-
-const testQuestions = Array.from({ length: 15 }, (_, i) => ({
-  q: `Choose the correct sentence (${i + 1})`,
-  options: [
-    "He go to school every day",
-    "He goes to school every day",
-    "He going to school every day"
-  ],
-  answer: 1
-}));
-
-const practiceQuestions = Array.from({ length: 50 }, (_, i) => ({
-  q: `Practice question ${i + 1}`,
-  options: [
-    "She have finished",
-    "She has finished",
-    "She finishing"
-  ],
-  answer: 1
-}));
-
-const grammars = [
-  "Present Simple → Subject + verb(s)",
-  "Present Perfect → Subject + have/has + past participle",
-  "Passive Voice → Subject + be + past participle",
-  "Conditionals → If + present, will + verb",
-  "Reported Speech → He said (that)..."
-];
-
+/* DARK MODE */
 function toggleDark() {
   document.body.classList.toggle("dark");
 }
 
-function showHome() {
-  card.innerHTML = `
-    <h2>Welcome</h2>
-    <button onclick="startTest()">English Level Test</button>
-    <button class="outline" onclick="startPractice()">Practice</button>
-    <button class="outline" onclick="showGrammar()">Grammar</button>
-    <button class="outline" onclick="showEssay()">Essay</button>
-  `;
+/* LOGIN */
+function login() {
+  const user = document.getElementById("username").value;
+  if (!user) return alert("Enter username");
+  localStorage.setItem("user", user);
+  document.getElementById("welcome").innerText =
+    "Welcome " + user;
+  startTest();
 }
+
+/* LOGOUT */
+function logout() {
+  showPage("login");
+}
+
+/* TEST */
+const testQuestions = [
+  { q: "She ___ to school every day.", a: ["go", "goes", "going"], c: 1 },
+  { q: "I have ___ dinner.", a: ["eat", "eaten", "eating"], c: 1 },
+  { q: "If it rains, we ___ home.", a: ["stay", "will stay", "stayed"], c: 1 },
+  { q: "The book ___ by him.", a: ["wrote", "was written", "write"], c: 1 },
+  { q: "He is ___ than me.", a: ["tall", "taller", "tallest"], c: 1 },
+  { q: "I didn’t ___ her.", a: ["saw", "see", "seen"], c: 1 },
+  { q: "She speaks ___ .", a: ["fluent", "fluently", "fluency"], c: 1 },
+  { q: "We were late ___ traffic.", a: ["because", "because of", "so"], c: 1 },
+  { q: "You ___ smoke here.", a: ["mustn't", "don't", "won't"], c: 0 },
+  { q: "I wish I ___ taller.", a: ["am", "was", "were"], c: 2 }
+];
+
+let testIndex = 0;
+let score = 0;
 
 function startTest() {
   testIndex = 0;
   score = 0;
-  showTest();
+  showPage("test");
+  loadTest();
 }
 
-function showTest() {
+function loadTest() {
   const q = testQuestions[testIndex];
-  card.innerHTML = `
-    <h3>${q.q}</h3>
-    ${q.options.map((o, i) =>
-      `<button class="option" onclick="answerTest(${i})">${o}</button>`
-    ).join("")}
-    <p>${testIndex + 1} / 15</p>
-  `;
+  document.getElementById("testQuestion").innerText = q.q;
+  document.getElementById("testOptions").innerHTML =
+    q.a.map((o, i) =>
+      `<button onclick="answerTest(${i})">${o}</button>`
+    ).join("");
 }
 
 function answerTest(i) {
-  if (i === testQuestions[testIndex].answer) score++;
+  if (i === testQuestions[testIndex].c) score++;
+}
+
+function nextTest() {
   testIndex++;
-  if (testIndex < 15) showTest();
-  else showResult();
+  if (testIndex < testQuestions.length) {
+    loadTest();
+  } else {
+    showPage("dashboard");
+  }
 }
 
-function showResult() {
-  let level = "A2";
-  if (score >= 9) level = "B1";
-  if (score >= 12) level = "B2";
-  if (score >= 14) level = "C1";
-  localStorage.setItem("level", level);
+/* PRACTICE – 30 QUESTIONS */
+const practiceQuestions = Array.from({ length: 30 }, (_, i) => ({
+  q: `Practice question ${i + 1}`,
+  a: ["Wrong", "Correct", "Wrong"],
+  c: 1
+}));
 
-  card.innerHTML = `
-    <h2>Result</h2>
-    <p>${score} / 15</p>
-    <h3>Your level: ${level}</h3>
-    <button onclick="showHome()">Continue</button>
-  `;
-}
+let practiceIndex = 0;
 
 function startPractice() {
   practiceIndex = 0;
   practiceQuestions.sort(() => Math.random() - 0.5);
-  showPractice();
+  showPage("practice");
+  loadPractice();
 }
 
-function showPractice() {
+function loadPractice() {
   const q = practiceQuestions[practiceIndex];
-  card.innerHTML = `
-    <h3>${q.q}</h3>
-    ${q.options.map((o, i) =>
-      `<button class="option" onclick="answerPractice(${i})">${o}</button>`
-    ).join("")}
-    <p>${practiceIndex + 1} / 50</p>
-  `;
+  document.getElementById("practiceQuestion").innerText = q.q;
+  document.getElementById("practiceOptions").innerHTML =
+    q.a.map((o, i) =>
+      `<button onclick="answerPractice(${i})">${o}</button>`
+    ).join("");
+  document.getElementById("practiceFeedback").innerText = "";
 }
 
 function answerPractice(i) {
-  const correct = practiceQuestions[practiceIndex].answer;
-  document.querySelectorAll(".option").forEach((b, idx) => {
-    b.classList.add(idx === correct ? "correct" : "wrong");
-  });
+  document.getElementById("practiceFeedback").innerText =
+    i === practiceQuestions[practiceIndex].c
+      ? "✅ Good job!"
+      : "❌ Wrong answer";
+}
+
+function nextPractice() {
   practiceIndex++;
-  if (practiceIndex < 50) {
-    setTimeout(showPractice, 700);
+  if (practiceIndex < practiceQuestions.length) {
+    loadPractice();
   } else {
-    card.innerHTML = `
-      <h2>Good job 🎉</h2>
-      <p>You finished practice</p>
-      <button onclick="showHome()">Back</button>
-    `;
+    document.getElementById("practiceQuestion").innerText =
+      "🎉 Practice completed!";
+    document.getElementById("practiceOptions").innerHTML = "";
   }
 }
 
-function showGrammar() {
-  card.innerHTML = `
-    <h2>Grammar</h2>
-    ${grammars.map(g => `<div>${g}</div>`).join("")}
-    <button onclick="showHome()">Back</button>
-  `;
-}
+/* ESSAY */
+const essayTitles = [
+  "Why learning English is important",
+  "My future goals",
+  "Technology in education"
+];
 
-function showEssay() {
-  const titles = [
-    "My future goals",
-    "The importance of English",
-    "A challenge I faced"
-  ];
-  const title = titles[Math.floor(Math.random() * titles.length)];
-
-  card.innerHTML = `
-    <h3>${title}</h3>
-    <textarea id="essay"></textarea>
-    <button onclick="checkEssay()">Submit</button>
-    <button onclick="showHome()">Back</button>
-  `;
-}
+document.getElementById("essayTitle").innerText =
+  essayTitles[Math.floor(Math.random() * essayTitles.length)];
 
 function checkEssay() {
-  const text = document.getElementById("essay").value;
+  const text = document.getElementById("essayText").value;
   const words = text.trim().split(/\s+/).length;
-  card.innerHTML += `
-    <p>Word count: ${words}</p>
-    <p><b>Feedback:</b> Good effort. Check verb tenses and articles.</p>
-  `;
+  document.getElementById("essayFeedback").innerText =
+    words < 50
+      ? "Essay too short."
+      : "Good job! Check grammar and tenses.";
 }
-
-showHome();
