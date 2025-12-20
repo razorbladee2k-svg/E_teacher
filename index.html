@@ -22,14 +22,25 @@
 
 <div class="card">
 
-  <!-- LOGIN PAGE -->
+  <!-- LOGIN -->
   <section id="login" class="page active">
     <h2>Login</h2>
-    <input id="username" placeholder="Username">
+    <input id="loginUser" placeholder="Username">
+    <input id="loginPass" type="password" placeholder="Password">
     <button onclick="login()">Login</button>
+    <button class="outline" onclick="showPage('signup')">Sign up</button>
   </section>
 
-  <!-- TEST PAGE -->
+  <!-- SIGN UP -->
+  <section id="signup" class="page">
+    <h2>Create Account</h2>
+    <input id="signupUser" placeholder="Username">
+    <input id="signupPass" type="password" placeholder="Password">
+    <button onclick="signup()">Create account</button>
+    <button class="outline" onclick="showPage('login')">Back to login</button>
+  </section>
+
+  <!-- TEST -->
   <section id="test" class="page">
     <h2>English Level Test</h2>
     <p id="testQuestion"></p>
@@ -49,13 +60,17 @@
   <!-- GRAMMAR -->
   <section id="grammar" class="page">
     <h2>Grammar</h2>
-    <p><b>Present Perfect:</b></p>
+
+    <p><b>Present Simple</b></p>
+    <p>Subject + verb(s)</p>
+
+    <p><b>Present Perfect</b></p>
     <p>Subject + have/has + past participle</p>
 
-    <p><b>Passive Voice:</b></p>
+    <p><b>Passive Voice</b></p>
     <p>Subject + be + past participle</p>
 
-    <p><b>First Conditional:</b></p>
+    <p><b>First Conditional</b></p>
     <p>If + present, will + verb</p>
 
     <button onclick="showPage('dashboard')">Back</button>
